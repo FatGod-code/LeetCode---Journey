@@ -2,7 +2,7 @@ class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target)
     {
-        //test
+        //test leetcode sync
         std::unordered_map<int, int> indexTable;
         for (int idx = 0; idx<nums.size(); ++idx)
         {
