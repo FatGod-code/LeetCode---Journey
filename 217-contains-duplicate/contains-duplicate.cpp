@@ -2,13 +2,13 @@ class Solution {
 public:
     bool containsDuplicate(vector<int>& nums)
     {
-        std::unordered_set<int> table;
-        for (int idx = 0; idx<nums.size(); ++idx)
-        {
-            auto found = table.find(nums[idx]);
-            if (found!=table.end()) { return true;}
+        std::sort(nums.begin(), nums.end());
 
-            table.emplace(nums[idx]);
+        int value = nums.front();
+        for (int idx = 1; idx<nums.size(); ++idx)
+        {
+            if (nums[idx]==value) { return true; }
+            else { value = nums[idx]; }
         }
 
         return false;
