@@ -3,18 +3,13 @@ public:
     vector<int> topKFrequent(vector<int>& nums, int k)
     {
         std::unordered_map<int, int> timesTable;
-        for (int idx = 0; idx<nums.size(); ++idx) { ++timesTable[nums[idx]]; }
+        for (const auto ele : nums) { ++timesTable[ele]; }
 
-        std::vector<std::pair<int, int>> timesVec;
-        for (const auto& ele : timesTable)
-        {
-            timesVec.push_back({ele.second, ele.first});
-        }
-
-        std::sort(timesVec.begin(), timesVec.end(), [](std::pair<int, int> a, std::pair<int, int> b) { return a.first>b.first; });
+        std::vector<std::pair<int, int>> timesVec(timesTable.begin(), timesTable.end());
+        std::sort(timesVec.begin(), timesVec.end(), [](const auto& a, const auto& b) { return a.second>b.second; });
 
         std::vector<int> results;
-        for (int i = 0; i<k; ++i) { results.emplace_back(timesVec[i].second); }
+        for (int i = 0; i<k; ++i) { results.emplace_back(timesVec[i].first); }
 
         return results;
     }
