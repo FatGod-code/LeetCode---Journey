@@ -5,11 +5,26 @@ public:
         std::unordered_map<int, int> timesTable;
         for (const auto ele : nums) { ++timesTable[ele]; }
 
-        std::vector<std::pair<int, int>> timesVec(timesTable.begin(), timesTable.end());
-        std::sort(timesVec.begin(), timesVec.end(), [](const auto& a, const auto& b) { return a.second>b.second; });
+        std::priority_queue<std::pair<int, int>, vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pque;
+        for (const auto& ele : timesTable)
+        {
+            if (pque.size()<k) { pque.push({ele.second, ele.first}); }
+            else
+            {
+                if (ele.second>pque.top().first)
+                {
+                    pque.pop();
+                    pque.push({ele.second, ele.first});
+                }
+            }
+        }
 
-        std::vector<int> results;
-        for (int i = 0; i<k; ++i) { results.emplace_back(timesVec[i].first); }
+        std::vector<int> results(k);
+        for (int i = 0; i<k; ++i)
+        {
+            results[i] = pque.top().second;
+            pque.pop();
+        }
 
         return results;
     }
