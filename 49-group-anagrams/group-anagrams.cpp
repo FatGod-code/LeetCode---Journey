@@ -15,7 +15,7 @@ public:
             else
             {
                 indexTable.emplace(str, results.size());
-                results.emplace_back(std::vector<std::string>{strs[idx]});
+                results.emplace_back(1, strs[idx]);
             }
         }
 
