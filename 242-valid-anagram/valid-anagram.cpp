@@ -2,13 +2,19 @@ class Solution {
 public:
     bool isAnagram(string s, string t)
     {
-        std::vector<int> tableS(26, 0);
-        for (int idx = 0; idx<s.size(); ++idx) { ++tableS[s[idx]-'a']; }
+        if (s.size()!=t.size()) { return false; }
+
+        std::vector<int> table(26, 0);
+        for (int idx = 0; idx<s.size(); ++idx) { ++table[s[idx]-'a']; }
 
         std::vector<int> tableT(26, 0);
-        for (int idx = 0; idx<t.size(); ++idx) { ++tableT[t[idx]-'a']; }
+        for (int idx = 0; idx<t.size(); ++idx) { --table[t[idx]-'a']; }
 
-        if (tableS!=tableT) { return false; }
+        for (auto ele : table)
+        {
+            if (ele) { return false; }
+        }
+        
         return true;
     }
 };
