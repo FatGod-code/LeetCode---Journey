@@ -13,7 +13,7 @@ public:
         }
 
         std::vector<int> results(k);
-        int index = 0;    
+        int index = 0;
         for (int idx = bucket.size()-1; idx>=0; --idx)
         {
             for (const auto ele : bucket[idx])
