@@ -2,24 +2,60 @@ class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board)
     {
-        std::vector<std::vector<bool>> rowTable(9, std::vector<bool>(9, false));
-        std::vector<std::vector<bool>> colTable(9, std::vector<bool>(9, false));
-        std::vector<std::vector<bool>> subBoxTable(9, std::vector<bool>(9, false));
-
-        for (int row = 0; row<board.size(); ++row)
+        for (int row = 0; row<9; ++row)
         {
-            for (int col = 0; col<board[0].size(); ++col)
+            uint16_t flags = 0x00000000;
+            for (int col = 0; col<9; ++col)
             {
-                int value = board[row][col];
+                const auto value = board[row][col];
                 if (value=='.') { continue; }
 
-                int index = value-'0'-1;
-                int subIdx = (row/3)*3+(col/3);
-                if (rowTable[row][index] || colTable[col][index] || subBoxTable[subIdx][index]) { return false; }
+                uint16_t mask = 0;
+                int idx = value-'0';
+                mask |= (1<<idx);
 
-                rowTable[row][index] = true;
-                colTable[col][index] = true;
-                subBoxTable[subIdx][index] = true;
+                if (flags & mask) { return false; }
+                flags |= mask;
+            }
+        }
+
+        for (int col = 0; col<9; ++col)
+        {
+            uint16_t flags = 0x00000000;
+            for (int row = 0; row<9; ++row)
+            {
+                const auto value = board[row][col];
+                if (value=='.') { continue; }
+
+                uint16_t mask = 0;
+                int idx = value-'0';
+                mask |= (1<<idx);
+
+                if (flags & mask) { return false; }
+                flags |= mask;
+            }
+        }
+
+        for (int bigRow = 0; bigRow<3; ++bigRow)
+        {
+            for (int bigCol = 0; bigCol<3; ++bigCol)
+            {
+                uint16_t flags = 0x00000000;
+                for (int row = 0; row<3; ++row)
+                {
+                    for (int col = 0; col<3; ++col)
+                    {
+                        const auto value = board[bigRow*3+row][bigCol*3+col];
+                        if (value=='.') { continue; }
+
+                        uint16_t mask = 0;
+                        int idx = value-'0';
+                        mask |= (1<<idx);
+
+                        if (flags & mask) { return false; }
+                        flags |= mask;
+                    }
+                }
             }
         }
 
