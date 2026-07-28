@@ -4,20 +4,15 @@ public:
     {
         int results = 0;
 
-        std::set<int> table(nums.begin(), nums.end());
-        for (auto citr = table.cbegin(); citr!= table.cend(); ++citr)
+        std::unordered_set<int> table(nums.begin(), nums.end());
+        for (const auto ele : table)
         {
-            int length = 1;
-            while (citr!=table.cend())
-            {
-                auto found = table.find(*citr+1);
-                if (found==table.cend()) { break; }
+            if (table.find(ele-1)!=table.end()) { continue; }
 
-                ++length;
-                ++citr;
-            }
-
-            results = std::max(length, results);
+            int value = ele;
+            while (table.find(++value)!=table.end()) {}
+            
+            results = std::max(value-ele, results);
         }
 
         return results;
