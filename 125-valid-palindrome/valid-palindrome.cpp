@@ -6,11 +6,11 @@ public:
         int right = static_cast<int>(s.size()-1);
         while (left<right)
         {
-            while (left<right && !std::isalpha(s[left]) && !std::isdigit(s[left])) { ++left; }
-            while (left<right && !std::isalpha(s[right]) && !std::isdigit(s[right])) { --right; }
+            while (left<right && !std::isalnum(s[left])) { ++left; }
+            while (left<right && !std::isalnum(s[right])) { --right; }
 
-            const auto leftChar = std::tolower(s[left]);
-            const auto rightChar = std::tolower(s[right]);
+            const auto leftChar = s[left] |= 0x20;
+            const auto rightChar = s[right] |= 0x20;
             if (leftChar!=rightChar) { return false; }
 
             ++left;
