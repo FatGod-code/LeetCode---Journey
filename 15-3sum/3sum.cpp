@@ -24,15 +24,8 @@ public:
                     while (left<right && nums[left]==leftValue) { ++left; }
                     while (left<right && nums[right]==rightValue) { --right; }
                 }
-                
-                else if (sum<(-nums[idx]))
-                {
-                    while (left<right && nums[left]==leftValue) { ++left; }
-                }
-                else
-                {
-                    while (left<right && nums[right]==rightValue) { --right; }
-                }
+                else if (sum<(-nums[idx])) { ++left; }
+                else { --right; }
             }
 
             while (idx+1<nums.size() && nums[idx+1]==nums[idx]) { ++idx; }
