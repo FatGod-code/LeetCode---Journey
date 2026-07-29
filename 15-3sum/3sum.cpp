@@ -8,6 +8,7 @@ public:
         for (int idx = 0; idx<nums.size(); ++idx)
         {
             if (nums[idx]>0) { break; }
+            if (idx>0 && nums[idx]==nums[idx-1]) { continue; }
 
             int left = idx+1;
             int right = static_cast<int>(nums.size()-1);
@@ -27,8 +28,6 @@ public:
                 else if (sum<(-nums[idx])) { ++left; }
                 else { --right; }
             }
-
-            while (idx+1<nums.size() && nums[idx+1]==nums[idx]) { ++idx; }
         }
 
         return results;
