@@ -10,7 +10,7 @@ public:
             if (nums[idx]>0) { break; }
 
             int left = idx+1;
-            int right = nums.size()-1;
+            int right = static_cast<int>(nums.size()-1);
             while (left<right)
             {
                 int leftValue = nums[left];
