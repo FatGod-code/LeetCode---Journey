@@ -18,9 +18,11 @@ public:
                 if (sum==(-nums[idx]))
                 {
                     results.push_back({nums[idx], leftValue, rightValue});
+
                     while (left<right && nums[left]==leftValue) { ++left; }
-                    while (left<right && nums[left]==leftValue) { ++left; }
+                    while (left<right && nums[right]==rightValue) { --right; }
                 }
+                
                 else if (sum<(-nums[idx]))
                 {
                     while (left<right && nums[left]==leftValue) { ++left; }
