@@ -1,33 +1,18 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums)
-    {
+    {   
         int results = 0;
+        int length = 0;
 
-        std::unordered_set<int> table(nums.begin(), nums.end());
-        while (!table.empty())
+        std::sort(nums.begin(), nums.end());
+        for (int idx = 0; idx<nums.size(); ++idx)
         {
-            int value = *table.begin();
-            table.erase(value);
-            
-            int length = 1;
-            
-            int valueL = value-1;
-            while (table.find(valueL)!=table.end())
-            {
-                ++length;
-                table.erase(valueL);
-                --valueL;
-            }
+            if (idx-1>=0 && nums[idx]==nums[idx-1]) { continue; }
 
-            int valueR = value+1;
-            while (table.find(valueR)!=table.end())
-            {
-                ++length;
-                table.erase(valueR);
-                ++valueR;
-            }
-
+            if (idx-1>=0 && nums[idx]-1==nums[idx-1]) { ++length; }
+            else { length = 1; }
+            
             results = std::max(length, results);
         }
 
