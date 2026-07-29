@@ -9,8 +9,8 @@ public:
             while (left<right && !std::isalnum(s[left])) { ++left; }
             while (left<right && !std::isalnum(s[right])) { --right; }
 
-            const auto leftChar = s[left] |= 0x20;
-            const auto rightChar = s[right] |= 0x20;
+            const auto leftChar = s[left] | 0x20;
+            const auto rightChar = s[right] | 0x20;
             if (leftChar!=rightChar) { return false; }
 
             ++left;
