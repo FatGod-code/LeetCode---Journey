@@ -11,7 +11,7 @@ public:
             if (idx>0 && nums[idx]==nums[idx-1]) { continue; }
 
             int left = idx+1;
-            int right = static_cast<int>(nums.size()-1);
+            int right = static_cast<int>(nums.size())-1;
             while (left<right)
             {
                 int leftValue = nums[left];
