@@ -7,8 +7,8 @@ public:
         std::sort(nums.begin(), nums.end());
         for (int idx = 0; idx<nums.size(); ++idx)
         {
-            if (nums[idx]>0) { continue; }
-            
+            if (nums[idx]>0) { break; }
+
             int left = idx+1;
             int right = nums.size()-1;
             while (left<right)
