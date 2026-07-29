@@ -8,8 +8,11 @@ public:
         while (!table.empty())
         {
             int value = *table.begin();
-            int valueL = value-1;
+            table.erase(value);
+            
             int length = 1;
+            
+            int valueL = value-1;
             while (table.find(valueL)!=table.end())
             {
                 ++length;
@@ -26,7 +29,6 @@ public:
             }
 
             results = std::max(length, results);
-            table.erase(value);
         }
 
         return results;
