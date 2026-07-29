@@ -16,8 +16,8 @@ public:
             {
                 int leftValue = nums[left];
                 int rightValue = nums[right];
-
                 int sum = leftValue+rightValue;
+                
                 if (sum==(-nums[idx]))
                 {
                     results.push_back({nums[idx], leftValue, rightValue});
