@@ -17,12 +17,12 @@ public:
 
             if (leftMax<rightMax)
             {
-                results += (leftMax-height[left]);
+                results += leftMax-height[left];
                 ++left;
             }
             else
             {
-                results += (rightMax-height[right]);
+                results += rightMax-height[right];
                 --right;
             }
         }
