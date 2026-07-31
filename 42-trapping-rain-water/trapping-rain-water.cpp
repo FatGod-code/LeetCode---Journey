@@ -5,26 +5,25 @@ public:
         int results = 0;
 
         int left = 0;
-        int leftMax = height[left];
+        int leftMax = 0;
 
         int right = height.size()-1;
-        int rightMax = height[right];
+        int rightMax = 0;
 
         while (left<right)
         {
+            leftMax = std::max(height[left], leftMax);
+            rightMax = std::max(height[right], rightMax);
+
             if (leftMax<rightMax)
             {
+                results += (leftMax-height[left]);
                 ++left;
-                results += std::max(leftMax-height[left], 0);
-                leftMax = std::max(height[left], leftMax);
-                
             }
             else
             {
+                results += (rightMax-height[right]);
                 --right;
-                results += std::max(rightMax-height[right], 0);
-                rightMax = std::max(height[right], rightMax);
-                
             }
         }
 
