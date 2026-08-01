@@ -28,6 +28,10 @@ public:
         delete slow->next;
         slow->next = temp;
 
-        return dummy->next;
+        head = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+
+        return head;
     }
 };
