@@ -12,17 +12,13 @@ class Solution {
 public:
     ListNode* reverseList(ListNode* head)
     {
-        return ReverseListRecur(nullptr, head);
+        if (!head || !head->next) { return head; }
+
+        auto ptr = reverseList(head->next);
+
+        head->next->next = head;
+        head->next = nullptr;
+
+        return ptr;
     }
-
-    ListNode* ReverseListRecur(ListNode* last, ListNode* node)
-    {
-        if (!node) { return last; }
-
-        auto next = node->next;
-        node->next = last;
-
-        return ReverseListRecur(node, next);;
-    }
-    
 };
