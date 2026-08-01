@@ -14,20 +14,19 @@ public:
     {
         auto dummy = new ListNode(-1, head);
 
-        auto ptr = head;
-        for (int i = 1; i<n; ++i) { ptr = ptr->next; }
+        auto fast = dummy;
+        for (int i = 0; i<=n; ++i) { fast = fast->next; }
 
-        auto target = head;
-        auto last = dummy;
-        while (ptr && ptr->next)
+        auto slow = dummy;
+        while (fast)
         {
-            ptr = ptr->next;
-            last = target;
-            target = target->next;
+            fast = fast->next;
+            slow = slow->next;
         }
 
-        last->next = target->next;
-        delete target;
+        auto temp = slow->next->next;
+        delete slow->next;
+        slow->next = temp;
 
         return dummy->next;
     }
