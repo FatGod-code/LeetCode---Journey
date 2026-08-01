@@ -20,8 +20,8 @@ public:
         auto slow = dummy;
         while (fast)
         {
-            fast = fast->next;
             slow = slow->next;
+            fast = fast->next;
         }
 
         auto temp = slow->next->next;
