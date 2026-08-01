@@ -19,10 +19,10 @@ public:
     {
         if (!node) { return last; }
 
-        auto ptr = ReverseListRecur(node, node->next);
+        auto next = node->next;
         node->next = last;
 
-        return ptr;
+        return ReverseListRecur(node, next);;
     }
     
 };
