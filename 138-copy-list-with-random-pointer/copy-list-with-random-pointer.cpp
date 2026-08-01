@@ -19,7 +19,7 @@ class Solution
 public:
     Node* copyRandomList(Node* head) 
     {
-        if (!head) { return nullptr; }
+        if (!head) { return head; }
 
         for (auto ptr = head; ptr; ptr = ptr->next->next)
         {
@@ -41,7 +41,7 @@ public:
             ptr->next = nextNode->next;
 
             if (nextNode->next) { nextNode->next = nextNode->next->next; }
-            else nextNode->next = nullptr;
+            else { nextNode->next = nullptr; }
         }
 
         return results;
