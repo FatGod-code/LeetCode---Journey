@@ -12,71 +12,41 @@ class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
     {
-        auto ptr1 = l1;
-        auto ptr2 = l2;
-        ListNode* last = nullptr;
+        ListNode dummy;
+        auto tail = &dummy;
+
         int carry = 0;
-        while (ptr1 && ptr2)
+        while (l1 || l2 || carry)
         {
-            int sum = ptr1->val+ptr2->val+carry;
+            int sum = 0;
+            if (l1) { sum += l1->val; }
+            if (l2) { sum += l2->val; }
+            if (carry) { sum += carry; }
+
             int value = sum%10;
             carry = sum/10;
-            
-            last = ptr1;
-            ptr1->val = value;
-
-            ptr1 = ptr1->next;
-            ptr2 = ptr2->next;
-        }
-
-        if (ptr2)
-        {
-            last->next = ptr2;
-            while (carry)
+        
+            if (l1)
             {
-                if (ptr2)
-                {
-                    int sum = ptr2->val+carry;
-                    int value = sum%10;
-                    carry = sum/10;
-                    ptr2->val = value;
-
-                    last = ptr2;
-                    ptr2 = ptr2->next;
-                }
-                else
-                {
-                    last->next = new ListNode(1);
-                    break;
-                }
+                l1->val = value;
+                tail->next = l1;
             }
-        }
-        else if (ptr1)
-        {
-            while (carry)
+            else if (l2)
             {
-                if (ptr1)
-                {
-                    int sum = ptr1->val+carry;
-                    int value = sum%10;
-                    carry = sum/10;
-                    ptr1->val = value;
-
-                    last = ptr1;
-                    ptr1 = ptr1->next;
-                }
-                else
-                {
-                    last->next = new ListNode(1);
-                    break;
-                }
+                l2->val = value;
+                tail->next = l2;
             }
-        }
-        else
-        {
-            if (carry) { last->next = new ListNode(1); }
+            else
+            {
+                tail->next = new ListNode(1);
+            }
+
+            tail = tail->next;
+
+            if (l1) { l1 = l1->next; }
+            if (l2) { l2 = l2->next; }
         }
 
-        return l1;
+        return dummy.next;
     }
 };
