@@ -35,18 +35,11 @@ public:
             slow = nextNode;
         }
 
-        for (auto ptr = head; ptr; ptr = ptr->next) { std::cout << ptr->val << "  "; }
-        std::cout << std::endl;
-
-        for (auto ptr = last; ptr; ptr = ptr->next) { std::cout << ptr->val << "  "; }
-        std::cout << std::endl;
-
         ListNode dummy;
         auto tail = &dummy;
         bool useFirst = true;
         while (head && last)
         {
-            std::cout << useFirst << std::endl;
             if (useFirst)
             {
                 tail->next = head;
