@@ -42,8 +42,8 @@ public:
             }
         }
 
-        if (ptr1) { last->next = ptr1; }
-        else if (ptr2) { last->next = ptr2; }
+//        if (ptr1) { last->next = ptr1; }
+//        else if (ptr2) { last->next = ptr2; }
 
         return list1->val<list2->val ? list1 : list2;
     }
