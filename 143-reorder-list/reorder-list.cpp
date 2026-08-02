@@ -12,48 +12,35 @@ class Solution {
 public:
     void reorderList(ListNode* head)
     {
-        if (!head || !head->next) { return; }
+        mNode = head;
+        mReturn = false;
 
-        ListNode* last = nullptr;
-        auto slow = head;
-        auto quick = head;
-        while (quick && quick->next)
-        {
-            last = slow;
-            slow = slow->next;
-            quick = quick->next->next;
-        }
-
-        last->next = nullptr;
-
-        last = nullptr;
-        while (slow)
-        {
-            auto nextNode = slow->next;
-            slow->next = last;
-            last = slow;
-            slow = nextNode;
-        }
-
-        ListNode dummy;
-        auto tail = &dummy;
-        bool useFirst = true;
-        while (head && last)
-        {
-            if (useFirst)
-            {
-                tail->next = head;
-                head = head->next;
-            }
-            else
-            {
-                tail->next = last;
-                last = last->next;
-            }
-            tail = tail->next;
-            useFirst = !useFirst;
-        }
-
-        tail->next = head ? head : last;
+        ReorderListRecur(head);
     }
+
+    void
+    ReorderListRecur(ListNode* node)
+    {
+        if (!node) { return; }
+
+        ReorderListRecur(node->next);
+
+        if (mReturn) { return; }
+        if (mNode==node || mNode->next==node)
+        {
+            mReturn = true;
+            node->next = nullptr;
+            return;
+        }
+
+        auto nextNode = mNode->next;
+        node->next = mNode->next;
+        mNode->next = node;
+
+        mNode = nextNode;
+    }
+
+private:
+    ListNode* mNode;
+    bool mReturn;
 };
