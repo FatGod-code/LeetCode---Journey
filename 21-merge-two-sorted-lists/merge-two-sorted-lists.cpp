@@ -40,7 +40,11 @@ public:
 
         tail->next = ptr1 ? ptr1 : ptr2;
 
-        return dummy->next;
+        auto results = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+
+        return results;
 
     }
 };
