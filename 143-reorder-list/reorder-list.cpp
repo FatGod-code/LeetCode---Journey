@@ -55,7 +55,5 @@ public:
         }
 
         tail->next = head ? head : last;
-
-        head = dummy.next;
     }
 };
