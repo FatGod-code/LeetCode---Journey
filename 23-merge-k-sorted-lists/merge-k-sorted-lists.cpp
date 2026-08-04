@@ -20,13 +20,6 @@ public:
     {
         if (start==end) { return nullptr; }
         if (start+1==end) { return lists[start]; }
-        if (start+2==end)
-        {
-            auto left = lists[start];
-            auto right = lists[start+1];
-
-            return SortTwoList(left, right);
-        }
 
         int middle = start+(end-start)/2;
         auto left = MergeListsRecur(lists, start, middle);
