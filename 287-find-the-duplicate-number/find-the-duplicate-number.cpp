@@ -2,13 +2,26 @@ class Solution {
 public:
     int findDuplicate(vector<int>& nums)
     {
-        std::unordered_map<int, int> table;
-        for (const auto ele : nums)
+        int slow = 0;
+        int quick = 0;
+        while (1)
         {
-            if (table[ele]>0) { return ele; }
-            ++table[ele];
+            slow = nums[slow];
+            quick = nums[quick];
+            quick = nums[quick];
+
+            if (quick==slow) { break; }
         }
 
-        return 0;
+        int idx = 0;
+        while (1)
+        {
+            slow = nums[slow];
+            idx = nums[idx];
+
+            if (slow==idx) { break; }
+        }
+
+        return slow;
     }
 };
