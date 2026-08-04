@@ -20,14 +20,11 @@ public:
         ListNode dummy;
         auto tail = &dummy;
     
-        std::vector<ListNode*> vec;
-        vec.reserve(lists.size());
-        for (const auto ele :lists)
+        std::priority_queue<ListNode*, std::vector<ListNode*>, decltype(cmp)> pque;
+        for (const auto ele : lists)
         {
-            if (ele) { vec.emplace_back(ele); }
+            if (ele) { pque.emplace(ele); }
         }
-
-        std::priority_queue<ListNode*, std::vector<ListNode*>, decltype(cmp)> pque(cmp, std::move(vec));
 
         while (!pque.empty())
         {
