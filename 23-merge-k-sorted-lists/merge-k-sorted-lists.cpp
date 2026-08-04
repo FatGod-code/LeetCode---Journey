@@ -12,29 +12,55 @@ class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists)
     {
-        auto cmp = [](ListNode* a, ListNode* b)
+
+        return MergeListsRecur(lists, 0, lists.size());
+    }
+
+    ListNode* MergeListsRecur(std::vector<ListNode*>& lists, int start, int end)
+    {
+        if (start==end) { return nullptr; }
+        if (start+1==end) { return lists[start]; }
+        if (start+2==end)
         {
-            return a->val>b->val;
-        };
+            auto left = lists[start];
+            auto right = lists[start+1];
+
+            return SortTwoList(left, right);
+        }
+
+        int middle = start+(end-start)/2;
+        auto left = MergeListsRecur(lists, start, middle);
+        auto right = MergeListsRecur(lists, middle, end);
+
+        return SortTwoList(left, right);
+    }
+
+    ListNode* SortTwoList(ListNode* left, ListNode* right)
+    {
+        if (!left || !right) { return left ? left : right; }
 
         ListNode dummy;
         auto tail = &dummy;
-    
-        std::priority_queue<ListNode*, std::vector<ListNode*>, decltype(cmp)> pque;
-        for (const auto ele : lists)
+
+        while (left && right)
         {
-            if (ele) { pque.emplace(ele); }
+            auto leftValue = left->val;
+            auto rightValue = right->val;
+            if (leftValue<rightValue)
+            {
+                tail->next = left;
+                tail = tail->next;
+                left = left->next;
+            }
+            else
+            {
+                tail->next = right;
+                tail = tail->next;
+                right = right->next;
+            }
         }
 
-        while (!pque.empty())
-        {
-            auto top = pque.top();
-            pque.pop();
-
-            tail->next = top;
-            tail = tail->next;
-            if (top->next) { pque.emplace(top->next); }
-        }
+        tail->next = left ? left : right;
 
         return dummy.next;
     }
