@@ -15,10 +15,8 @@ public:
         if (lists.empty()) { return nullptr; }
 
         int size = lists.size();
-        while (size)
+        while (size>1)
         {
-            if (size==1) { break; }
-
             for (int idx = 0; idx<size/2; ++idx)
             {
                 auto ptr = SortTwoLists(lists[idx], lists[size-1-idx]);
