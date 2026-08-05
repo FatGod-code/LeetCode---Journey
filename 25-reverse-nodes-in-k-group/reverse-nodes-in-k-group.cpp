@@ -24,11 +24,7 @@ public:
             for (int c = 0; c<k; ++c)
             {
                 if (ptr) { ptr = ptr->next; }
-                else
-                {
-                    runReverse = false;
-                    break;
-                }
+                else { runReverse = false; }
             }
             
             auto firstNode = start;
