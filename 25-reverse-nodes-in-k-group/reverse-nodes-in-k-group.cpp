@@ -31,15 +31,15 @@ public:
                 }
             }
             
-            auto head = start;
+            auto firstNode = start;
             std::pair<ListNode*, ListNode*> headTailPair{nullptr, nullptr};
             if (runReverse)
             {
                 headTailPair = ReverseList(start, ptr);
-                head = headTailPair.first;
+                firstNode = headTailPair.first;
             }
 
-            if (last) { last->next = head; }
+            if (last) { last->next = firstNode; }
             last = headTailPair.second;
 
             if (!results) { results = headTailPair.first; }
