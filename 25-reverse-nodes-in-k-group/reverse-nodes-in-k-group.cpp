@@ -32,27 +32,19 @@ public:
             }
             
             auto firstNode = start;
-            std::pair<ListNode*, ListNode*> headTailPair{nullptr, nullptr};
-            if (runReverse)
-            {
-                headTailPair = ReverseList(start, ptr);
-                firstNode = headTailPair.first;
-            }
+            if (runReverse) { firstNode = ReverseList(start, ptr); }
 
             if (last) { last->next = firstNode; }
-            last = headTailPair.second;
+            last = start;
 
-            if (!results) { results = headTailPair.first; }
+            if (!results) { results = firstNode; }
         }
 
         return results;
     }
 
-    std::pair<ListNode*, ListNode*> ReverseList(ListNode* start, ListNode* end)
+    ListNode* ReverseList(ListNode* start, ListNode* end)
     {
-        std::pair<ListNode*, ListNode*> headTailPair;
-        headTailPair.second = start;
-
         ListNode* last = nullptr;
         while (start!=end)
         {
@@ -62,7 +54,6 @@ public:
             start = next;
         }
 
-        headTailPair.first = last;
-        return headTailPair;
+        return last;
     }
 };
