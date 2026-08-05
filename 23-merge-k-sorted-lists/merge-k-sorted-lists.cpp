@@ -15,10 +15,8 @@ public:
         if (lists.empty()) { return nullptr; }
 
         int size = lists.size();
-        std::cout << " " << size << std::endl;
         while (size)
         {
-            std::cout << size << std::endl;
             if (size==1) { break; }
 
             for (int idx = 0; idx<size/2; ++idx)
