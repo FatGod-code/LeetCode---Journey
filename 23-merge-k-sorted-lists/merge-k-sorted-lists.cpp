@@ -12,48 +12,50 @@ class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists)
     {
+        if (lists.empty()) { return nullptr; }
 
-        return MergeListsRecur(lists, 0, lists.size());
+        int size = lists.size();
+        std::cout << " " << size << std::endl;
+        while (size)
+        {
+            std::cout << size << std::endl;
+            if (size==1) { break; }
+
+            for (int idx = 0; idx<size/2; ++idx)
+            {
+                auto ptr = SortTwoLists(lists[idx], lists[size-1-idx]);
+                lists[idx] = ptr;
+            }
+            size = size/2 +size%2;
+        }
+
+        return lists.front();
     }
 
-    ListNode* MergeListsRecur(std::vector<ListNode*>& lists, int start, int end)
+    ListNode* SortTwoLists(ListNode* l1, ListNode* l2)
     {
-        if (start==end) { return nullptr; }
-        if (start+1==end) { return lists[start]; }
-
-        int middle = start+(end-start)/2;
-        auto left = MergeListsRecur(lists, start, middle);
-        auto right = MergeListsRecur(lists, middle, end);
-
-        return SortTwoList(left, right);
-    }
-
-    ListNode* SortTwoList(ListNode* left, ListNode* right)
-    {
-        if (!left || !right) { return left ? left : right; }
+        if (!l1 || !l2) { return l1 ? l1 : l2; }
 
         ListNode dummy;
         auto tail = &dummy;
 
-        while (left && right)
+        while (l1 && l2)
         {
-            auto leftValue = left->val;
-            auto rightValue = right->val;
-            if (leftValue<rightValue)
+            if (l1->val<l2->val)
             {
-                tail->next = left;
+                tail->next = l1;
+                l1 = l1->next;
                 tail = tail->next;
-                left = left->next;
             }
             else
             {
-                tail->next = right;
+                tail->next = l2;
+                l2 = l2->next;
                 tail = tail->next;
-                right = right->next;
             }
         }
 
-        tail->next = left ? left : right;
+        tail->next = l1 ? l1 : l2;
 
         return dummy.next;
     }
