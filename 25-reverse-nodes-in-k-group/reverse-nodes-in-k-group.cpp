@@ -14,29 +14,28 @@ public:
     {
         if (!head || !head->next) { return head; }
 
-        ListNode* results = nullptr;
-        ListNode* last = nullptr;
-        ListNode* ptr = head;
+        ListNode dummy(INT_MIN);
+        auto tail = &dummy;
+
+        auto ptr = head;
         while (ptr)
         {
-            bool runReverse = true;
             auto start = ptr;
             for (int c = 0; c<k; ++c)
             {
                 if (ptr) { ptr = ptr->next; }
-                else { runReverse = false; }
+                else
+                {
+                    tail->next = start;
+                    return dummy.next;
+                }
             }
-            
-            auto firstNode = start;
-            if (runReverse) { firstNode = ReverseList(start, ptr); }
 
-            if (last) { last->next = firstNode; }
-            last = start;
-
-            if (!results) { results = firstNode; }
+            tail->next = ReverseList(start, ptr);
+            tail = start;
         }
 
-        return results;
+        return dummy.next;
     }
 
     ListNode* ReverseList(ListNode* start, ListNode* end)
@@ -44,10 +43,10 @@ public:
         ListNode* last = nullptr;
         while (start!=end)
         {
-            auto next = start->next;
+            auto nextNode = start->next;
             start->next = last;
             last = start;
-            start = next;
+            start = nextNode;
         }
 
         return last;
