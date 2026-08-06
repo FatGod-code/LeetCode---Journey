@@ -3,16 +3,17 @@ public:
     int findMin(vector<int>& nums)
     {
         int left = 0;
-        int right = nums.size();
-        int lastValue = nums.back();
+        int right = nums.size()-1;
+        int target = nums.back();
+        
         while (left<right)
         {
             int middle = left+(right-left)/2;
 
-            if (nums[middle]>lastValue) { left = middle+1; }
-            else { right = middle; }
+            if (nums[middle]<=target) { right = middle; }
+            else { left = middle+1; }
         }
-        
+
         return nums[left];
     }
 };
