@@ -13,14 +13,15 @@ public:
             else { left = middle+1; }
         }
 
-        int end = nums.size();
+        right = nums.size();
+        //int end = nums.size();
         if (target>lastValue)
         {
+            nums.resize(left);
             right = left;
-            end = left;
+            //end = left;
             left = 0;
         }
-        else { right = nums.size(); }
 
         while (left<right)
         {
@@ -30,7 +31,7 @@ public:
             else{ left = middle+1; }
         }
 
-        if (left==end) { return -1;}
+        if (left==nums.size()) { return -1;}
         return nums[left]==target ? left : -1;
     }
 };
