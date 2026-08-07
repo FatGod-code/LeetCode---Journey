@@ -8,29 +8,22 @@ public:
         while (left<right)
         {
             int middle = left+(right-left)/2;
+            int value = nums[middle];
 
-            if (nums[middle]<=lastValue) { right = middle; }
-            else { left = middle+1; }
+            if ((value>lastValue && target>lastValue) ||
+                (value<=lastValue && target<=lastValue))
+            {
+                if (value>=target) { right = middle; }
+                else { left = middle+1; }
+            }
+            else
+            {
+                if (value>lastValue && target<=lastValue) { left = middle+1; }
+                else if (value<=lastValue && target>lastValue) { right = middle; }
+            }
         }
 
-        right = nums.size();
-        int end = nums.size();
-        if (target>lastValue)
-        {
-            right = left;
-            end = left;
-            left = 0;
-        }
-
-        while (left<right)
-        {
-            int middle = left+(right-left)/2;
-
-            if (nums[middle]>=target) { right = middle; }
-            else{ left = middle+1; }
-        }
-
-        if (left==end) { return -1;}
+        if (left==nums.size()) { return -1; }
         return nums[left]==target ? left : -1;
     }
 };
