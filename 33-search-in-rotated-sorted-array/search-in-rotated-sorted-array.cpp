@@ -19,7 +19,7 @@ public:
             else
             {
                 if (value>lastValue && target<=lastValue) { left = middle+1; }
-                else if (value<=lastValue && target>lastValue) { right = middle; }
+                else  { right = middle; }
             }
         }
 
