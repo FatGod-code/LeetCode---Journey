@@ -1,5 +1,12 @@
 class Solution {
 public:
+    bool Decision(const std::vector<int>& nums, int middle, int target)
+    {
+        //int lastValue = 
+
+        return true;
+    }
+
     int search(vector<int>& nums, int target)
     {
         int left = 0;
@@ -18,8 +25,9 @@ public:
             }
             else
             {
-                if (value>lastValue && target<=lastValue) { left = middle+1; }
-                else  { right = middle; }
+                if (value<=lastValue && target>lastValue) { right = middle; }
+                else { left = middle+1; }
+                
             }
         }
 
