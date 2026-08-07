@@ -1,10 +1,18 @@
 class Solution {
 public:
-    bool Decision(const std::vector<int>& nums, int middle, int target)
+    bool Decision(int middleValue, int target, int lastValue)
     {
-        //int lastValue = 
+        bool isSameArea = (middleValue<=lastValue)==(target<=lastValue);
+        if (isSameArea)
+        {
+            if (middleValue>=target) { return true; }
+        }
+        else
+        {
+            if (middleValue<=lastValue && target>lastValue) { return true; }
+        }
 
-        return true;
+        return false;
     }
 
     int search(vector<int>& nums, int target)
@@ -17,18 +25,8 @@ public:
             int middle = left+(right-left)/2;
             int value = nums[middle];
 
-            if ((value>lastValue && target>lastValue) ||
-                (value<=lastValue && target<=lastValue))
-            {
-                if (value>=target) { right = middle; }
-                else { left = middle+1; }
-            }
-            else
-            {
-                if (value<=lastValue && target>lastValue) { right = middle; }
-                else { left = middle+1; }
-                
-            }
+            if (Decision(value, target, lastValue)) { right = middle; }
+            else { left = middle+1; }
         }
 
         if (left==nums.size()) { return -1; }
