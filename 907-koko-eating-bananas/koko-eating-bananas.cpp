@@ -2,19 +2,13 @@ class Solution {
 public:
     bool Decision(const std::vector<int>& piles, int h, int speed)
     {
-        int idx = 0;
-        while (h>0)
+        int needHours = 0;
+        for (const auto ele : piles)
         {
-            if (idx==piles.size()) { return true; }
-            
-            int numBananas = piles[idx];
-            int needHours = (numBananas/speed)+((numBananas%speed) ? 1 : 0);
-            
-            h -= needHours;
-            ++idx;
+            needHours += ((ele/speed)+(ele%speed ? 1 : 0));
         }
 
-        return (h>=0 && idx==piles.size()) ? true : false;
+        return h>=needHours;
     }
 
     int minEatingSpeed(vector<int>& piles, int h)
