@@ -14,7 +14,7 @@ public:
             ++idx;
         }
 
-        return h>=0 && idx==piles.size() ? true : false;
+        return (h>=0 && idx==piles.size()) ? true : false;
     }
 
     int minEatingSpeed(vector<int>& piles, int h)
