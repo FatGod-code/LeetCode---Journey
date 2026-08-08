@@ -14,21 +14,24 @@ public:
     int diameterOfBinaryTree(TreeNode* root)
     {
         int maxDiameter = 0;
-        (void) CountMaxDiameter(root, maxDiameter);
+        auto diameterHeightPair = CountMaxDiameter(root);
 
-        return maxDiameter;
+        return diameterHeightPair.first;
     }
 
-    int CountMaxDiameter(TreeNode* root, int& maxDiameter)
+    std::pair<int, int> CountMaxDiameter(TreeNode* root)
     {
-        if (!root) { return 0; }
+        if (!root) { return {0, 0}; }
 
-        auto left = CountMaxDiameter(root->left, maxDiameter);
-        auto right = CountMaxDiameter(root->right, maxDiameter);
+        auto left = CountMaxDiameter(root->left);
+        auto right = CountMaxDiameter(root->right);
 
-        int diameter = left+right;
-        maxDiameter = std::max(diameter, maxDiameter);
+        int diameter = left.second+right.second;
 
-        return std::max(left, right)+1;
+        std::pair<int, int> diameterHeightPair;
+        diameterHeightPair.first = std::max(diameter, std::max(left.first, right.first));
+        diameterHeightPair.second = std::max(left.second, right.second)+1;
+
+        return diameterHeightPair;
     }
 };
