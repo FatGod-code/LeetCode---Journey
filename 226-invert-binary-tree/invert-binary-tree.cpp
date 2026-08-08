@@ -15,22 +15,10 @@ public:
     {
         if (!root) { return nullptr; }
 
-        std::queue<TreeNode*> que;
-        que.emplace(root);
-        while (!que.empty())
-        {
-            int size = que.size();
-            for (int s = 0; s<size; ++s)
-            {
-                auto node = que.front();
-                que.pop();
+        std::swap(root->left, root->right);
 
-                std::swap(node->left, node->right);
-
-                if (node->left) { que.emplace(node->left); }
-                if (node->right) { que.emplace(node->right); }
-            }
-        }
+        invertTree(root->left);
+        invertTree(root->right);
 
         return root;
     }
