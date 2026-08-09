@@ -13,27 +13,21 @@ class Solution {
 public:
     vector<int> rightSideView(TreeNode* root)
     {
-        if (!root) { return {}; }
-
         std::vector<int> results;
-
-        std::queue<TreeNode*> que;
-        que.emplace(root); 
-        while (!que.empty())
-        {
-            int size = que.size();
-            for (int s = 0; s<size; ++s)
-            {
-                auto front = que.front();
-                que.pop();
-
-                if (s==size-1) { results.emplace_back(front->val); }
-
-                if (front->left) { que.emplace(front->left); }
-                if (front->right) { que.emplace(front->right); }
-            }
-        }
+        (void) GetRightSideView(root, 1, results);
 
         return results;
+    }
+
+    TreeNode* GetRightSideView(TreeNode* root, int depth, std::vector<int>& results)
+    {
+        if (!root) { return nullptr; }
+
+        if (depth>results.size()) { results.emplace_back(root->val); }
+
+        auto right = GetRightSideView(root->right, depth+1, results);
+        auto left = GetRightSideView(root->left, depth+1, results);
+
+        return root;
     }
 };
