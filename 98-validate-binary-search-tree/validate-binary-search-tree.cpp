@@ -13,21 +13,20 @@ class Solution {
 public:
     bool isValidBST(TreeNode* root)
     {
-        TreeNode* bound = nullptr;
-        return IsBinaryTreeBST(root, bound);
+        TreeNode* prevNode = nullptr;
+        return IsBinaryTreeBST(root, prevNode);
     }
 
-    bool IsBinaryTreeBST(TreeNode* root, TreeNode*& bound)
+    bool IsBinaryTreeBST(TreeNode* root, TreeNode*& prevNode)
     {
         if (!root) { return true; }
         
-        auto left = IsBinaryTreeBST(root->left, bound);
-        if (!left) { return false; }
+        if (!IsBinaryTreeBST(root->left, prevNode)) { return false; }
         
-        if (bound && bound->val>=root->val) { return false; }
-        bound = root;
-        auto right = IsBinaryTreeBST(root->right, bound);
-        if (!right) { return false; }
+        if (prevNode && prevNode->val>=root->val) { return false; }
+        prevNode = root;
+        
+        if (!IsBinaryTreeBST(root->right, prevNode)) { return false; }
         
         return true;
     }
