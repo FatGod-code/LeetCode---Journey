@@ -20,16 +20,16 @@ public:
     {
         if (!root) { return 0; }
 
-        bool isGood = false;
+        int isGoodNode = 0;
         if (!maxNode || root->val>=maxNode->val)
         {
-            isGood = true;
+            isGoodNode = 1;
             maxNode = root;
         }
 
         auto left = CountGoodNodes(root->left, maxNode);
         auto right = CountGoodNodes(root->right, maxNode);
 
-        return left+right+(isGood ? 1 : 0);
+        return left+right+isGoodNode;
     }
 };
