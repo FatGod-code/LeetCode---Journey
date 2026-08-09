@@ -14,20 +14,18 @@ public:
     vector<int> rightSideView(TreeNode* root)
     {
         std::vector<int> results;
-        (void) GetRightSideView(root, 1, results);
+        GetRightSideView(root, 1, results);
 
         return results;
     }
 
-    TreeNode* GetRightSideView(TreeNode* root, int depth, std::vector<int>& results)
+    void GetRightSideView(TreeNode* root, int depth, std::vector<int>& results)
     {
-        if (!root) { return nullptr; }
+        if (!root) { return; }
 
         if (depth>results.size()) { results.emplace_back(root->val); }
 
-        auto right = GetRightSideView(root->right, depth+1, results);
-        auto left = GetRightSideView(root->left, depth+1, results);
-
-        return root;
+        GetRightSideView(root->right, depth+1, results);
+        GetRightSideView(root->left, depth+1, results);
     }
 };
