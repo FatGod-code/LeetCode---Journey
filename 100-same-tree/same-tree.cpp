@@ -17,8 +17,11 @@ public:
         if (p->val!=q->val) { return false; }
 
         auto left = isSameTree(p->left, q->left);
+        if (!left) { return false; }
+        
         auto right = isSameTree(p->right, q->right);
+        if (!right) { return false;}
 
-        return left && right;
+        return true;
     }
 };
