@@ -13,16 +13,17 @@ class Solution {
 public:
     bool isValidBST(TreeNode* root)
     {
-        return IsBinaryTreeBST(root, LLONG_MIN, LLONG_MAX);
+        return IsBinaryTreeBST(root, nullptr, nullptr);
     }
 
-    bool IsBinaryTreeBST(TreeNode* root, long long leftBound, long long rightBound)
+    bool IsBinaryTreeBST(TreeNode* root, TreeNode* leftBound, TreeNode* rightBound)
     {
         if (!root) { return true; }
         
-        if (leftBound>=root->val || rightBound<=root->val) { return false; }
+        if ((leftBound && leftBound->val>=root->val) ||
+            (rightBound && rightBound->val<=root->val)) { return false; }
 
         int value = root->val;
-        return IsBinaryTreeBST(root->left, leftBound, value) && IsBinaryTreeBST(root->right, value, rightBound);
+        return IsBinaryTreeBST(root->left, leftBound, root) && IsBinaryTreeBST(root->right, root, rightBound);
     }
 };
