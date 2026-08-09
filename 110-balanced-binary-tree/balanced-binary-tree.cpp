@@ -13,24 +13,23 @@ class Solution {
 public:
     bool isBalanced(TreeNode* root)
     {
-        return isBalancedRecur(root).first;
+        auto value = isBalancedRecur(root);
+        return value==-1 ? false : true;
     }
 
-    std::pair<bool, int> isBalancedRecur(TreeNode* root)
+    int isBalancedRecur(TreeNode* root)
     {
-        if (!root) { return {true, 0}; }
+        if (!root) { return 0; }
 
         auto left = isBalancedRecur(root->left);
+        if (left<0) { return -1; }
+
         auto right = isBalancedRecur(root->right);
+        if (right<0) { return -1; }
+        
+        int difference = std::abs(left-right);
 
-        if (!left.first || !right.first) { return {false, -1}; }
-
-        auto leftHeight = left.second;
-        auto rightHeight = right.second;
-        int difference = std::abs(leftHeight-rightHeight);
-
-        if (difference>1) { return {false, -1}; }
-
-        return {true, std::max(leftHeight, rightHeight)+1};
+        if (difference>1) { return -1; }
+        return std::max(left, right)+1;
     }
 };
