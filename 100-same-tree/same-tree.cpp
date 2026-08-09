@@ -28,8 +28,25 @@ public:
                 if (!node1 || !node2) { return false; }
                 if (node1->val!=node2->val) { return false; }
 
-                que.push({node1->left, node2->left});
-                que.push({node1->right, node2->right});
+                if (node1->left && node2->left)
+                {
+                    que.push({node1->left, node2->left});
+                }
+                else if ((node1->left && !node2->left) ||
+                         (!node1->left && node2->left))
+                {
+                    return false;
+                }
+
+                if (node1->right && node2->right)
+                {
+                    que.push({node1->right, node2->right});
+                }
+                else if ((node1->right && !node2->right) ||
+                         (!node1->right && node2->right))
+                {
+                    return false;
+                }
             }
         }
 
