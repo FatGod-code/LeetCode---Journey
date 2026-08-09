@@ -13,14 +13,25 @@ class Solution {
 public:
     bool isSameTree(TreeNode* p, TreeNode* q)
     {
-        if (!p || !q) { return p==q; }
-        if (p->val!=q->val) { return false; }
+        std::queue<std::pair<TreeNode*, TreeNode*>> que;
+        que.push({p, q});
+        while (!que.empty())
+        {
+            int size = que.size();
+            for (int s = 0; s<size; ++s)
+            {
+                auto [node1, node2] = que.front();
+                que.pop();
 
-        auto left = isSameTree(p->left, q->left);
-        if (!left) { return false; }
-        
-        auto right = isSameTree(p->right, q->right);
-        if (!right) { return false;}
+                if (!node1 && !node2) { continue; }
+                
+                if (!node1 || !node2) { return false; }
+                if (node1->val!=node2->val) { return false; }
+
+                que.push({node1->left, node2->left});
+                que.push({node1->right, node2->right});
+            }
+        }
 
         return true;
     }
