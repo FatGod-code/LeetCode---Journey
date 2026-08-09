@@ -13,23 +13,27 @@ class Solution {
 public:
     int goodNodes(TreeNode* root)
     {
-        return CountGoodNodes(root, nullptr);;
-    }
-
-    int CountGoodNodes(TreeNode* root, TreeNode* maxNode)
-    {
         if (!root) { return 0; }
 
-        int isGoodNode = 0;
-        if (!maxNode || root->val>=maxNode->val)
+        int results = 0;
+
+        std::stack<std::pair<TreeNode*, TreeNode*>> sta;
+        sta.push({root, nullptr});
+        while (!sta.empty())
         {
-            isGoodNode = 1;
-            maxNode = root;
+            auto [node, maxNode] = sta.top();
+            sta.pop();
+
+            if (!maxNode || node->val>=maxNode->val)
+            {
+                ++results;
+                maxNode = node;
+            }
+
+            if (node->right) { sta.push({node->right, maxNode}); }
+            if (node->left) { sta.push({node->left, maxNode}); }
         }
 
-        auto left = CountGoodNodes(root->left, maxNode);
-        auto right = CountGoodNodes(root->right, maxNode);
-
-        return left+right+isGoodNode;
+        return results;
     }
 };
