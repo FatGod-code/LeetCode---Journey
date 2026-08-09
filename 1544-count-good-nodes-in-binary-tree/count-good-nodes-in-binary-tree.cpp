@@ -14,20 +14,20 @@ public:
     int goodNodes(TreeNode* root)
     {
         int results = 0;
-        int maxValue = INT_MIN;
-        CountGoodNodes(root, maxValue, results);
+        TreeNode* maxNode = nullptr;
+        CountGoodNodes(root, maxNode, results);
 
         return results;
     }
 
-    void CountGoodNodes(TreeNode* root, int maxValue, int& results)
+    void CountGoodNodes(TreeNode* root, TreeNode* maxNode, int& results)
     {
         if (!root) { return; }
 
-        if (maxValue<=root->val) { ++results; }
-        if (root->val>maxValue) { maxValue = root->val; }
+        if (!maxNode || maxNode->val<=root->val) { ++results; }
+        if (!maxNode || root->val>maxNode->val) { maxNode = root; }
 
-        CountGoodNodes(root->left, maxValue, results);
-        CountGoodNodes(root->right, maxValue, results);
+        CountGoodNodes(root->left, maxNode, results);
+        CountGoodNodes(root->right, maxNode, results);
     }
 };
