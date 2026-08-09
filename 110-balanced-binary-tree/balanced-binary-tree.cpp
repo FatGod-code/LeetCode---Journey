@@ -22,10 +22,10 @@ public:
         if (!root) { return 0; }
 
         auto left = isBalancedRecur(root->left);
-        if (left<0) { return -1; }
+        if (left==-1) { return -1; }
 
         auto right = isBalancedRecur(root->right);
-        if (right<0) { return -1; }
+        if (right==-1) { return -1; }
         
         int difference = std::abs(left-right);
 
