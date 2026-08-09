@@ -13,24 +13,23 @@ class Solution {
 public:
     int goodNodes(TreeNode* root)
     {
-        int results = 0;
-        TreeNode* maxNode = nullptr;
-        CountGoodNodes(root, maxNode, results);
-
-        return results;
+        return CountGoodNodes(root, nullptr);;
     }
 
-    void CountGoodNodes(TreeNode* root, TreeNode* maxNode, int& results)
+    int CountGoodNodes(TreeNode* root, TreeNode* maxNode)
     {
-        if (!root) { return; }
+        if (!root) { return 0; }
 
+        bool isGood = false;
         if (!maxNode || root->val>=maxNode->val)
         {
-            ++results;
+            isGood = true;
             maxNode = root;
         }
 
-        CountGoodNodes(root->left, maxNode, results);
-        CountGoodNodes(root->right, maxNode, results);
+        auto left = CountGoodNodes(root->left, maxNode);
+        auto right = CountGoodNodes(root->right, maxNode);
+
+        return left+right+(isGood ? 1 : 0);
     }
 };
