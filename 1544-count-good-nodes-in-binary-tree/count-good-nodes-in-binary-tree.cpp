@@ -24,8 +24,12 @@ public:
     {
         if (!root) { return; }
 
-        if (!maxNode || maxNode->val<=root->val) { ++results; }
-        if (!maxNode || root->val>maxNode->val) { maxNode = root; }
+        //if (!maxNode || root->val>=maxNode->val) { ++results; }
+        if (!maxNode || root->val>=maxNode->val)
+        {
+            ++results;
+            maxNode = root;
+        }
 
         CountGoodNodes(root->left, maxNode, results);
         CountGoodNodes(root->right, maxNode, results);
