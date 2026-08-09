@@ -24,7 +24,6 @@ public:
     {
         if (!root) { return; }
 
-        //if (!maxNode || root->val>=maxNode->val) { ++results; }
         if (!maxNode || root->val>=maxNode->val)
         {
             ++results;
