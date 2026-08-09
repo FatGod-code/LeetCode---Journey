@@ -14,8 +14,6 @@ public:
     {
         while (root)
         {
-            if (root==p || root==q) { return root; }
-
             if (p->val<root->val && q->val<root->val) { root = root->left; }
             else if ( (p->val>root->val && q->val>root->val)) { root = root->right; }
             else { return root; }
