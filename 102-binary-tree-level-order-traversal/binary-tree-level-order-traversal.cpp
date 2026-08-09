@@ -13,32 +13,21 @@ class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root)
     {
-        if (!root) { return {}; }
-
         std::vector<std::vector<int>> results;
-
-        std::queue<TreeNode*> que;
-        que.emplace(root);
-        while (!que.empty())
-        {
-            int size = que.size();
-            std::vector<int> levelOrder(size);
-            
-            
-            for (int s = 0; s<size; ++s)
-            {
-                auto front = que.front();
-                que.pop();
-
-                levelOrder[s] = front->val;
-
-                if (front->left) { que.emplace(front->left); }
-                if (front->right) { que.emplace(front->right); }
-            }
-
-            results.emplace_back(levelOrder);
-        }
+        GetLevelOrder(root, 1, results);
 
         return results;
+    }
+
+    void GetLevelOrder(TreeNode* root, int height, std::vector<std::vector<int>>& results)
+    {
+        if (!root) { return; }
+
+        if (height>results.size()) { results.push_back({}); }
+
+        results[height-1].emplace_back(root->val);
+
+        GetLevelOrder(root->left, height+1, results);
+        GetLevelOrder(root->right, height+1, results);
     }
 };
