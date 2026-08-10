@@ -19,7 +19,7 @@ public:
     TreeNode* KthSmallestRecur(TreeNode* root, int& k)
     {
         if (!root) { return nullptr; }
-        if (k==0) { return nullptr; }
+        if (k<=0) { return nullptr; }
 
         auto left = KthSmallestRecur(root->left, k);
         if (left) { return left; }
