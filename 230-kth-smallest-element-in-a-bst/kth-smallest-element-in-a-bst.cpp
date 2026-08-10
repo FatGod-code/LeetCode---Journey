@@ -22,12 +22,13 @@ public:
         if (k==0) { return nullptr; }
 
         auto left = KthSmallestRecur(root->left, k);
-        
+        if (left) { return left; }
+
         --k;
         if (k==0) { return root; }
         
         auto right = KthSmallestRecur(root->right, k);
 
-        return left ? left : right;
+        return right;
     }
 };
