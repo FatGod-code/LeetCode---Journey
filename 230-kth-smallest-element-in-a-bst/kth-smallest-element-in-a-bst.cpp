@@ -13,22 +13,28 @@ class Solution {
 public:
     int kthSmallest(TreeNode* root, int k)
     {
-        return KthSmallestRecur(root, k)->val;
-    }
+        if (!root) { return INT_MIN; }
 
-    TreeNode* KthSmallestRecur(TreeNode* root, int& k)
-    {
-        if (!root) { return nullptr; }
-        if (k<=0) { return nullptr; }
+        std::stack<std::pair<TreeNode*, bool>> sta;
+        sta.push({root, true});
+        while (!sta.empty())
+        {
+            auto [node, toPush] = sta.top();
+            sta.pop();
 
-        auto left = KthSmallestRecur(root->left, k);
-        if (left) { return left; }
+            if (toPush)
+            {
+                if (node->right) { sta.push({node->right, true}); }
+                sta.push({node, false});
+                if (node->left) { sta.push({node->left, true}); }
+            }
+            else
+            {
+                --k;
+                if (k==0) { return node->val; }
+            }
+        }
 
-        --k;
-        if (k==0) { return root; }
-        
-        auto right = KthSmallestRecur(root->right, k);
-
-        return right;
+        return INT_MIN;
     }
 };
