@@ -14,31 +14,53 @@ public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
     {
         std::unordered_map<int, int> inorderIdxTable;
-        for(int idx = 0; idx<inorder.size(); ++idx)
+        for (int idx = 0; idx<inorder.size(); ++idx)
         {
-            inorderIdxTable.emplace(inorder[idx], idx);
+            inorderIdxTable[inorder[idx]] = idx;
         }
 
-        TreeNode* root = nullptr;
         int idx = 0;
-        GenerateTreeNodes(preorder, inorder, inorderIdxTable, root, idx, 0, preorder.size());
+        TreeNode* root = nullptr;
+        
+        std::stack<std::pair<TreeNode**, std::pair<int, int>>> sta;
+        sta.push({&root, {0, inorder.size()}});
+        while (!sta.empty())
+        {
+            auto [node, p] = sta.top();
+            auto [left, right] = p;
+            sta.pop();
+
+            if (left>=right) { continue; }
+
+            int value = preorder[idx];
+            ++idx;
+
+            *node = new TreeNode(value);
+
+            int inorderIdx = inorderIdxTable[value];
+
+            sta.push({&(*node)->right, {inorderIdx+1, right}});
+            sta.push({&(*node)->left, {left, inorderIdx}});
+        }
 
         return root;
     }
 
-    void GenerateTreeNodes(const std::vector<int>&preorder, const std::vector<int>& inorder,
-                           const std::unordered_map<int, int>& inorderIdxTable,
-                           TreeNode*& root, int& idx, int start, int end)
+    void GenerateNodes(const std::vector<int>& preorder, const std::vector<int>& inorder,
+                       const std::unordered_map<int, int>& inorderIdxTable,
+                       TreeNode*& root, int& idx, int left, int right)
     {
-        if (start>=end) { return; }
+        if (left>=right) { return; }
         if (idx>=preorder.size()) { return; }
 
         int value = preorder[idx];
         root = new TreeNode(value);
         ++idx;
-        
-        auto inorderIdx = inorderIdxTable.at(value);
-        GenerateTreeNodes(preorder, inorder, inorderIdxTable, root->left, idx, start, inorderIdx);
-        GenerateTreeNodes(preorder, inorder, inorderIdxTable, root->right, idx, inorderIdx+1, end);
+
+        int inorderIdx = inorderIdxTable.at(value);
+
+        GenerateNodes(preorder, inorder, inorderIdxTable, root->left, idx, left, inorderIdx);
+        GenerateNodes(preorder, inorder, inorderIdxTable, root->right, idx, inorderIdx+1, right);
+
     }
 };
