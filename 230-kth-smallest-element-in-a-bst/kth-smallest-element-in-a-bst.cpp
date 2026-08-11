@@ -28,7 +28,6 @@ public:
             auto node = sta.top();
             sta.pop();
 
-            std::cout << node->val << " ";
             --k;
             if (k==0) { return node->val; }
 
