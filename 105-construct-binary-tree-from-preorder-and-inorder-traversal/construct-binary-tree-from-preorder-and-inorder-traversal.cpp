@@ -45,22 +45,4 @@ public:
 
         return root;
     }
-
-    void GenerateNodes(const std::vector<int>& preorder, const std::vector<int>& inorder,
-                       const std::unordered_map<int, int>& inorderIdxTable,
-                       TreeNode*& root, int& idx, int left, int right)
-    {
-        if (left>=right) { return; }
-        if (idx>=preorder.size()) { return; }
-
-        int value = preorder[idx];
-        root = new TreeNode(value);
-        ++idx;
-
-        int inorderIdx = inorderIdxTable.at(value);
-
-        GenerateNodes(preorder, inorder, inorderIdxTable, root->left, idx, left, inorderIdx);
-        GenerateNodes(preorder, inorder, inorderIdxTable, root->right, idx, inorderIdx+1, right);
-
-    }
 };
