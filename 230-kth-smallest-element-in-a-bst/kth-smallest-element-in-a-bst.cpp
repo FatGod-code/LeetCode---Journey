@@ -13,10 +13,11 @@ class Solution {
 public:
     int kthSmallest(TreeNode* root, int k)
     {
-        if (!root) { INT_MIN; }
+        if (!root) { return INT_MIN; }
 
         std::stack<TreeNode*> sta;
         TreeNode* current = root;
+        TreeNode* results = nullptr;
         while (current || !sta.empty())
         {
             while (current)
@@ -29,11 +30,16 @@ public:
             sta.pop();
 
             --k;
-            if (k==0) { return node->val; }
+            if (k==0)
+            {
+                results = node;
+                break;
+            }
 
             current = node->right;
         }
 
-        return INT_MIN;
+        if (k!=0) { return INT_MIN; }
+        return results->val;
     }
 };
