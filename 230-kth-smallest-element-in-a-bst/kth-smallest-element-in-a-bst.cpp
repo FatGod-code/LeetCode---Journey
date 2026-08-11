@@ -39,7 +39,7 @@ public:
             current = node->right;
         }
 
-        if (k!=0) { return INT_MIN; }
+        if (k!=0 || !results) { return INT_MIN; }
         return results->val;
     }
 };
