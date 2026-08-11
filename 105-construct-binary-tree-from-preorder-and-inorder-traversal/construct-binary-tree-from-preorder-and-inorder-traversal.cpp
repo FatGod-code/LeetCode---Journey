@@ -21,7 +21,7 @@ public:
 
         int idx = 0;
         TreeNode* root = nullptr;
-        
+
         std::stack<std::pair<TreeNode**, std::pair<int, int>>> sta;
         sta.push({&root, {0, inorder.size()}});
         while (!sta.empty())
@@ -34,9 +34,9 @@ public:
 
             int value = preorder[idx];
             ++idx;
-
-            *node = new TreeNode(value);
-
+            
+            (*node) = new TreeNode(value);
+            
             int inorderIdx = inorderIdxTable[value];
 
             sta.push({&(*node)->right, {inorderIdx+1, right}});
