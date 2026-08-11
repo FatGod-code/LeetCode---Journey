@@ -13,27 +13,32 @@ class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
     {
-        for (int idx = 0; idx<inorder.size(); ++idx) { mTable[inorder[idx]] = idx; }
+        std::unordered_map<int, int> inorderIdxTable;
+        for(int idx = 0; idx<inorder.size(); ++idx)
+        {
+            inorderIdxTable.emplace(inorder[idx], idx);
+        }
 
-        TreeNode* results = nullptr;
-        GenerateNode(preorder, results, 0, inorder.size());
-        return results;
+        TreeNode* root = nullptr;
+        int idx = 0;
+        GenerateTreeNodes(preorder, inorder, inorderIdxTable, root, idx, 0, preorder.size());
+
+        return root;
     }
 
-    void GenerateNode(const std::vector<int> &preorder, TreeNode* &ptr, int left, int right)
+    void GenerateTreeNodes(const std::vector<int>&preorder, const std::vector<int>& inorder,
+                           const std::unordered_map<int, int>& inorderIdxTable,
+                           TreeNode*& root, int& idx, int start, int end)
     {
-        if (mIdx>=preorder.size()) { return; }
-        if (left>=right) { return; }
+        if (start>=end) { return; }
+        if (idx>=preorder.size()) { return; }
 
-        int value = preorder[mIdx++];
-        ptr = new TreeNode(value);
+        int value = preorder[idx];
+        root = new TreeNode(value);
+        ++idx;
         
-        int idx = mTable[value];
-        GenerateNode(preorder, ptr->left, left, idx);
-        GenerateNode(preorder, ptr->right, idx+1, right);
+        auto inorderIdx = inorderIdxTable.at(value);
+        GenerateTreeNodes(preorder, inorder, inorderIdxTable, root->left, idx, start, inorderIdx);
+        GenerateTreeNodes(preorder, inorder, inorderIdxTable, root->right, idx, inorderIdx+1, end);
     }
-
-private:
-    int mIdx{0};
-    std::unordered_map<int, int> mTable;
 };
