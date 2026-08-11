@@ -13,26 +13,26 @@ class Solution {
 public:
     int kthSmallest(TreeNode* root, int k)
     {
-        if (!root) { return INT_MIN; }
+        if (!root) { INT_MIN; }
 
-        std::stack<std::pair<TreeNode*, bool>> sta;
-        sta.push({root, true});
-        while (!sta.empty())
+        std::stack<TreeNode*> sta;
+        TreeNode* current = root;
+        while (current || !sta.empty())
         {
-            auto [node, toPush] = sta.top();
+            while (current)
+            {
+                sta.emplace(current);
+                current = current->left;
+            }
+
+            auto node = sta.top();
             sta.pop();
 
-            if (toPush)
-            {
-                if (node->right) { sta.push({node->right, true}); }
-                sta.push({node, false});
-                if (node->left) { sta.push({node->left, true}); }
-            }
-            else
-            {
-                --k;
-                if (k==0) { return node->val; }
-            }
+            std::cout << node->val << " ";
+            --k;
+            if (k==0) { return node->val; }
+
+            current = node->right;
         }
 
         return INT_MIN;
