@@ -41,6 +41,9 @@ public:
                 results = std::max(sum, results);
 
                 table[node] = std::max(node->val+left, node->val+right);
+
+                table.erase(node->left);
+                table.erase(node->right);
             }
         }
 
