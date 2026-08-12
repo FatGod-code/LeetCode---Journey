@@ -13,22 +13,40 @@ class Solution {
 public:
     int maxPathSum(TreeNode* root)
     {
+        if (!root) { return 0; }
+
         int maxPathSum = INT_MIN;
-        (void) CountPathSum(root, maxPathSum);
+        std::unordered_map<TreeNode*, int> table;
+        
+        std::stack<std::pair<TreeNode*, bool>> sta;
+        sta.push({root, true});
+        while (!sta.empty())
+        {
+            auto [node, toPush] = sta.top();
+            sta.pop();
+
+            if (toPush)
+            {
+                sta.push({node, false});
+                
+                if (node->left) { sta.push({node->left, true}); }
+                if (node->right) { sta.push({node->right, true}); }
+            }
+            else
+            {
+                int left = std::max(0, table[node->left]);
+                int right = std::max(0, table[node->right]);
+
+                int pathSum = node->val+left+right;
+                maxPathSum = std::max(pathSum, maxPathSum);
+
+                table[node] = node->val+std::max(left, right);
+
+                table.erase(node->left);
+                table.erase(node->right);
+            }
+        }
 
         return maxPathSum;
-    }
-
-    int CountPathSum(TreeNode* root, int& maxPathSum)
-    {
-        if (!root) { return  0; }
-
-        auto left = std::max(0, CountPathSum(root->left, maxPathSum));
-        auto right = std::max(0, CountPathSum(root->right, maxPathSum));
-
-        int pathSum = root->val+left+right;
-        maxPathSum = std::max(pathSum, maxPathSum);
-
-        return root->val+std::max(left, right);
     }
 };
