@@ -23,17 +23,12 @@ public:
     {
         if (!root) { return 0; }
 
-        auto left = CountMaxPathSum(root->left, maxPathSum);
-        auto right = CountMaxPathSum(root->right, maxPathSum);
+        auto left = std::max(0, CountMaxPathSum(root->left, maxPathSum));
+        auto right = std::max(0, CountMaxPathSum(root->right, maxPathSum));
 
-        int pathSum = root->val;
-        if (left>0) { pathSum += left; }
-        if (right>0) { pathSum += right; }
-
+        int pathSum = root->val+left+right;
         maxPathSum = std::max(pathSum, maxPathSum);
 
-        return std::max({root->val, root->val+left, root->val+right});
-
-
+        return std::max(root->val+left, root->val+right);
     }
 };
