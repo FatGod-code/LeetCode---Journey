@@ -5,17 +5,17 @@ public:
         std::vector<std::vector<int>> results;
 
         std::stack<std::pair<int, std::vector<int>>> sta;
-        sta.push({0, {}});
+        sta.push({-1, {}});
         while (!sta.empty())
         {
             auto [idx, subset] = sta.top();
             sta.pop();
 
-            if (idx<nums.size())
+            if (idx+1<nums.size())
             {
                 sta.push({idx+1, subset});
                 
-                subset.emplace_back(nums[idx]);
+                subset.emplace_back(nums[idx+1]);
                 sta.push({idx+1, subset});
             }
             else { results.emplace_back(subset); }
