@@ -2,9 +2,11 @@ class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums)
     {
-        std::vector<std::vector<int>> results;
-
         int number = 1 << nums.size();
+        std::vector<std::vector<int>> results;
+        results.reserve(number);
+
+        
         for (int i = 0; i<number; ++i)
         {
             std::vector<int> subset;
