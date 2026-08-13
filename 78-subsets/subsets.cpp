@@ -3,25 +3,24 @@ public:
     vector<vector<int>> subsets(vector<int>& nums)
     {
         std::vector<std::vector<int>> results;
-        std::vector<int> subset;
-        GenerateSubsets(nums, 0, subset, results);
- 
-        return results;
-    }
 
-    void GenerateSubsets(const std::vector<int>& nums, int idx,
-                         std::vector<int>& subset, std::vector<std::vector<int>>& results)
-    {
-        if (idx==nums.size())
+        std::stack<std::pair<int, std::vector<int>>> sta;
+        sta.push({0, {}});
+        while (!sta.empty())
         {
-            results.emplace_back(subset);
-            return;
+            auto [idx, subset] = sta.top();
+            sta.pop();
+
+            if (idx<nums.size())
+            {
+                sta.push({idx+1, subset});
+                
+                subset.emplace_back(nums[idx]);
+                sta.push({idx+1, subset});
+            }
+            else { results.emplace_back(subset); }
         }
 
-        subset.emplace_back(nums[idx]);
-        GenerateSubsets(nums, idx+1, subset, results);
-
-        subset.pop_back();
-        GenerateSubsets(nums, idx+1, subset, results);
+        return results;
     }
 };
