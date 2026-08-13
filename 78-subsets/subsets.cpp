@@ -13,7 +13,7 @@ public:
     }
 
     void GenerateSubsets(std::vector<int>& nums, int numEle, int startIdx,
-                         std::vector<int> subset, std::vector<std::vector<int>>& results)
+                         std::vector<int>& subset, std::vector<std::vector<int>>& results)
     {
         if (numEle==0)
         {
