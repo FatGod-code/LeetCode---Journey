@@ -4,21 +4,17 @@ public:
     {
         std::vector<std::vector<int>> results;
 
-        std::stack<std::pair<int, std::vector<int>>> sta;
-        sta.push({-1, {}});
-        while (!sta.empty())
+        int number = std::pow(2, nums.size());
+        for (int i = 0; i<number; ++i)
         {
-            auto [idx, subset] = sta.top();
-            sta.pop();
-
-            if (idx+1<nums.size())
+            std::vector<int> subset;
+            for (int shift = 0; shift<nums.size(); ++shift)
             {
-                sta.push({idx+1, subset});
-                
-                subset.emplace_back(nums[idx+1]);
-                sta.push({idx+1, subset});
+                int mask = 1 << shift;
+                if (i & mask) { subset.emplace_back(nums[shift]); }
             }
-            else { results.emplace_back(subset); }
+
+            results.emplace_back(subset);
         }
 
         return results;
