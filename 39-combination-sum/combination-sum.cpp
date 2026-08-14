@@ -2,6 +2,8 @@ class Solution {
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target)
     {
+        std::sort(candidates.begin(), candidates.end());
+
         std::vector<std::vector<int>> results;
         std::vector<int> combination;
         GenerateCombinations(candidates, target, 0, combination, results);
@@ -24,6 +26,8 @@ public:
         for (int idx = startIdx; idx<candidates.size(); ++idx)
         {
             int value = candidates[idx];
+            if (value>target) { break; }
+
             combination.emplace_back(value);
             
             GenerateCombinations(candidates, target-value, idx, combination, results);
