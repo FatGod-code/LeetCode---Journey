@@ -14,13 +14,10 @@ public:
 
     bool GenerateNextPermutation(std::vector<int>& nums)
     {
-        int maxValue = INT_MIN;
-        
-        int idx = nums.size()-1;
+        int idx = nums.size()-2;
         for (; idx>=0; --idx)
         {
-            if (nums[idx]<maxValue) { break; }
-            maxValue = nums[idx];
+            if (nums[idx]<=nums[idx+1]) { break; }
         }
 
         if (idx<0) { return false; }
@@ -29,7 +26,7 @@ public:
         while (targetIdx>=0 && nums[targetIdx]<=nums[idx]) { --targetIdx; }
 
         std::swap(nums[idx], nums[targetIdx]);
-        std:reverse(nums.begin()+idx+1, nums.end());
+        std::reverse(nums.begin()+idx+1, nums.end());
 
         return true;
     }
