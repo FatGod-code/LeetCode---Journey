@@ -5,30 +5,30 @@ public:
         std::vector<std::vector<int>> results;
         std::vector<int> permutation;
         
-        std::unordered_set<int> table;
+        std::vector<bool> table(nums.size(), false);
         GeneratePermutations(nums, table, permutation, results);
 
         return results;
     }
 
-    void GeneratePermutations(const std::vector<int>& nums, std::unordered_set<int>& table,
+    void GeneratePermutations(const std::vector<int>& nums, std::vector<bool>& table,
                               std::vector<int>& permutation, std::vector<std::vector<int>>& results)
     {
-        if (table.size()==nums.size())
+        if (permutation.size()==nums.size())
         {
             results.emplace_back(permutation);
             return;
         }
 
-        for (const auto ele : nums)
+        for (int idx = 0; idx<nums.size(); ++idx)
         {
-            if (table.find(ele)!=table.end()) { continue; }
+            if (table[idx]) { continue; }
 
-            table.emplace(ele);
-            permutation.emplace_back(ele);
+            table[idx] = true;
+            permutation.emplace_back(nums[idx]);
             GeneratePermutations(nums, table, permutation, results);
 
-            table.erase(ele);
+            table[idx] = false;
             permutation.pop_back();
         }
     }
