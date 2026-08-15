@@ -3,25 +3,34 @@ public:
     vector<vector<int>> permute(vector<int>& nums)
     {
         std::vector<std::vector<int>> results;
-        GeneratePermutations(nums, 0, results);
+        
+        std::stack<std::pair<std::vector<int>, std::vector<bool>>> sta;
+        std::vector<bool> t(nums.size(), false);
+        sta.push({{}, t});
+        while (!sta.empty())
+        {
+            auto [permutation, table] = sta.top();
+            sta.pop();
+
+            if (permutation.size()==nums.size())
+            {
+                results.emplace_back(permutation);
+                continue;
+            }
+
+            for (int idx = 0; idx<nums.size(); ++idx)
+            {
+                if (table[idx]) { continue; }
+
+                permutation.emplace_back(nums[idx]);
+                table[idx] = true;
+
+                sta.push({permutation, table});
+                permutation.pop_back();
+                table[idx] = false;
+            }
+        }
 
         return results;
-    }
-
-    void GeneratePermutations(std::vector<int>& nums, int startIdx, std::vector<std::vector<int>>& results)
-    {
-        if (startIdx==nums.size())
-        {
-            results.emplace_back(nums);
-            return;
-        }
-
-        for (int idx = startIdx; idx<nums.size(); ++idx)
-        {
-            std::swap(nums[idx], nums[startIdx]);
-            GeneratePermutations(nums, startIdx+1, results);
-            
-            std::swap(nums[idx], nums[startIdx]);
-        }
     }
 };
