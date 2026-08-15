@@ -5,8 +5,7 @@ public:
         std::vector<std::vector<int>> results;
         
         std::stack<std::pair<std::vector<int>, std::vector<bool>>> sta;
-        std::vector<bool> t(nums.size(), false);
-        sta.push({{}, t});
+        sta.push({{}, std::vector<bool>(nums.size(), false)});
         while (!sta.empty())
         {
             auto [permutation, table] = sta.top();
