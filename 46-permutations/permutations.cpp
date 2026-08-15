@@ -2,36 +2,35 @@ class Solution {
 public:
     vector<vector<int>> permute(vector<int>& nums)
     {
+        std::sort(nums.begin(), nums.end());
+
         std::vector<std::vector<int>> results;
+        results.emplace_back(nums);
 
-        std::stack<std::pair<std::vector<int>, std::vector<bool>>> sta;
-        sta.push({{}, std::vector<bool>(nums.size(), false)});
-        while (!sta.empty())
-        {
-            auto [permutation, table] = sta.top();
-            sta.pop();
-
-            if (permutation.size()==nums.size())
-            {
-                results.emplace_back(permutation);
-                continue;
-            }
-
-            for (int idx = 0; idx<nums.size(); ++idx)
-            {
-                if (table[idx]) { continue; } 
-
-                permutation.emplace_back(nums[idx]);
-                table[idx] = true;
-
-                sta.push({permutation, table});
-
-                permutation.pop_back();
-                table[idx] = false;
-            }
-        }
-
+        while (GenerateNextPermutation(nums)) { results.emplace_back(nums); }
 
         return results;
+    }
+
+    bool GenerateNextPermutation(std::vector<int>& nums)
+    {
+        int maxValue = INT_MIN;
+        
+        int idx = nums.size()-1;
+        for (; idx>=0; --idx)
+        {
+            if (nums[idx]<maxValue) { break; }
+            maxValue = nums[idx];
+        }
+
+        if (idx<0) { return false; }
+
+        int targetIdx = nums.size()-1;
+        while (targetIdx>=0 && nums[targetIdx]<=nums[idx]) { --targetIdx; }
+
+        std::swap(nums[idx], nums[targetIdx]);
+        std:reverse(nums.begin()+idx+1, nums.end());
+
+        return true;
     }
 };
