@@ -5,33 +5,30 @@ public:
         std::sort(candidates.begin(), candidates.end());
 
         std::vector<std::vector<int>> results;
-        std::vector<int> combination;
-        GenerateCombinations(candidates, target, 0, combination, results);
+        std::stack<std::pair<int, std::pair<int, std::vector<int>>>> sta;
+        sta.push({target, {0, {}}});
+        while (!sta.empty())
+        {
+            auto [t, p] = sta.top();
+            auto [startIdx, combination] = p;
+            sta.pop();
+
+            if (t==0) { results.emplace_back(combination); }
+            if (t<0) { continue; }
+
+            for (int idx = startIdx; idx<candidates.size(); ++idx)
+            {
+                int value = candidates[idx];
+                if (value>t) { break; }
+
+                combination.emplace_back(value);
+                sta.push({t-value, {idx+1, combination}});
+                combination.pop_back();
+
+                while (idx+1<candidates.size() && candidates[idx+1]==candidates[idx]) { ++idx; }
+            }
+        }
 
         return results;
-    }
-
-    void GenerateCombinations(const std::vector<int>& candidates, int target,
-                              int startIdx, std::vector<int>& combination, std::vector<std::vector<int>>& results)
-    {
-        if (target==0)
-        {
-            results.emplace_back(combination);
-            return;
-        }
-
-        if (target<0) { return; }
-
-        for (int idx = startIdx; idx<candidates.size(); ++idx)
-        {
-            int value = candidates[idx];
-            if (value>target) { break; }
-
-            combination.emplace_back(value);
-            GenerateCombinations(candidates, target-value, idx+1, combination, results);
-            combination.pop_back();
-
-            while (idx+1<candidates.size() && candidates[idx+1]==candidates[idx]) { ++idx; }
-        }
     }
 };
