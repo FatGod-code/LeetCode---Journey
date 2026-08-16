@@ -15,7 +15,7 @@ public:
             int size = que.size();
             for (int s = 0; s<size; ++s)
             {
-                auto str = que.front();
+                auto str = std::move(que.front());
                 que.pop();
 
                 if (str.size()==digits.size())
