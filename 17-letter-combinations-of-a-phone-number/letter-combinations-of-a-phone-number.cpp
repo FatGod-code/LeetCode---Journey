@@ -2,32 +2,33 @@ class Solution {
 public:
     vector<string> letterCombinations(string digits)
     {
-        if (digits.size()==0) { return {}; } 
+        if (digits.size()==0) { return {}; }
 
         std::vector<std::string> results;
 
-        const std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-        
-        std::queue<std::string> que;
-        que.push({});
-        while (!que.empty())
+        std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+        std::stack<std::string> sta;
+        sta.emplace("");
+        while (!sta.empty())
         {
-            int size = que.size();
-            for (int s = 0; s<size; ++s)
+            auto str = sta.top();
+            sta.pop();
+
+            if (str.size()==digits.size())
             {
-                auto str = std::move(que.front());
-                que.pop();
+                results.emplace_back(str);
+                continue;
+            }
 
-                if (str.size()==digits.size())
-                {
-                    results.emplace_back(str);
-                    continue;
-                }
-
-                const auto& numStr = table[digits[str.size()]-'0'];
-                for (const auto ele : numStr) { que.push(str+ele); }
+            int idx = digits[str.size()]-'0';
+            const auto& numStr = table[idx];
+            for (const auto ele : numStr)
+            {
+                sta.emplace(str+ele);
             }
         }
+
 
         return results;
     }
