@@ -7,7 +7,7 @@ public:
         std::vector<std::string> results;
         std::string combination;
 
-        std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mon", "pqrs", "tuv", "wxyz"};
+        const std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mon", "pqrs", "tuv", "wxyz"};
 
         GenerateCombinations(digits, 0, table, combination, results);
         return results;
