@@ -7,7 +7,7 @@ public:
         std::vector<std::string> results;
         std::string combination;
 
-        const std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mon", "pqrs", "tuv", "wxyz"};
+        const std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
         GenerateCombinations(digits, 0, table, combination, results);
         return results;
@@ -22,8 +22,7 @@ public:
             return;
         }
 
-        char d = digits[idx];
-        int tableIdx = std::stoi(std::string(1, d));
+        int tableIdx = digits[idx]-'0';
         const auto& str = table[tableIdx];
         for (const auto ele : str)
         {
