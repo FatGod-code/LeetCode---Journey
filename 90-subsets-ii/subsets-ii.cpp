@@ -8,24 +8,26 @@ public:
         std::vector<int> subset;
 
         GenerateSubsets(nums, 0, subset, results);
-        return results;
+        return results;    
     }
 
-    void GenerateSubsets(const std::vector<int>& nums, int startIdx,
+    void GenerateSubsets(const std::vector<int>& nums, int idx,
                          std::vector<int>& subset, std::vector<std::vector<int>>& results)
     {
-        results.emplace_back(subset);
-        
-        for (int idx = startIdx; idx<nums.size(); ++idx)
+        if (idx==nums.size())
         {
-            int value = nums[idx];
-            subset.emplace_back(value);
-
-            GenerateSubsets(nums, idx+1, subset, results);
-
-            subset.pop_back();
-
-            while (idx+1<nums.size() && nums[idx]==nums[idx+1]) { ++idx; }
+            results.emplace_back(subset);
+            return;
         }
+
+        int value = nums[idx];
+        subset.emplace_back(value);
+
+        GenerateSubsets(nums, idx+1, subset, results);
+
+        while (idx+1<nums.size() && nums[idx]==nums[idx+1]) { ++idx; }
+
+        subset.pop_back();
+        GenerateSubsets(nums, idx+1, subset, results);
     }
 };
