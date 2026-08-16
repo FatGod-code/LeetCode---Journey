@@ -3,31 +3,29 @@ public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums)
     {
         std::sort(nums.begin(), nums.end());
-
         std::vector<std::vector<int>> results;
-        std::vector<int> subset;
-
-        GenerateSubsets(nums, 0, subset, results);
-        return results;    
-    }
-
-    void GenerateSubsets(const std::vector<int>& nums, int idx,
-                         std::vector<int>& subset, std::vector<std::vector<int>>& results)
-    {
-        if (idx==nums.size())
+        
+        std::stack<std::pair<int, std::vector<int>>> sta;
+        sta.push({-1, {}});
+        while (!sta.empty())
         {
-            results.emplace_back(subset);
-            return;
+            auto [idx, subset] = sta.top();
+            sta.pop();
+
+            if (idx+1<nums.size())
+            {
+                int value = nums[idx+1];
+                subset.emplace_back(value);
+                sta.push({idx+1, subset});
+
+                while (idx+2<nums.size() && nums[idx+1]==nums[idx+2]) { ++idx; }
+
+                subset.pop_back();
+                sta.push({idx+1, subset});
+            }
+            else { results.emplace_back(subset); }
         }
 
-        int value = nums[idx];
-        subset.emplace_back(value);
-
-        GenerateSubsets(nums, idx+1, subset, results);
-
-        while (idx+1<nums.size() && nums[idx]==nums[idx+1]) { ++idx; }
-
-        subset.pop_back();
-        GenerateSubsets(nums, idx+1, subset, results);
+        return results;
     }
 };
