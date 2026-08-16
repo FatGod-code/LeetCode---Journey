@@ -2,31 +2,30 @@ class Solution {
 public:
     vector<string> letterCombinations(string digits)
     {
+        if (digits.size()==0) { return {}; } 
+
         std::vector<std::string> results;
 
         const std::vector<std::string> table{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         
-        std::queue<std::pair<int, std::string>> que;
-        que.push({0, {}});
+        std::queue<std::string> que;
+        que.push({});
         while (!que.empty())
         {
             int size = que.size();
             for (int s = 0; s<size; ++s)
             {
-                auto [idx, str] = que.front();
+                auto str = que.front();
                 que.pop();
 
-                if (idx==digits.size())
+                if (str.size()==digits.size())
                 {
                     results.emplace_back(str);
                     continue;
                 }
 
-                const auto& numStr = table[digits[idx]-'0'];
-                for (const auto ele : numStr)
-                {
-                    que.push({idx+1, str+ele});
-                }
+                const auto& numStr = table[digits[str.size()]-'0'];
+                for (const auto ele : numStr) { que.push(str+ele); }
             }
         }
 
