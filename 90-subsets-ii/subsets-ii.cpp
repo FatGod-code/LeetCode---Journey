@@ -7,29 +7,21 @@ public:
         std::vector<std::vector<int>> results;
         std::vector<int> subset;
 
-        for (int count = 0; count<=nums.size(); ++count)
-        {
-            GenerateSubsets(nums, count, 0, subset, results);
-        }
-
+        GenerateSubsets(nums, 0, subset, results);
         return results;
     }
 
-    void GenerateSubsets(const std::vector<int>& nums, int count, int startIdx,
+    void GenerateSubsets(const std::vector<int>& nums, int startIdx,
                          std::vector<int>& subset, std::vector<std::vector<int>>& results)
     {
-        if (subset.size()==count)
-        {
-            results.emplace_back(subset);
-            return;
-        }
-
+        results.emplace_back(subset);
+        
         for (int idx = startIdx; idx<nums.size(); ++idx)
         {
             int value = nums[idx];
             subset.emplace_back(value);
 
-            GenerateSubsets(nums, count, idx+1, subset, results);
+            GenerateSubsets(nums, idx+1, subset, results);
 
             subset.pop_back();
 
