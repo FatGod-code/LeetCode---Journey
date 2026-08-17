@@ -3,27 +3,34 @@ public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums)
     {
         std::sort(nums.begin(), nums.end());
+
+        int times = 1 << nums.size();
         std::vector<std::vector<int>> results;
-        
-        std::stack<std::pair<int, std::vector<int>>> sta;
-        sta.push({0, {}});
-        while (!sta.empty())
+        results.reserve(times);
+
+        for (int t = 0; t<times; ++t)
         {
-            auto [idx, subset] = sta.top();
-            sta.pop();
+            std::vector<int> subset;
+            bool toPush = true;
 
-            if (idx<nums.size())
+            for (int idx = 0; idx<nums.size(); ++idx)
             {
-                int value = nums[idx];
-                subset.emplace_back(value);
-                sta.push({idx+1, subset});
+                bool b = (t & (1 << idx));
+                if (idx-1>=0 && nums[idx]==nums[idx-1])
+                {
+                    bool bLast = (t & (1 << (idx-1)));
+                    if (b && !bLast)
+                    {
+                        toPush = false;
+                        break;
+                    }
+                }
 
-                while (idx+1<nums.size() && nums[idx]==nums[idx+1]) { ++idx; }
-
-                subset.pop_back();
-                sta.push({idx+1, subset});
+                if (b) { subset.emplace_back(nums[idx]); }
             }
-            else { results.emplace_back(subset); }
+
+            if (toPush) { results.emplace_back(subset); }
+            
         }
 
         return results;
