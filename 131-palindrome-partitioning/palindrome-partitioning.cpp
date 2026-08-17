@@ -42,16 +42,21 @@ public:
         int value = isPalindromeTable[start][end];
         if (value!=-1) { return static_cast<bool>(value); }
 
-        while (start<end)
+        int left = start;
+        int right = end;
+        while (left<right)
         {
-            if (s[start]!=s[end])
+            int value = isPalindromeTable[left][right];
+            if (value!=-1) { return static_cast<bool>(value); }
+
+            if (s[left]!=s[right])
             {
                 isPalindromeTable[start][end] = 0;
                 return false;
             }
 
-            ++start;
-            --end;
+            ++left;
+            --right;
         }
 
         isPalindromeTable[start][end] = 1;
