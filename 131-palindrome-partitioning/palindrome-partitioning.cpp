@@ -3,9 +3,34 @@ public:
     vector<vector<string>> partition(string s)
     {
         std::vector<std::vector<std::string>> results;
-        std::vector<std::string> substrings;
-        GeneratePartition(s, 0, substrings, results);
         
+        std::stack<std::pair<int, std::vector<std::string>>> sta;
+        sta.push({0, {}});
+        while (!sta.empty())
+        {
+            auto [idx, substrings] = sta.top();
+            sta.pop();
+
+            if (idx>=s.size())
+            {
+                results.emplace_back(substrings);
+                continue;
+            }
+
+            for (int numChoose = 1; numChoose<=s.size(); ++numChoose)
+            {
+                if (idx+numChoose-1>=s.size()) { break; }
+
+                if (!IsPalindrome(s, idx, idx+numChoose-1)) { continue; }
+
+                std::string str(s, idx, numChoose);
+                substrings.emplace_back(str);
+                sta.push({idx+numChoose, substrings});
+
+                substrings.pop_back();
+            }
+        }
+
         return results;
     }
 
@@ -21,12 +46,11 @@ public:
         for (int numChoose = 1; numChoose<=s.size(); ++numChoose)
         {
             if (startIdx+numChoose-1>=s.size()) { break; }
-            
-            std::string str(s, startIdx, numChoose);
-            auto isPalindrome = IsPalindrome(str);
-
+        
+            auto isPalindrome = IsPalindrome(s, startIdx, startIdx+numChoose-1);
             if (!isPalindrome) { continue; }
 
+            std::string str(s, startIdx, numChoose);
             substrings.emplace_back(str);
             GeneratePartition(s, startIdx+numChoose, substrings, results);
 
@@ -34,11 +58,14 @@ public:
         }
     }
 
-    bool IsPalindrome(const std::string& s)
+    bool IsPalindrome(const std::string& s, int start, int end)
     {
-        for (int idx = 0; idx<s.size()/2; ++idx)
+        while (start<end)
         {
-            if (s[idx]!=s[s.size()-1-idx]) { return false; }
+            if (s[start]!=s[end]) { return false; }
+
+            ++start;
+            --end;
         }
 
         return true;
