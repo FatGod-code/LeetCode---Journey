@@ -10,13 +10,7 @@ public:
             for (int col = 0; col<board[0].size(); ++col)
             {
                 
-                if (FindString(board, word, 0, row, col, table))
-                {
-                    std::cout << row << " " << col << std::endl;
-                    return true;
-                }
-
-                std::cout << std::endl << std::endl;
+                if (FindString(board, word, 0, row, col, table)) { return true; }
             }
         }
 
