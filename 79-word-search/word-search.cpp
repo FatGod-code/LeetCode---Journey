@@ -4,11 +4,12 @@ public:
     {
         if (board.size()*board[0].size()<word.size()) { return false; }
 
+        std::vector<std::vector<bool>> table(board.size(), std::vector<bool>(board[0].size(), true));
         for (int row = 0; row<board.size(); ++row)
         {
             for (int col = 0; col<board[0].size(); ++col)
             {
-                std::vector<std::vector<bool>> table(board.size(), std::vector<bool>(board[0].size(), true));
+                
                 if (FindString(board, word, 0, row, col, table))
                 {
                     std::cout << row << " " << col << std::endl;
