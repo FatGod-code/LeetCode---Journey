@@ -34,40 +34,16 @@ public:
         }
 
         bool down = false;
-        if (row-1>=0 && table[row-1][col])
-        {
-            table[row-1][col] = false;
-            down = FindString(board, word, idx+1, row-1, col, table);
-
-            table[row-1][col] = true;
-        }
+        if (row-1>=0 && table[row-1][col]) { down = FindString(board, word, idx+1, row-1, col, table); }
 
         bool up = false;
-        if (row+1<board.size() && table[row+1][col])
-        {
-            table[row+1][col] = false;
-            up = FindString(board, word, idx+1, row+1, col, table);
-
-            table[row+1][col] = true;
-        }
+        if (row+1<board.size() && table[row+1][col]) { up = FindString(board, word, idx+1, row+1, col, table); }
 
         bool left = false;
-        if (col-1>=0 && table[row][col-1])
-        {
-            table[row][col-1] = false;
-            left = FindString(board, word, idx+1, row, col-1, table);
-
-            table[row][col-1] = true;
-        }
+        if (col-1>=0 && table[row][col-1]) { left = FindString(board, word, idx+1, row, col-1, table); }
 
         bool right = false;
-        if (col+1<board[0].size() && table[row][col+1])
-        {
-            table[row][col+1] = false;
-            right = FindString(board, word, idx+1, row, col+1, table);
-
-            table[row][col+1] = true;
-        }
+        if (col+1<board[0].size() && table[row][col+1]) { right = FindString(board, word, idx+1, row, col+1, table); }
 
         table[row][col] = true;
         return down || up || left || right;
