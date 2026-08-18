@@ -19,18 +19,10 @@ public:
     bool FindString(const std::vector<std::vector<char>>& board, const std::string& word,
                     int idx, int row, int col, std::vector<std::vector<bool>>& table)
     {
-        
-
-        
-
-        if (row<0 || row>=board.size() || col<0 || col>=board[0].size())
-        {
-            return false;
-        }
-
+        if (row<0 || row>=board.size() || col<0 || col>=board[0].size()) { return false; }
         if (!table[row][col]) { return false; }
 
-        table[row][col] = false;
+        
 
         if (idx==word.size()-1 && board[row][col]==word[idx])
         {
@@ -43,19 +35,14 @@ public:
             return false;
         }
 
-        bool down = false;
-        down = FindString(board, word, idx+1, row-1, col, table);
+        table[row][col] = false;
 
-        bool up = false;
-        up = FindString(board, word, idx+1, row+1, col, table);
-
-        bool left = false;
-        left = FindString(board, word, idx+1, row, col-1, table);
-
-        bool right = false;
-        right = FindString(board, word, idx+1, row, col+1, table);
+        auto results = FindString(board, word, idx+1, row-1, col, table) ||
+                       FindString(board, word, idx+1, row+1, col, table) ||
+                       FindString(board, word, idx+1, row, col-1, table) ||
+                       FindString(board, word, idx+1, row, col+1, table);
 
         table[row][col] = true;
-        return down || up || left || right;
+        return results;
     }
 };
