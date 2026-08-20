@@ -1,17 +1,17 @@
 struct TrieNode
 {
-    TrieNode()
-    {
-        for (auto& ptr : children) { ptr = nullptr; }
-    }
+    TrieNode() = default;
 
-    std::array<TrieNode*, 26> children;
+    std::array<TrieNode*, 26> children{};
     bool isEnd{false};
 };
 
 class Trie {
 public:
     Trie()　{　mRoot = new TrieNode;　}
+
+    Trie(const Trie& trie) = delete;
+    Trie& operator=(const Trie& trie) = delete;
 
     ~Trie()
     {
@@ -61,7 +61,7 @@ public:
 private:
     TrieNode* mRoot{nullptr};
 
-    TrieNode* FindString(std::string str)
+    TrieNode* FindString(const std::string& str)
     {
         auto root = mRoot;
         for (const auto ele : str)
