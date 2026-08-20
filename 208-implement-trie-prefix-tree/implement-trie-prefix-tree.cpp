@@ -15,7 +15,22 @@ public:
 
     ~Trie()
     {
+        if (!mRoot) { return; }
         
+        std::stack<TrieNode*>sta;
+        sta.emplace(mRoot);
+        while (!sta.empty())
+        {
+            auto ptr = sta.top();
+            sta.pop();
+
+            for (const auto ele : ptr->children)
+            {
+                if (ele) { sta.emplace(ele); }
+            }
+
+            delete ptr;
+        }
     }
     
     void insert(string word)
