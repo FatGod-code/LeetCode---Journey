@@ -29,36 +29,32 @@ public:
     
     bool search(string word)
     {
-        auto root = mRoot;
-        for (const auto ele : word)
-        {
-            int idx = ele-'a';
-            const auto child = root->children[idx];
-            if (!child) { return false;}
-
-            root = child;
-        }
-
-        return root->isEnd;
+        auto node = FindString(word);
+        return node ? node->isEnd : false; 
     }
     
     bool startsWith(string prefix)
     {
-        auto root = mRoot;
-        for (const auto ele : prefix)
-        {
-            int idx = ele-'a';
-            const auto child = root->children[idx];
-            if (!child) { return false; }
-
-            root = child;
-        }
-
-        return true;
+        return FindString(prefix);
     }
 
 private:
     TrieNode* mRoot{nullptr};
+
+    TrieNode* FindString(std::string str)
+    {
+        auto root = mRoot;
+        for (const auto ele : str)
+        {
+            int idx = ele-'a';
+            const auto child = root->children[idx];
+            if (!child) { return nullptr; }
+
+            root = child;
+        }
+
+        return root;
+    }
 };
 
 /**
