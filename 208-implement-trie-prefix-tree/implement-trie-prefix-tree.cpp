@@ -1,16 +1,21 @@
 struct TrieNode
 {
-    TrieNode() :children(26, nullptr) {}
+    TrieNode()
+    {
+        for (auto& ptr : children) { ptr = nullptr; }
+    }
 
-    std::vector<TrieNode*> children;
+    std::array<TrieNode*, 26> children;
     bool isEnd{false};
 };
 
 class Trie {
 public:
-    Trie()
+    Trie()　{　mRoot = new TrieNode;　}
+
+    ~Trie()
     {
-        mRoot = new TrieNode;
+        
     }
     
     void insert(string word)
