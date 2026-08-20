@@ -33,7 +33,7 @@ public:
         }
     }
     
-    void insert(string word)
+    void insert(const string& word)
     {
         auto root = mRoot;
         for (const auto ele : word)
@@ -47,13 +47,13 @@ public:
         root->isEnd = true;
     }
     
-    bool search(string word)
+    bool search(const string& word)
     {
         auto node = FindString(word);
         return node ? node->isEnd : false; 
     }
     
-    bool startsWith(string prefix)
+    bool startsWith(const string& prefix)
     {
         return FindString(prefix);
     }
