@@ -1,65 +1,54 @@
-struct TrieNode
-{
-    TrieNode() = default;
-    ~TrieNode() = default;
-
-    TrieNode* children[26]{};
-    bool isEnd{false};
+class alignas(64) TrieNode{
+public:
+    uint16_t arr[26];
+    bool wordEnd{false};
+    uint32_t mask{0};
 };
 
 class WordDictionary {
+	inline static vector<TrieNode> trie{};
 public:
-    WordDictionary()
-    {
-        mRoot = new TrieNode();
+    WordDictionary() {
+        static bool init = (trie.reserve(500002), true);
+        trie.clear();
+        trie.emplace_back();
     }
     
-    void addWord(const string& word)
-    {
-        auto root = mRoot;
-        for (const auto ele : word)
-        {
-            int idx = ele-'a';
-            auto& child = root->children[idx];
-            if (!child) { child = new TrieNode(); }
+    void addWord(const string &word) {
+    	uint32_t level = 0;
+    	for(char c : word) {
+    		uint32_t idx = c - 'a';
+    		if((trie[level].mask & (1 << idx)) == 0){
+    			trie[level].arr[idx] = trie.size();
+    			trie[level].mask |= (1 << idx);
+    			trie.emplace_back();
+    		}
+    		level = trie[level].arr[idx];
+    	}
+    	trie[level].wordEnd = true;
+    }
 
-            root = child;
-        }
-
-        root->isEnd = true;
+    bool search(uint32_t level, string_view word) {
+    	if(word.empty())
+    		return trie[level].wordEnd;
+    	char c = word.front();
+    	uint32_t idx = c - 'a';
+    	if(c != '.'){
+    		if(trie[level].mask & (1 << idx))
+    			return search(trie[level].arr[idx], word.substr(1));
+    	} else {
+    		uint32_t m = trie[level].mask;
+    		while(m) {
+    			uint32_t idx = std::countr_zero(m);
+    			if(search(trie[level].arr[idx], word.substr(1)))
+    				return true;
+    			m = m & (m - 1);
+    		}
+    	}
+    	return false;
     }
     
-    bool search(const string& word)
-    {
-        return Find(word, 0, mRoot);
-    }
-
-private:
-    TrieNode* mRoot{nullptr};
-
-    bool Find(const std::string& str, int idx, TrieNode* node)
-    {
-        if (!node) { return false; }
-        if (idx==str.size()) { return node->isEnd; }
-
-        if (str[idx]=='.')
-        {
-            for (const auto& child : node->children)
-            {
-                if (Find(str, idx+1, child)) { return true; }
-            }
-
-            return false;
-        }
-
-        int cidx = str[idx]-'a';
-        return Find(str, idx+1, node->children[cidx]);
+    bool search(const string &word) {
+    	return search(0, word);
     }
 };
-
-/**
- * Your WordDictionary object will be instantiated and called as such:
- * WordDictionary* obj = new WordDictionary();
- * obj->addWord(word);
- * bool param_2 = obj->search(word);
- */
