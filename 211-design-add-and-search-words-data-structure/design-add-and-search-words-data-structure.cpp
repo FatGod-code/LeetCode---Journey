@@ -70,7 +70,7 @@ private:
 
         if (cidx!=-1)
         {
-            if (!node->children) { return false; }
+            if (!node->children[cidx]) { return false; }
 
             return Find(str, idx+1, node->children[cidx]); 
         }
@@ -80,7 +80,6 @@ private:
         for (const auto& child : children)
         {
             if (!child) { continue; }
-
             if (Find(str, idx+1, child)) { return true; }
         }
 
