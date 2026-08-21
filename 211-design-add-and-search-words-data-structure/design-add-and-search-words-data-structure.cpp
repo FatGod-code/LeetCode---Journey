@@ -82,9 +82,10 @@ private:
             if (!child) { continue; }
 
             results |= Find(str, idx+1, child);
+            if (results) { return true; }
         }
 
-        return results;
+        return false;
     }
 };
 
