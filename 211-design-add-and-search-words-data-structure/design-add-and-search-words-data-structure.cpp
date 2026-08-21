@@ -65,6 +65,7 @@ private:
         {
             for (const auto& child : node->children)
             {
+                if (!child) { continue; }
                 if (Find(str, idx+1, child)) { return true; }
             }
 
@@ -72,6 +73,8 @@ private:
         }
 
         int cidx = str[idx]-'a';
+        if (!node->children[cidx]) { return false; }
+        
         return Find(str, idx+1, node->children[cidx]);
     }
 };
