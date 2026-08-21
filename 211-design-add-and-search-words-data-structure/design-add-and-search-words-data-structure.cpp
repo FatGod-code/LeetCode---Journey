@@ -60,29 +60,19 @@ private:
                 return false;
             }
         }
-       
-        int cidx = -1;
-        if (str[idx]!='.')
+
+        if (str[idx]=='.')
         {
-            char ch = str[idx];
-            cidx = ch-'a';
+            for (const auto& child : node->children)
+            {
+                if (Find(str, idx+1, child)) { return true; }
+            }
+
+            return false;
         }
 
-        if (cidx!=-1)
-        {
-            //if (!node->children[cidx]) { return false; }
-
-            return Find(str, idx+1, node->children[cidx]); 
-        }
-
-        bool results = false;
-        const auto& children = node->children;
-        for (const auto& child : children)
-        {
-            if (Find(str, idx+1, child)) { return true; }
-        }
-
-        return false;
+        int cidx = str[idx]-'a';
+        return Find(str, idx+1, node->children[cidx]);
     }
 };
 
