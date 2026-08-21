@@ -81,8 +81,7 @@ private:
         {
             if (!child) { continue; }
 
-            results |= Find(str, idx+1, child);
-            if (results) { return true; }
+            if (Find(str, idx+1, child)) { return true; }
         }
 
         return false;
