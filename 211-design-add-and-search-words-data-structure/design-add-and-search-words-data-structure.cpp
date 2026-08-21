@@ -75,7 +75,6 @@ private:
             return Find(str, idx+1, node->children[cidx]); 
         }
 
-
         bool results = false;
         const auto& children = node->children;
         for (const auto& child : children)
