@@ -39,7 +39,6 @@ private:
 
     bool Find(const std::string& str, int idx, TrieNode* node)
     {
-        if (!node) { return false; }
         if (idx==str.size()-1)
         {
             char ch = str[idx];
