@@ -14,7 +14,7 @@ public:
         mRoot = new TrieNode();
     }
     
-    void addWord(string word)
+    void addWord(const string& word)
     {
         auto root = mRoot;
         for (const auto ele : word)
@@ -29,7 +29,7 @@ public:
         root->isEnd = true;
     }
     
-    bool search(string word)
+    bool search(const string& word)
     {
         return Find(word, 0, mRoot);
     }
@@ -39,32 +39,13 @@ private:
 
     bool Find(const std::string& str, int idx, TrieNode* node)
     {
-        if (idx==str.size()-1)
-        {
-            char ch = str[idx];
-            if (ch!='.')
-            {
-                int cidx = ch - 'a';
-                if (node->children[cidx] && node->children[cidx]->isEnd) { return true; }
-                else { return false; }
-            }
-            else
-            {
-                const auto& children = node->children;
-                for (const auto& child : children)
-                {
-                   if (child && child->isEnd) { return  true; }
-                }
-
-                return false;
-            }
-        }
+        if (!node) { return false; }
+        if (idx==str.size()) { return node->isEnd; }
 
         if (str[idx]=='.')
         {
             for (const auto& child : node->children)
             {
-                if (!child) { continue; }
                 if (Find(str, idx+1, child)) { return true; }
             }
 
@@ -72,8 +53,6 @@ private:
         }
 
         int cidx = str[idx]-'a';
-        if (!node->children[cidx]) { return false; }
-        
         return Find(str, idx+1, node->children[cidx]);
     }
 };
