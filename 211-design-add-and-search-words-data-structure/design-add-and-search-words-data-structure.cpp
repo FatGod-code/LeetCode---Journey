@@ -28,7 +28,39 @@ public:
     
     bool search(const string& word)
     {
-        return FindWord(word, 0, mRoot);
+        //return FindWord(word, 0, mRoot);
+
+        if (word.empty()) { return false; }
+
+        std::stack<std::pair<int, TrieNode*>> sta;
+        sta.push({0, mRoot});
+        while (!sta.empty())
+        {
+            auto [idx, root] = sta.top();
+            sta.pop();
+
+            if (!root) { continue; }
+            if (idx==word.size())
+            {
+                if (root->isEnd) { return true;}
+                continue;
+            }
+
+            if (word[idx]=='.')
+            {
+                for (const auto child : root->children)
+                {
+                    sta.push({idx+1, child});
+                }
+            }
+            else
+            {
+                int cidx = word[idx]-'a';
+                sta.push({idx+1, root->children[cidx]});
+            }
+        }
+
+        return false;
     }
 
 private:
