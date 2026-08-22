@@ -3,16 +3,13 @@ struct TrieNode
     TrieNode() = default;
     ~TrieNode() = default;
 
-    TrieNode* children[26]{};
+    std::array<TrieNode*, 26> children{};
     bool isEnd{false};
 };
 
 class WordDictionary {
 public:
-    WordDictionary()
-    {
-        mRoot = new TrieNode();
-    }
+    WordDictionary() { mRoot = new TrieNode(); }
     
     void addWord(const string& word)
     {
@@ -31,13 +28,13 @@ public:
     
     bool search(const string& word)
     {
-        return FindString(word, 0, mRoot);
+        return FindWord(word, 0, mRoot);
     }
 
 private:
     TrieNode* mRoot{nullptr};
 
-    bool FindString(const std::string& word, int idx, TrieNode* root)
+    bool FindWord(const std::string& word, int idx, TrieNode* root)
     {
         if (!root) { return false; }
         if (idx==word.size()) { return root->isEnd; }
@@ -46,16 +43,15 @@ private:
         {
             for (const auto child : root->children)
             {
-                if (FindString(word, idx+1, child)) { return true; }
+                if (FindWord(word, idx+1, child)) { return true;}
             }
 
             return false;
         }
 
         int cidx = word[idx]-'a';
-        return FindString(word, idx+1, root->children[cidx]);
+        return FindWord(word, idx+1, root->children[cidx]);
     }
-    
 };
 
 /**
