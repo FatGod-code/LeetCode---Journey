@@ -12,15 +12,8 @@ public:
         std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comp)> pque;
         for (const auto& point : points)
         {
-            if (pque.size()<k) { pque.push({point[0], point[1]}); }
-            else
-            {
-                if (comp({point[0], point[1]}, {pque.top().first, pque.top().second}))
-                {
-                    pque.pop();
-                    pque.push({point[0], point[1]});
-                }
-            }
+            pque.push({point[0], point[1]});
+            if (pque.size()>k) { pque.pop(); }
         }
 
         std::vector<std::vector<int>> results(k, std::vector<int>(2));
