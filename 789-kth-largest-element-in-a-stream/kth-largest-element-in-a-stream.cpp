@@ -4,16 +4,7 @@ public:
     {
         for (const auto ele : nums)
         {
-            if (mPQ.size()>=mK)
-            {
-                if (ele>mPQ.top())
-                {
-                    mPQ.pop();
-                    mPQ.emplace(ele);
-                }
-            }
-            else { mPQ.emplace(ele); }
-            
+            (void) add(ele);
         }
     }
     
