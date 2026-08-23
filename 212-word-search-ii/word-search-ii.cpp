@@ -64,18 +64,15 @@ public:
         auto child = trieNode->children[idx];
         if (!child) { return; }
 
-        //
-
         str += board[row][col];
-
-        char temp = board[row][col];
-        board[row][col] = '#';
-
         if (child->isEnd)
         {
             results.emplace_back(str);
             child->isEnd = false;
         }
+
+        auto temp = board[row][col];
+        board[row][col] = '#';
 
         FindWord(board, row-1, col, child, str, results);
         FindWord(board, row+1, col, child, str, results);
