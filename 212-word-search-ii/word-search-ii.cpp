@@ -5,7 +5,6 @@ struct TrieNode
 
     std::array<TrieNode*, 26> children{};
     std::string word;
-    bool isEnd{false};
 };
 
 class Trie
@@ -26,7 +25,6 @@ public:
         }
 
         root->word = word;
-        root->isEnd = true;
     }
 
     TrieNode* getRoot() { return mRoot; }
@@ -65,10 +63,9 @@ public:
         auto& child = trieNode->children[idx];
         if (!child) { return; }
 
-        if (child->isEnd)
+        if (!child->word.empty())
         {
             results.emplace_back(child->word);
-            child->isEnd = false;
             child->word.clear();
         }
 
@@ -93,9 +90,7 @@ public:
     bool CanDelete(TrieNode* node)
     {
         if (!node) { return false; }
-
         if (!node->word.empty()) { return false; }
-        if (node->isEnd) { return false; }
 
         for (const auto child : node->children)
         {
