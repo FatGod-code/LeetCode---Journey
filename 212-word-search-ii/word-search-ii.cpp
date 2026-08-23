@@ -58,7 +58,7 @@ public:
     {
         if (row<0 || row>=board.size() || col<0 || col>=board[0].size()) { return; }
         if (board[row][col]=='#') { return; }
-        if (!trieNode) { return; }
+        //if (!trieNode) { return; }
 
         int idx = board[row][col]-'a';
         auto child = trieNode->children[idx];
