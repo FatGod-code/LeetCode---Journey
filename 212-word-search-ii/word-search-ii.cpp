@@ -4,6 +4,7 @@ struct TrieNode
     ~TrieNode() = default;
 
     std::array<TrieNode*, 26> children{};
+    std::string word;
     bool isEnd{false};
 };
 
@@ -24,6 +25,7 @@ public:
             root = child;
         }
 
+        root->word = word;
         root->isEnd = true;
     }
 
@@ -40,13 +42,12 @@ public:
         Trie trie;
         for (const auto& ele : words) { trie.addWord(ele); }
 
-        std::string str;
         std::vector<std::string> results;
         for (int row = 0; row<board.size(); ++row)
         {
             for (int col = 0; col<board[0].size(); ++col)
             {
-                FindWord(board, row, col, trie.getRoot(), str, results);
+                FindWord(board, row, col, trie.getRoot(), results);
             }
         }
 
@@ -54,33 +55,31 @@ public:
     }
 
     void FindWord(std::vector<std::vector<char>>& board, int row, int col,
-                  TrieNode* trieNode, std::string& str, std::vector<std::string>& results)
+                  TrieNode* trieNode, std::vector<std::string>& results)
     {
         if (row<0 || row>=board.size() || col<0 || col>=board[0].size()) { return; }
         if (board[row][col]=='#') { return; }
-        //if (!trieNode) { return; }
+        if (!trieNode) { return; }
 
         int idx = board[row][col]-'a';
         auto child = trieNode->children[idx];
         if (!child) { return; }
 
-        str += board[row][col];
         if (child->isEnd)
         {
-            results.emplace_back(str);
+            results.emplace_back(child->word);
             child->isEnd = false;
         }
 
         auto temp = board[row][col];
         board[row][col] = '#';
 
-        FindWord(board, row-1, col, child, str, results);
-        FindWord(board, row+1, col, child, str, results);
+        FindWord(board, row-1, col, child, results);
+        FindWord(board, row+1, col, child, results);
         
-        FindWord(board, row, col-1, child, str, results);
-        FindWord(board, row, col+1, child, str, results);
+        FindWord(board, row, col-1, child, results);
+        FindWord(board, row, col+1, child, results);
 
-        str.pop_back();
         board[row][col] = temp;
     }
 };
