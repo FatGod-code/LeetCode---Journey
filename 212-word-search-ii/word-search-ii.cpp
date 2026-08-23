@@ -62,13 +62,14 @@ public:
         if (!trieNode) { return; }
 
         int idx = board[row][col]-'a';
-        auto child = trieNode->children[idx];
+        auto& child = trieNode->children[idx];
         if (!child) { return; }
 
         if (child->isEnd)
         {
             results.emplace_back(child->word);
             child->isEnd = false;
+            child->word.clear();
         }
 
         auto temp = board[row][col];
@@ -81,5 +82,26 @@ public:
         FindWord(board, row, col+1, child, results);
 
         board[row][col] = temp;
+
+        if (CanDelete(child))
+        {
+            delete child;
+            child = nullptr;
+        }
+    }
+
+    bool CanDelete(TrieNode* node)
+    {
+        if (!node) { return false; }
+
+        if (!node->word.empty()) { return false; }
+        if (node->isEnd) { return false; }
+
+        for (const auto child : node->children)
+        {
+            if (child) { return false; }
+        }
+
+        return true;
     }
 };
