@@ -1,74 +1,85 @@
-struct TrieType {
-    TrieType* lchar[26] = {0};
-    bool end = false;
+struct TrieNode
+{
+    TrieNode() = default;
+    ~TrieNode() = default;
+
+    std::array<TrieNode*, 26> children{};
+    std::string word;
+    bool isEnd{false};
 };
 
-class Solution
+class Trie
 {
-	public:
-		bool dfs(int ind, int indi, int indj, vector<vector < char>> &board, string &search, int &row, int &col)
-		{
-			if (ind == search.size())
-				return true;
-			if (indi >= 0 and indi < row and indj >= 0 and indj < col)
-			{
-				if (board[indi][indj] != search[ind])
-					return false;
-				char originalchar = board[indi][indj];
-				board[indi][indj] = '$';
-				bool ans = dfs(ind + 1, indi + 1, indj, board, search, row, col) ||
-					dfs(ind + 1, indi - 1, indj, board, search, row, col) ||
-					dfs(ind + 1, indi, indj + 1, board, search, row, col) ||
-					dfs(ind + 1, indi, indj - 1, board, search, row, col);
-				board[indi][indj] = originalchar;
-				return ans;
-			}
-			else
-				return false;
-		}
-	vector<string> findWords(vector<vector < char>> &board, vector< string > &words)
-	{
-		int row = board.size();
-		int col = board[0].size();
-		vector<string> ans;
-		vector<vector<pair<int, int>>> vp(27);
-		for (int i = 0; i < row; i++)
-		{
-			for (int j = 0; j < col; j++)
-				vp[board[i][j] - 'a'].push_back({ i, j });
-		}
-		int starta = 0;
-		int enda = 0;
-		for (auto ele: words)
-		{
-			if (ele[0] == 'a')
-				starta++;
-			if (ele[ele.size() - 1] == 'a')
-				enda++;
-		}
-		bool reversehaikya = false;
-		if (starta > enda)
-		{
-			reversehaikya = true;
-			for (int i = 0; i < words.size(); i++)
-				reverse(words[i].begin(), words[i].end());
-		}
-		for (auto search: words)
-		{
-			bool flag = false;
-			for (auto ele: vp[search[0] - 'a'])
-			{
-				flag = dfs(0, ele.first, ele.second, board, search, row, col);
-				if (flag)
-				{
-					if (reversehaikya)
-						reverse(search.begin(), search.end());
+public:
+    Trie() { mRoot = new TrieNode(); }
 
-					ans.push_back(search);
-					break;
-				}
-			}
-		}
-		return ans;
-	}
+    void addWord(const std::string& word)
+    {
+        auto root = mRoot;
+        for (const auto ele : word)
+        {
+            int idx = ele-'a';
+            auto& child = root->children[idx];
+            if (!child) { child = new TrieNode(); }
+
+            root = child;
+        }
+
+        root->word = word;
+        root->isEnd = true;
+    }
+
+    TrieNode* getRoot() { return mRoot; }
+
+private:
+    TrieNode* mRoot{nullptr};
+};
+
+class Solution {
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words)
+    {
+        Trie trie;
+        for (const auto& ele : words) { trie.addWord(ele); }
+
+        std::vector<std::string> results;
+        for (int row = 0; row<board.size(); ++row)
+        {
+            for (int col = 0; col<board[0].size(); ++col)
+            {
+                FindWord(board, row, col, trie.getRoot(), results);
+            }
+        }
+
+        return results;
+    }
+
+    void FindWord(std::vector<std::vector<char>>& board, int row, int col,
+                  TrieNode* trieNode, std::vector<std::string>& results)
+    {
+        if (row<0 || row>=board.size() || col<0 || col>=board[0].size()) { return; }
+        if (board[row][col]=='#') { return; }
+        if (!trieNode) { return; }
+
+        int idx = board[row][col]-'a';
+        auto child = trieNode->children[idx];
+        if (!child) { return; }
+
+        if (child->isEnd)
+        {
+            results.emplace_back(child->word);
+            child->isEnd = false;
+        }
+
+        auto temp = board[row][col];
+        board[row][col] = '#';
+
+        FindWord(board, row-1, col, child, results);
+        FindWord(board, row+1, col, child, results);
+        
+        FindWord(board, row, col-1, child, results);
+        FindWord(board, row, col+1, child, results);
+
+        board[row][col] = temp;
+    }
 };
