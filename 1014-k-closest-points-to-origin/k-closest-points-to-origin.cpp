@@ -2,27 +2,43 @@ class Solution {
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k)
     {
-        auto comp = [] (const std::vector<int>& a, const std::vector<int>& b)
-        {
-            return (a[0]*a[0]+a[1]*a[1])<(b[0]*b[0]+b[1]*b[1]);
-        };
-        
-        std::priority_queue<std::vector<int>, std::vector<std::vector<int>>, decltype(comp)> pque;
-        for (const auto& point : points)
-        {
-            pque.push(point);
-            if (pque.size()>k) { pque.pop(); }
-        }
+        QuickSelect(points, 0, points.size()-1, k-1);
+        points.resize(k);
 
-        std::vector<std::vector<int>> results(k);
-        int idx = 0;
-        while (!pque.empty())
-        {
-            results[idx] = pque.top();
-            pque.pop();
-            ++idx;
-        }
+        return points;
+    }
 
-        return results;
+    int CountDistance(const std::vector<int>& point)
+    {
+        return point[0]*point[0]+point[1]*point[1];
+    }
+
+    int Partition(std::vector<std::vector<int>>& nums, int left, int right, int targetIdx)
+    {
+        int piviotDistance = CountDistance(nums[right]);
+        int i = left;
+
+        for (int j = left; j<right; ++j)
+        {
+            int distance = CountDistance(nums[j]);
+            if (distance<piviotDistance)
+            {
+                std::swap(nums[i], nums[j]);
+                ++i;
+            }
+        }
+        std::swap(nums[i], nums[right]);
+
+        return i;
+    }
+
+    void QuickSelect(std::vector<std::vector<int>>& nums, int left, int right, int targetIdx)
+    {
+        if (left>=right) { return; }
+
+        int piviotIdx = Partition(nums, left, right, targetIdx);
+        if (piviotIdx==targetIdx) { return; }
+        else if (piviotIdx>targetIdx) { QuickSelect(nums, left, piviotIdx-1, targetIdx); }
+        else { QuickSelect(nums, piviotIdx+1, right, targetIdx); }
     }
 };
