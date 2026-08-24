@@ -13,8 +13,11 @@ public:
         return point[0]*point[0]+point[1]*point[1];
     }
 
-    int Partition(std::vector<std::vector<int>>& nums, int left, int right, int targetIdx)
+    int Partition(std::vector<std::vector<int>>& nums, int left, int right)
     {
+        int idx = left+rand()%(right-left+1);
+        std::swap(nums[idx], nums[right]);
+        
         int piviotDistance = CountDistance(nums[right]);
         int i = left;
 
@@ -36,7 +39,7 @@ public:
     {
         if (left>=right) { return; }
 
-        int piviotIdx = Partition(nums, left, right, targetIdx);
+        int piviotIdx = Partition(nums, left, right);
         if (piviotIdx==targetIdx) { return; }
         else if (piviotIdx>targetIdx) { QuickSelect(nums, left, piviotIdx-1, targetIdx); }
         else { QuickSelect(nums, piviotIdx+1, right, targetIdx); }
