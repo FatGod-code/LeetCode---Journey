@@ -14,23 +14,4 @@ public:
 
         return idx-10000;
     }
-
-    int Partition(std::vector<int>& nums, int left, int right)
-    {
-        int idx = left+std::rand()%(right-left+1);
-        std::swap(nums[idx], nums[right]);
-
-        int i = left;
-        for (int j = left; j<right; ++j)
-        {
-            if (nums[j]<nums[right])
-            {
-                std::swap(nums[j], nums[i]);
-                ++i;
-            }
-        }
-        std::swap(nums[i], nums[right]);
-
-        return i;
-    }
 };
