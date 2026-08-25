@@ -1,6 +1,7 @@
 class Twitter {
 public:
-    using IterPair = std::pair<std::list<std::pair<int, int>>::const_iterator, std::list<std::pair<int, int>>::const_iterator>;
+    using ListPairConstIter = std::list<std::pair<int, int>>::const_iterator;
+    using IterPair = std::pair<ListPairConstIter, ListPairConstIter>;
 
     Twitter() : NUM_POSTS_SEEN(10), mTimeStamp(0) {}
     
