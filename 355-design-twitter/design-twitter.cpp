@@ -1,42 +1,79 @@
 class Twitter {
 public:
-    Twitter() {}
+    using IterPair = std::pair<std::list<std::pair<int, int>>::const_iterator, std::list<std::pair<int, int>>::const_iterator>;
+
+    Twitter() : NUM_POSTS_SEEN(10), mTimeStamp(0) {}
     
     void postTweet(int userId, int tweetId)
     {
-        mPosts.emplace_front(userId, tweetId);
+        mUsersPosts[userId].emplace_front(std::pair<int, int>{mTimeStamp++, tweetId});
     }
     
     vector<int> getNewsFeed(int userId)
     {
-        std::vector<int> feeds;
-        auto &followees = mFollowees[userId];
-        for (auto itr = mPosts.begin(); itr!=mPosts.end(); ++itr)
+        auto cmp = [](const IterPair& a, const IterPair& b)
         {
-            int posterId = itr->first;
-            if (posterId==userId) feeds.emplace_back(itr->second);
-            
-            auto found = followees.find(posterId);
-            if (found!=followees.end()) feeds.emplace_back(itr->second);
-            
-            if (feeds.size()==10) return feeds;
-        }
+            return a.first->first<b.first->first;
+        };
+
+        std::vector<IterPair> lists;
+        lists.emplace_back(IterPair{mUsersPosts[userId].cbegin(), mUsersPosts[userId].cend()});
         
-        return feeds;
+        for (const auto follower : mUsersFollowers[userId])
+        {
+            const auto& posts = mUsersPosts[follower];
+            lists.emplace_back(IterPair{posts.cbegin(), posts.cend()});
+        }
+
+        std::priority_queue<IterPair, std::vector<IterPair>, decltype(cmp)> pq;
+        for (const auto& itPair : lists)
+        {
+            if (itPair.first!=itPair.second) { pq.emplace(itPair); }
+        }
+
+        std::vector<int> newsFeeds;
+        while (!pq.empty())
+        {
+            auto top = pq.top();
+            pq.pop();
+
+            newsFeeds.emplace_back(top.first->second);
+            if (newsFeeds.size()==NUM_POSTS_SEEN) { return newsFeeds; }
+
+            auto next = std::next(top.first);
+            if (next!=top.second) { pq.emplace(IterPair{next, top.second}); }
+        }
+
+        return newsFeeds;
     }
     
     void follow(int followerId, int followeeId)
     {
-        mFollowees[followerId].emplace(followeeId);
+        mUsersFollowers[followerId].emplace(followeeId);
     }
     
-    void unfollow(int followerId, int followeeId) 
+    void unfollow(int followerId, int followeeId)
     {
-        auto foundFollowee = mFollowees[followerId].find(followeeId);
-        if (foundFollowee!=mFollowees[followerId].end()) foundFollowee = mFollowees[followerId].erase(foundFollowee);
+        auto foundUser = mUsersFollowers.find(followerId);
+        if (foundUser==mUsersFollowers.end()) { return; }
+
+        auto& followers = foundUser->second;
+        followers.erase(followeeId);
     }
-    
+
 private:
-    std::unordered_map<int, std::unordered_set<int>> mFollowees;
-    std::list<std::pair<int, int>> mPosts;
+    std::unordered_map<int, std::list<std::pair<int, int>>> mUsersPosts;
+    std::unordered_map<int, std::unordered_set<int>> mUsersFollowers;
+
+    const int NUM_POSTS_SEEN{10};
+    int mTimeStamp{0};
 };
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
