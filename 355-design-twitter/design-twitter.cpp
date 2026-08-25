@@ -1,13 +1,13 @@
 class Twitter {
 public:
-    using ListPairConstIter = std::list<std::pair<int, int>>::const_iterator;
-    using IterPair = std::pair<ListPairConstIter, ListPairConstIter>;
+    using VectorPairConstIter = std::vector<std::pair<int, int>>::const_reverse_iterator;
+    using IterPair = std::pair<VectorPairConstIter, VectorPairConstIter>;
 
     Twitter() : NUM_POSTS_SEEN(10), mTimeStamp(0) {}
     
     void postTweet(int userId, int tweetId)
     {
-        mUsersPosts[userId].emplace_front(std::pair<int, int>{mTimeStamp++, tweetId});
+        mUsersPosts[userId].emplace_back(std::pair<int, int>{mTimeStamp++, tweetId});
     }
     
     vector<int> getNewsFeed(int userId)
@@ -17,17 +17,17 @@ public:
             return a.first->first<b.first->first;
         };
 
-        std::vector<IterPair> lists;
-        lists.emplace_back(IterPair{mUsersPosts[userId].cbegin(), mUsersPosts[userId].cend()});
+        std::vector<IterPair> begins;
+        begins.emplace_back(IterPair{mUsersPosts[userId].crbegin(), mUsersPosts[userId].crend()});
         
         for (const auto follower : mUsersFollowers[userId])
         {
             const auto& posts = mUsersPosts[follower];
-            lists.emplace_back(IterPair{posts.cbegin(), posts.cend()});
+            begins.emplace_back(IterPair{posts.crbegin(), posts.crend()});
         }
 
         std::priority_queue<IterPair, std::vector<IterPair>, decltype(cmp)> pq;
-        for (const auto& itPair : lists)
+        for (const auto& itPair : begins)
         {
             if (itPair.first!=itPair.second) { pq.emplace(itPair); }
         }
@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    std::unordered_map<int, std::list<std::pair<int, int>>> mUsersPosts;
+    std::unordered_map<int, std::vector<std::pair<int, int>>> mUsersPosts;
     std::unordered_map<int, std::unordered_set<int>> mUsersFollowers;
 
     const int NUM_POSTS_SEEN{10};
