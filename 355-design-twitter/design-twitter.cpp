@@ -1,58 +1,42 @@
 class Twitter {
 public:
-    Twitter() : NUM_POSTS_SEEN(10) {}
+    Twitter() {}
     
     void postTweet(int userId, int tweetId)
     {
-        mPosts.push_back({userId, tweetId});
+        mPosts.emplace_front(userId, tweetId);
     }
     
     vector<int> getNewsFeed(int userId)
     {
-        std::unordered_set<int> filter = mUsersFollowers[userId];
-        filter.emplace(userId);
-
-        std::vector<int> newsFeeds;
-        newsFeeds.reserve(NUM_POSTS_SEEN);
-        
-        for (auto critr = mPosts.crbegin(); critr!=mPosts.crend(); ++critr)
+        std::vector<int> feeds;
+        auto &followees = mFollowees[userId];
+        for (auto itr = mPosts.begin(); itr!=mPosts.end(); ++itr)
         {
-            const auto user = critr->first;
-            if (filter.find(user)==filter.end()) { continue; }
-
-            newsFeeds.emplace_back(critr->second);
-            if (newsFeeds.size()==NUM_POSTS_SEEN) { return newsFeeds; }
+            int posterId = itr->first;
+            if (posterId==userId) feeds.emplace_back(itr->second);
+            
+            auto found = followees.find(posterId);
+            if (found!=followees.end()) feeds.emplace_back(itr->second);
+            
+            if (feeds.size()==10) return feeds;
         }
         
-        return newsFeeds;
+        return feeds;
     }
     
     void follow(int followerId, int followeeId)
     {
-        mUsersFollowers[followerId].emplace(followeeId);
+        mFollowees[followerId].emplace(followeeId);
     }
     
-    void unfollow(int followerId, int followeeId)
+    void unfollow(int followerId, int followeeId) 
     {
-        auto foundUser = mUsersFollowers.find(followerId);
-        if (foundUser==mUsersFollowers.end()) { return; }
-
-        auto& followers = foundUser->second;
-        followers.erase(followeeId);
+        auto foundFollowee = mFollowees[followerId].find(followeeId);
+        if (foundFollowee!=mFollowees[followerId].end()) foundFollowee = mFollowees[followerId].erase(foundFollowee);
     }
-
+    
 private:
+    std::unordered_map<int, std::unordered_set<int>> mFollowees;
     std::list<std::pair<int, int>> mPosts;
-    std::unordered_map<int, std::unordered_set<int>> mUsersFollowers;
-
-    const int NUM_POSTS_SEEN{10};
 };
-
-/**
- * Your Twitter object will be instantiated and called as such:
- * Twitter* obj = new Twitter();
- * obj->postTweet(userId,tweetId);
- * vector<int> param_2 = obj->getNewsFeed(userId);
- * obj->follow(followerId,followeeId);
- * obj->unfollow(followerId,followeeId);
- */
