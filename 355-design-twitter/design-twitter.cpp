@@ -50,9 +50,8 @@ public:
             const auto& next = std::next(top.first);
             if (next!=top.second) { pq.push({next, top.second}); }
         }
-        return newsFeeds;
 
-        return {};
+        return newsFeeds;
     }
     
     void follow(int followerId, int followeeId)
