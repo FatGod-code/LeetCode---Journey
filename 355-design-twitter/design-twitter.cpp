@@ -53,7 +53,6 @@ public:
         return newsFeeds;
 
         return {};
-        
     }
     
     void follow(int followerId, int followeeId)
