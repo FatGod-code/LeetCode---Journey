@@ -46,7 +46,7 @@ public:
             ++time;
         }
 
-        for (const auto ele : results) { std::cout << ele << " "; }
+        //for (const auto ele : results) { std::cout << ele << " "; }
 
         return time;
     }
