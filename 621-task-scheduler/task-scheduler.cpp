@@ -35,11 +35,11 @@ public:
 
             if (!pq.empty())
             {
-                auto top = pq.top();
+                auto [times, tasks] = pq.top();
                 pq.pop();
 
-                results.emplace_back(top.second);
-                if (top.first-1>0) { que.push({top.second, top.first-1, time+n}); }
+                results.emplace_back(tasks);
+                if (times-1>0) { que.push({tasks, times-1, time+n}); }
             }
             else { results.emplace_back('#'); }
             
