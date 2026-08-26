@@ -2,18 +2,13 @@ class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n)
     {
-        std::unordered_map<char, int> timesTable;
-        for (const auto ele : tasks) { ++timesTable[ele]; }
+        std::vector<int> timesTable(26);
+        for (const auto ele : tasks) { ++timesTable[ele-'A']; }
 
-        int maxTimes = 0;
-        for (const auto& ele : timesTable) { maxTimes = std::max(ele.second, maxTimes); }
-
-        unsigned long results = (maxTimes-1)*(n+1);
-        for (const auto& ele : timesTable)
-        {
-            if (ele.second==maxTimes) { ++results; }
-        }
-
-        return std::max(tasks.size(), results);
+        int maxTimes = *(std::ranges::max_element(timesTable));
+        int maxTimesCount = std::ranges::count(timesTable, maxTimes);
+        int results = (maxTimes-1)*(n+1)+maxTimesCount;
+        
+        return std::max(static_cast<int>(tasks.size()), results);
     }
 };
