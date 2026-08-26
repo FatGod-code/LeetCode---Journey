@@ -1,51 +1,59 @@
 class Twitter {
 public:
-    using VectorPairConstIter = std::vector<std::pair<int, int>>::const_reverse_iterator;
-    using IterPair = std::pair<VectorPairConstIter, VectorPairConstIter>;
-
-    Twitter() : NUM_POSTS_SEEN(10), mTimeStamp(0) {}
+    using VectorIterPair = std::pair<std::vector<std::pair<int, int>>::const_reverse_iterator,
+                                     std::vector<std::pair<int, int>>::const_reverse_iterator>;
+    
+    Twitter() : mTimeStamp(0), mNumSeenPosts(10) {}
     
     void postTweet(int userId, int tweetId)
     {
-        mUsersPosts[userId].emplace_back(std::pair<int, int>{mTimeStamp++, tweetId});
+        mUsersPosts[userId].push_back({tweetId, mTimeStamp});
+        ++mTimeStamp;
     }
     
     vector<int> getNewsFeed(int userId)
     {
-        auto cmp = [](const IterPair& a, const IterPair& b)
+        auto cmp = [](const VectorIterPair& a, const VectorIterPair& b)
         {
-            return a.first->first<b.first->first;
+            return a.first->second<b.first->second;
         };
 
-        std::vector<IterPair> begins;
-        begins.emplace_back(IterPair{mUsersPosts[userId].crbegin(), mUsersPosts[userId].crend()});
+        std::vector<VectorIterPair> begins;
+        begins.push_back({mUsersPosts[userId].crbegin(), mUsersPosts[userId].crend()});
         
-        for (const auto follower : mUsersFollowers[userId])
+        const auto& followers = mUsersFollowers[userId];
+        for (const auto follower : followers)
         {
             const auto& posts = mUsersPosts[follower];
-            begins.emplace_back(IterPair{posts.crbegin(), posts.crend()});
+            begins.push_back({posts.crbegin(), posts.crend()});
         }
 
-        std::priority_queue<IterPair, std::vector<IterPair>, decltype(cmp)> pq;
-        for (const auto& itPair : begins)
+        std::priority_queue<VectorIterPair, std::vector<VectorIterPair>, decltype(cmp)> pq;
+        for (const auto& begin : begins)
         {
-            if (itPair.first!=itPair.second) { pq.emplace(itPair); }
+            if (begin.first==begin.second) { continue; }
+            pq.emplace(begin);
         }
 
         std::vector<int> newsFeeds;
+        newsFeeds.reserve(10);
         while (!pq.empty())
         {
             auto top = pq.top();
             pq.pop();
 
-            newsFeeds.emplace_back(top.first->second);
-            if (newsFeeds.size()==NUM_POSTS_SEEN) { return newsFeeds; }
+            if (top.first==top.second) { continue; }
 
-            auto next = std::next(top.first);
-            if (next!=top.second) { pq.emplace(IterPair{next, top.second}); }
+            newsFeeds.emplace_back(top.first->first);
+            if (newsFeeds.size()==mNumSeenPosts) { return newsFeeds;}
+
+            const auto& next = std::next(top.first);
+            if (next!=top.second) { pq.push({next, top.second}); }
         }
-
         return newsFeeds;
+
+        return {};
+        
     }
     
     void follow(int followerId, int followeeId)
@@ -55,10 +63,9 @@ public:
     
     void unfollow(int followerId, int followeeId)
     {
-        auto foundUser = mUsersFollowers.find(followerId);
-        if (foundUser==mUsersFollowers.end()) { return; }
+        auto& followers = mUsersFollowers[followerId];
+        if (followers.find(followeeId)==followers.end()) { return; }
 
-        auto& followers = foundUser->second;
         followers.erase(followeeId);
     }
 
@@ -66,8 +73,8 @@ private:
     std::unordered_map<int, std::vector<std::pair<int, int>>> mUsersPosts;
     std::unordered_map<int, std::unordered_set<int>> mUsersFollowers;
 
-    const int NUM_POSTS_SEEN{10};
     int mTimeStamp{0};
+    const int mNumSeenPosts{10};
 };
 
 /**
