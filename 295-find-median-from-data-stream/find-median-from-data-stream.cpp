@@ -7,7 +7,7 @@ public:
     void addNum(int num)
     {
         int idx = FindInsertIdx(num);
-        std::cout << idx << std::endl;
+        //std::cout << idx << std::endl;
 //        mValues.emplace_back()
         mValues.insert(std::next(mValues.begin(), idx), num);
     }
