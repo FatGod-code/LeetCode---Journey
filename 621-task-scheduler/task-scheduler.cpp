@@ -11,7 +11,6 @@ public:
             if (table[idx]>0) { pq.push({table[idx], 'A'+idx}); }
         }
 
-        std::vector<char> tasksOrder;
         int results = 0;
         std::queue<std::tuple<char, int, int>> q;
         while (!pq.empty() || !q.empty())
@@ -32,10 +31,8 @@ public:
                 auto [times, task] = pq.top();
                 pq.pop();
 
-                tasksOrder.emplace_back(task);
                 if (times-1>0) { q.push({task, times-1, results+n+1}); }
             }
-            else { tasksOrder.emplace_back('#'); }
 
             ++results;
         }
