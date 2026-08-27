@@ -4,14 +4,11 @@ public:
     {
         long long results = 0;
         std::unordered_map<int, long long> table;
-        for (int idx = 0; idx<tasks.size(); ++idx)
+        for (const auto ele : tasks)
         {
-            auto found = table.find(tasks[idx]);
-            if (found!=table.end() && results<found->second)
-            {
-                results = found->second;
-            }
-            table[tasks[idx]] = results+space+1;
+            if (table.count(ele)) { results = std::max(table[ele], results); }
+            
+            table[ele] = results+space+1;
             ++results;
         }
 
