@@ -1,39 +1,61 @@
 class MedianFinder {
 public:
-    MedianFinder() {
-        
-    }
+    MedianFinder() {}
     
     void addNum(int num)
     {
-        int idx = FindInsertIdx(num);
-        mValues.insert(std::next(mValues.begin(), idx), num);
+        mMaxHeap.emplace(num);
+        if (mMinHeap.size()>0 && mMaxHeap.top()>mMinHeap.top())
+        {
+            int value = mMaxHeap.top();
+            mMaxHeap.pop();
+
+            mMinHeap.emplace(value);
+        }
+        
+        int maxSize = mMaxHeap.size();
+        int minSize = mMinHeap.size();
+
+        if (maxSize>minSize+1)
+        {
+            while (maxSize>minSize+1)
+            {
+                int value = mMaxHeap.top();
+                mMaxHeap.pop();
+
+                mMinHeap.emplace(value);
+
+                maxSize = mMaxHeap.size();
+                minSize = mMinHeap.size();
+            }
+        }
+        else if (minSize>maxSize)
+        {
+            while (minSize>maxSize)
+            {
+                int value = mMinHeap.top();
+                mMinHeap.pop();
+
+                mMaxHeap.emplace(value);
+
+                maxSize = mMaxHeap.size();
+                minSize = mMinHeap.size();
+            }
+        }
     }
     
     double findMedian()
     {
-        int halfSize = mValues.size()/2;
-        if (mValues.size()%2) { return mValues[halfSize]; }
-        else { return (mValues[halfSize-1]+mValues[halfSize])/2.0; }
+        int maxSize = mMaxHeap.size();
+        int minSize = mMinHeap.size();
+
+        if ((maxSize+minSize)%2) { return mMaxHeap.top(); }
+        return (mMaxHeap.top()+mMinHeap.top())/2.0;
     }
 
 private:
-    std::vector<int> mValues;
-
-    int FindInsertIdx(int num)
-    {
-        int left = 0;
-        int right = mValues.size();
-        while (left<right)
-        {
-            int middle = left+(right-left)/2;
-            
-            if (mValues[middle]>=num) { right = middle; }
-            else { left = middle+1; }
-        }
-
-        return left;
-    }
+    std::priority_queue<int> mMaxHeap;
+    std::priority_queue<int, std::vector<int>, std::greater<int>> mMinHeap;
 };
 
 /**
