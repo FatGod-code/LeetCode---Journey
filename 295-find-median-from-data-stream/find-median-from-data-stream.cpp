@@ -1,30 +1,55 @@
 class MedianFinder {
 public:
-    priority_queue<int> left;
-    priority_queue<int, vector<int>, greater<int>> right;
-    MedianFinder() {
+    MedianFinder() {}
+    
+    void addNum(int num)
+    {
+        mMaxHeap.emplace(num);
+        if (mMinHeap.size()>0 && mMaxHeap.top()>mMinHeap.top())
+        {
+            int value = mMaxHeap.top();
+            mMaxHeap.pop();
+
+            mMinHeap.emplace(value);
+        }
+        
+        int maxSize = mMaxHeap.size();
+        int minSize = mMinHeap.size();
+
+        if (maxSize>minSize+1)
+        {
+            int value = mMaxHeap.top();
+            mMaxHeap.pop();
+
+            mMinHeap.emplace(value);
+        }
+        else if (minSize>maxSize)
+        {
+            
+            int value = mMinHeap.top();
+            mMinHeap.pop();
+
+            mMaxHeap.emplace(value);
+        }
     }
-    void addNum(int num) {
-        if (left.empty() || num <= left.top()) {
-            left.push(num);
-        }
-        else {
-            right.push(num);
-        }
-        if (left.size() > right.size() + 1) {
-            right.push(left.top());
-            left.pop();
-        }
-        else if (right.size() > left.size()) {
-            left.push(right.top());
-            right.pop();
-        }
+    
+    double findMedian()
+    {
+        int maxSize = mMaxHeap.size();
+        int minSize = mMinHeap.size();
+
+        if ((maxSize+minSize)%2) { return mMaxHeap.top(); }
+        return (mMaxHeap.top()+mMinHeap.top())/2.0;
     }
 
-    double findMedian() {
-        if (left.size() > right.size()) {
-            return left.top();
-        }
-        return (left.top() + right.top()) / 2.0;
-    }
+private:
+    std::priority_queue<int> mMaxHeap;
+    std::priority_queue<int, std::vector<int>, std::greater<int>> mMinHeap;
 };
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
