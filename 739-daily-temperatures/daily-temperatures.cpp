@@ -4,18 +4,19 @@ public:
     {
         std::vector<int> results(temperatures.size(), 0);
 
-        std::stack<int> sta;
+        std::vector<int> sta;
+        sta.reserve(temperatures.size());
         for (int idx = 0; idx<temperatures.size(); ++idx)
         {
-            while (!sta.empty() && temperatures[idx]>temperatures[sta.top()])
+            while (!sta.empty() && temperatures[idx]>temperatures[sta.back()])
             {
-                auto top = sta.top();
-                sta.pop();
+                auto top = sta.back();
+                sta.pop_back();
                 
                 results[top] = idx-top;
             }
 
-            sta.emplace(idx);
+            sta.emplace_back(idx);
         }
 
         return results;
