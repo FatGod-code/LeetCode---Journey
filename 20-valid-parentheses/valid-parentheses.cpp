@@ -15,6 +15,6 @@ public:
             }
         }
 
-        return sta.empty() ? true : false;
+        return sta.empty();
     }
 };
