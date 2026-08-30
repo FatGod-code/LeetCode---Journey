@@ -9,17 +9,15 @@ public:
         }
         std::sort(positionSort.begin(), positionSort.end(), std::greater<std::pair<int, int>>());
 
-        int results = 0;
-        double maxTime = 0.0;
+        std::stack<double> sta;
         for (const auto& ele : positionSort)
         {
             double time = (target-ele.first)/static_cast<double>(ele.second);
-            if (time<=maxTime) { continue; }
+            if (sta.size() && time<=sta.top()) { continue; }
 
-            maxTime = time;
-            ++results;
+            sta.emplace(time);
         }
 
-        return results;
+        return sta.size();
     }
 };
