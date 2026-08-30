@@ -20,13 +20,15 @@ public:
 
         for (int idx = 1; idx<s2.size()-s1.size()+1; ++idx)
         {
-            if (table1[s2[idx-1]-'a']==table2[s2[idx-1]-'a']) { --numMatches; }
-            --table2[s2[idx-1]-'a'];
-            if (table1[s2[idx-1]-'a']==table2[s2[idx-1]-'a']) { ++numMatches; }
+            char leftChar = s2[idx-1]-'a';
+            if (table1[leftChar]==table2[leftChar]) { --numMatches; }
+            --table2[leftChar];
+            if (table1[leftChar]==table2[leftChar]) { ++numMatches; }
             
-            if (table1[s2[idx+s1.size()-1]-'a']==table2[s2[idx+s1.size()-1]-'a']) { --numMatches; }
-            ++table2[s2[idx+s1.size()-1]-'a'];
-            if (table1[s2[idx+s1.size()-1]-'a']==table2[s2[idx+s1.size()-1]-'a']) { ++numMatches; }
+            char rightChar = s2[idx+s1.size()-1]-'a';
+            if (table1[rightChar]==table2[rightChar]) { --numMatches; }
+            ++table2[rightChar];
+            if (table1[rightChar]==table2[rightChar]) { ++numMatches; }
             
             if (numMatches==26) { return true; }
         }
