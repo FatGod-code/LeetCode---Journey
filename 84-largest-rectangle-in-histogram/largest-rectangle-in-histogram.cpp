@@ -6,19 +6,19 @@ public:
         for (int idx = 0; idx<heights.size(); ++idx) { h[idx+1] = heights[idx]; }
 
         int results = 0;
-        std::stack<int> sta;
+        std::vector<int> sta;
         for (int idx = 0; idx<h.size(); ++idx)
         {
-            while (sta.size() && h[idx]<h[sta.top()])
+            while (sta.size() && h[idx]<h[sta.back()])
             {
-                auto index = sta.top();
-                sta.pop();
+                auto index = sta.back();
+                sta.pop_back();
 
-                int surface = h[index]*(idx-sta.top()-1);
+                int surface = h[index]*(idx-sta.back()-1);
                 results = std::max(surface, results);
             }
 
-            sta.push(idx);
+            sta.emplace_back(idx);
         }
 
         return results;
