@@ -6,19 +6,19 @@ public:
         for (int idx = 0; idx<heights.size(); ++idx) { h[idx+1] = heights[idx]; }
 
         int results = 0;
-        std::stack<std::pair<int, int>> sta;
+        std::stack<int> sta;
         for (int idx = 0; idx<h.size(); ++idx)
         {
-            while (sta.size() && h[idx]<sta.top().first)
+            while (sta.size() && h[idx]<h[sta.top()])
             {
-                auto [height, index] = sta.top();
+                auto index = sta.top();
                 sta.pop();
 
-                int surface = height*(idx-sta.top().second-1);
+                int surface = h[index]*(idx-sta.top()-1);
                 results = std::max(surface, results);
             }
 
-            sta.push({h[idx], idx});
+            sta.push(idx);
         }
 
         return results;
