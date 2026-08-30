@@ -2,16 +2,22 @@ class Solution {
 public:
     bool checkInclusion(string s1, string s2)
     {
+        if (s2.size()<s1.size()) { return false; }
+        
         std::vector<int> table1(26);
         for (const auto ele : s1) { ++table1[ele-'a']; }
 
-        for (int idx = 0; idx<s2.size(); ++idx)
+        std::vector<int> table2(26);
+        for (int idx = 0; idx<s1.size(); ++idx) { ++table2[s2[idx]-'a']; }
+
+        if (table1==table2) { return true; }
+
+        for (int idx = 1; idx<s2.size()-s1.size()+1; ++idx)
         {
-            if (idx+s1.size()-1>=s2.size()) { return false; }
 
-            std::vector<int> table2(26);
-            for (int index = idx; index<idx+s1.size(); ++index) { ++table2[s2[index]-'a']; }
-
+            --table2[s2[idx-1]-'a'];
+            ++table2[s2[idx+s1.size()-1]-'a'];
+            
             if (table1==table2) { return true; }
         }
 
