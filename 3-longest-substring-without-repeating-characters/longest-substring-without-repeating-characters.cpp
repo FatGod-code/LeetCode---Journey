@@ -10,23 +10,14 @@ public:
         for (int idx = 0; idx<s.size(); ++idx)
         {
             int tidx = static_cast<int>(s[idx]);
-            if (table[tidx]==-1)
-            {
-                results = std::max(idx-startIdx+1, results);
-                table[tidx] = idx;
-            }
-            else if (table[tidx]<startIdx)
-            {
-                results = std::max(idx-startIdx+1, results);
-                table[tidx] = idx;
-            }
+            if (table[tidx]==-1 || table[tidx]<startIdx) { results = std::max(idx-startIdx+1, results); }
             else
             {
                 results = std::max(idx-startIdx-2, results);
-
                 startIdx = table[tidx]+1;
-                table[tidx] = idx;
+
             }
+            table[tidx] = idx;
         }
 
         return results;
