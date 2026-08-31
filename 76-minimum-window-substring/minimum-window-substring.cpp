@@ -5,7 +5,7 @@ public:
         std::vector<int> tableT(256, 0);
         for (const auto ele : t)
         {
-            int idx = static_cast<int>(ele);
+            unsigned char idx = ele;
             ++tableT[idx];
         }
 
@@ -22,7 +22,7 @@ public:
         int startPoint = -1;
         for (int right = 0; right<s.size(); ++right)
         {
-            int idx = s[right];            
+            unsigned char idx = s[right];            
             ++tableS[idx];
             if (tableT[idx]!=0 && tableS[idx]==tableT[idx]) { ++numMatch;}
 
@@ -34,7 +34,7 @@ public:
                     startPoint = left;
                 }
 
-                int leftIdx = static_cast<int>(s[left]);
+                unsigned char leftIdx = s[left];
                 --tableS[leftIdx];
                 if (tableT[leftIdx]!=0 && tableS[leftIdx]==tableT[leftIdx]-1) { --numMatch; }
 
