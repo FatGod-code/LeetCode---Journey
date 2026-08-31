@@ -10,7 +10,8 @@ public:
         for (int idx = 0; idx<s.size(); ++idx)
         {
             int tidx = static_cast<int>(s[idx]);
-            if (table[tidx]==-1 || table[tidx]<startIdx) { results = std::max(idx-startIdx+1, results); }
+            int length = idx-startIdx+1;
+            if (table[tidx]==-1 || table[tidx]<startIdx) { results = std::max(length, results); }
             else
             {
                 results = std::max(idx-startIdx-2, results);
