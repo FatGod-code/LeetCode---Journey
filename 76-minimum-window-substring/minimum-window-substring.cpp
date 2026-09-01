@@ -9,24 +9,26 @@ public:
             ++tableT[idx];
         }
 
+        int numRequiredMatch = 0;
         int numMatch = 0;
         std::vector<int> tableS(256, 0);
         for (int idx = 0; idx<tableT.size(); ++idx)
         {
-            if (tableS[idx]>=tableT[idx]) { ++numMatch; }
+            if (tableT[idx]==0) { continue; }
+            ++numRequiredMatch;
         }
 
         int minLength = INT_MAX;
         
         int left = 0;
-        int startPoint = -1;
+        int startPoint = 0;
         for (int right = 0; right<s.size(); ++right)
         {
             unsigned char idx = s[right];            
             ++tableS[idx];
             if (tableT[idx]!=0 && tableS[idx]==tableT[idx]) { ++numMatch;}
 
-            while (numMatch==tableT.size())
+            while (numMatch==numRequiredMatch)
             {
                 if (right-left+1<minLength)
                 {
@@ -42,6 +44,6 @@ public:
             }
         }
 
-        return startPoint==-1 ? "" : s.substr(startPoint, minLength);
+        return minLength==INT_MAX ? "" : s.substr(startPoint, minLength);
     }
 };
