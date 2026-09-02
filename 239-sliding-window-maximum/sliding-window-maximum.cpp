@@ -5,6 +5,7 @@ public:
         std::vector<int> results;
 
         std::deque<int> dq;
+        
         int left = 0;
         for (int right = 0; right<nums.size(); ++right)
         {
