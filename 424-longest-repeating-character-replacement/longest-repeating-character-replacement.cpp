@@ -5,17 +5,18 @@ public:
         int results = 0;
 
         std::vector<int> table(26);
-        
+
         int left = 0;
         for (int right = 0; right<s.size(); ++right)
         {
-            unsigned char rightIdx = s[right]-'A';
-            ++table[rightIdx];
+            unsigned char c = s[right]-'A';
+            ++table[c];
 
-            while (Check(table, k))
+            while (check(table, k))
             {
-                unsigned char leftIdx = s[left]-'A';
-                --table[leftIdx];
+                unsigned char leftC = s[left]-'A';
+                --table[leftC];
+                
                 ++left;
             }
 
@@ -26,14 +27,14 @@ public:
     }
 
 private:
-    bool Check(const std::vector<int>& table, int k)
+    bool check(const std::vector<int>& table, int k)
     {
         int numChars = 0;
-        for (int idx = 0; idx<table.size(); ++idx) { numChars += table[idx]; }
-        
-        int maxValue = *(std::ranges::max_element(table));
-        if (numChars-maxValue>k) { return true; }
+        for (const auto ele : table) { numChars += ele; }
 
-        return false;
+        int maxValue = *(std::ranges::max_element(table));
+        numChars -= maxValue;
+
+        return numChars>k ? true : false;
     }
 };
