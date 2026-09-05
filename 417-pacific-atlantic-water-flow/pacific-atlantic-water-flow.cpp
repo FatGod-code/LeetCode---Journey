@@ -1,79 +1,80 @@
 class Solution {
 public:
-    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights)
-    {
-        std::vector<std::vector<int>> table1(heights.size(), std::vector<int>(heights[0].size(), 0));
 
-        std::queue<std::pair<int, int>> que;
-        for (int row = 0; row<heights.size(); ++row)
-        {
-            que.push({row, 0});
-            table1[row][0] = 1;
+    void dfs(vector<vector<int>>& heights,
+             vector<vector<bool>>& ocean,
+             int r, int c) {
+
+        int m = heights.size();
+        int n = heights[0].size();
+
+        ocean[r][c] = true;
+
+        int dr[] = {1, -1, 0, 0};
+        int dc[] = {0, 0, 1, -1};
+
+        for (int i = 0; i < 4; i++) {
+
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+
+            // Out of bounds
+            if (nr < 0 || nr >= m ||
+                nc < 0 || nc >= n)
+                continue;
+
+            // Already visited
+            if (ocean[nr][nc])
+                continue;
+
+            // Can't move downhill in reverse
+            if (heights[nr][nc] < heights[r][c])
+                continue;
+
+            dfs(heights, ocean, nr, nc);
         }
-
-        for (int col = 0; col<heights[0].size(); ++col)
-        {
-            que.push({0, col});
-            table1[0][col] = 1;
-            std::cout << 0 << " " << col << std::endl;
-        }
-        
-
-        BFS(heights, que, table1);
-
-        std::vector<std::vector<int>> table2(heights.size(), std::vector<int>(heights[0].size(), 0));
-
-        std::queue<std::pair<int, int>> que2;
-        for (int row = 0; row<heights.size(); ++row)
-        {
-            que2.push({row, heights[0].size()-1});
-            table2[row][heights[0].size()-1] = 1;
-        }
-
-        for (int col = 0; col<heights[0].size(); ++col)
-        {
-            que2.push({heights.size()-1, col});
-            table2[heights.size()-1][col] = 1;
-        }
-        
-        BFS(heights, que2, table2);
-
-        std::vector<std::vector<int>> results;
-        for (int row = 0; row<table1.size(); ++row)
-        {
-            for (int col = 0; col<table1[0].size(); ++col)
-            {
-                if (table1[row][col] && table2[row][col]) { results.push_back({row, col}); }
-            }
-        }
-
-        return results;
     }
 
-    void BFS(std::vector<std::vector<int>>& heights,
-             std::queue<std::pair<int, int>>& que, std::vector<std::vector<int>>& table)
-    {
-        std::vector<int> dirs{0, 1, 0, -1, 0};
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
 
-        while (!que.empty())
-        {
-            int size = que.size();
-            for (int s = 0; s<size; ++s)
-            {
-                auto [row, col] = que.front();
-                que.pop();
+        int m = heights.size();
+        int n = heights[0].size();
 
-                for (int d = 0; d<4; ++d)
-                {
-                    int y = row+dirs[d];
-                    int x = col+dirs[d+1];
-                    if (y<0 || y>=heights.size() || x<0 || x>=heights[0].size() ||
-                        heights[row][col]>heights[y][x] || table[y][x]!=0) { continue; }
+        vector<vector<bool>> pacific(m, vector<bool>(n, false));
+        vector<vector<bool>> atlantic(m, vector<bool>(n, false));
 
-                    que.push({y, x});
-                    table[y][x] = 1;
+        // Pacific: top row
+        for (int c = 0; c < n; c++) {
+            dfs(heights, pacific, 0, c);
+        }
+
+        // Pacific: left column
+        for (int r = 0; r < m; r++) {
+            dfs(heights, pacific, r, 0);
+        }
+
+        // Atlantic: bottom row
+        for (int c = 0; c < n; c++) {
+            dfs(heights, atlantic, m - 1, c);
+        }
+
+        // Atlantic: right column
+        for (int r = 0; r < m; r++) {
+            dfs(heights, atlantic, r, n - 1);
+        }
+
+        vector<vector<int>> result;
+
+        // Find cells reachable from both oceans
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+
+                if (pacific[r][c] && atlantic[r][c]) {
+                    result.push_back({r, c});
                 }
             }
         }
+
+        return result;
     }
 };
