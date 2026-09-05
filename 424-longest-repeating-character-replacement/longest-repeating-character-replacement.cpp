@@ -4,6 +4,7 @@ public:
     {
         int results = 0;
 
+        int maxFreq = 0;
         std::vector<int> table(26);
 
         int left = 0;
@@ -11,12 +12,12 @@ public:
         {
             unsigned char c = s[right]-'A';
             ++table[c];
-
-            while (check(table, k))
+            
+            maxFreq = std::max(table[c], maxFreq);
+            while (right-left+1-maxFreq>k)
             {
                 unsigned char leftC = s[left]-'A';
                 --table[leftC];
-                
                 ++left;
             }
 
@@ -24,17 +25,5 @@ public:
         }
 
         return results;
-    }
-
-private:
-    bool check(const std::vector<int>& table, int k)
-    {
-        int numChars = 0;
-        for (const auto ele : table) { numChars += ele; }
-
-        int maxValue = *(std::ranges::max_element(table));
-        numChars -= maxValue;
-
-        return numChars>k ? true : false;
     }
 };
