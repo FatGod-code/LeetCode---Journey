@@ -30,14 +30,14 @@ public:
         Node* results = new Node(node->val);
         visited.emplace(node, results);
         
-        std::queue<std::pair<Node*, Node*>> que;
-        que.push({node, results});
+        std::queue<Node*> que;
+        que.push(node);
         while (!que.empty())
         {
             int size = que.size();
             for (int s = 0; s<size; ++s)
             {
-                auto [node, cloneNode] = que.front();
+                auto node = que.front();
                 que.pop();
 
                 for (const auto neighbor : node->neighbors)
@@ -45,15 +45,15 @@ public:
                     Node* ptr = nullptr;
 
                     auto found = visited.find(neighbor);
-                    if (visited.find(neighbor)==visited.end())
+                    if (found==visited.end())
                     {
                         ptr = new Node(neighbor->val);
                         visited.emplace(neighbor, ptr);
-                        que.push({neighbor, ptr});
+                        que.push(neighbor);
                     }
                     else { ptr = found->second; }
 
-                    cloneNode->neighbors.emplace_back(ptr);
+                    visited[node]->neighbors.emplace_back(ptr);
                 }
             }
         }
