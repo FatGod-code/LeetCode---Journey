@@ -4,16 +4,12 @@ public:
     {
         std::vector<std::vector<int>> table1(heights.size(), std::vector<int>(heights[0].size(), 0));
 
-        
-
         std::queue<std::pair<int, int>> que;
         for (int row = 0; row<heights.size(); ++row)
         {
             que.push({row, 0});
             table1[row][0] = 1;
-            std::cout << row << " " << 0 << std::endl;
         }
-        std::cout << std::endl;
 
         for (int col = 0; col<heights[0].size(); ++col)
         {
@@ -32,18 +28,13 @@ public:
         {
             que2.push({row, heights[0].size()-1});
             table2[row][heights[0].size()-1] = 1;
-            std::cout << row << " " << heights[0].size()-1 << std::endl;}
-        std::cout << std::endl;
+        }
 
         for (int col = 0; col<heights[0].size(); ++col)
         {
             que2.push({heights.size()-1, col});
             table2[heights.size()-1][col] = 1;
-            std::cout << heights.size()-1 << " " << col << std::endl;
         }
-        std::cout << std::endl;
-        std::cout << std::endl;
-
         
         BFS(heights, que2, table2);
 
