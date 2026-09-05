@@ -12,7 +12,7 @@ public:
             {
                 if (grid[row][col]!='1') { continue; }
 
-                std::queue<std::pair<int, int>> que;
+                std::stack<std::pair<int, int>> que;
                 que.push({row, col});
                 grid[row][col] = '#';
                 while (!que.empty())
@@ -20,7 +20,7 @@ public:
                     int size = que.size();
                     for (int s = 0; s<size; ++s)
                     {
-                        auto [y, x] = que.front();
+                        auto [y, x] = que.top();
                         que.pop();
 
                         for (int d = 0; d<4; ++d)
