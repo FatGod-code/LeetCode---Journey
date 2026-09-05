@@ -63,8 +63,6 @@ public:
                 auto [row, col] = que.front();
                 que.pop();
 
-                //table[row][col] = 1;
-
                 for (int d = 0; d<4; ++d)
                 {
                     int y = row+dirs[d];
