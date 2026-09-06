@@ -46,8 +46,6 @@ public:
             }
         }
 
-        std::cout << numCoursesTaken << " " << numCourses;
-
         return numCoursesTaken==numCourses;
     }
 };
