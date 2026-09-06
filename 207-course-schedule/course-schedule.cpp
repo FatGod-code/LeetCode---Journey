@@ -13,11 +13,7 @@ public:
         std::queue<int> que;
         for (int idx = 0; idx<table.size(); ++idx)
         {
-            if (table[idx]==0)
-            {
-                que.push(idx);
-                //coursesTaken.emplace(idx);
-            }
+            if (table[idx]==0) { que.push(idx); }
         }
 
         int numCoursesTaken = 0;
@@ -33,14 +29,8 @@ public:
 
                 for (const auto ele : graph[course])
                 {
-                    //if (coursesTaken.find(ele)!=coursesTaken.end()) { continue; }
-                    
                     --table[ele];
-                    if (table[ele]==0)
-                    {
-                        que.push(ele);
-                     //   coursesTaken.emplace(ele);
-                    }
+                    if (table[ele]==0) { que.push(ele); }
                 }
             }
         }
