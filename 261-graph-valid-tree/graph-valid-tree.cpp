@@ -1,43 +1,50 @@
+class UnionFind
+{
+public:
+    UnionFind(int n) : mNumComponents(n), mNodes(n)
+    {
+        std::iota(mNodes.begin(), mNodes.end(), 0);
+    }
+
+    bool Unite(int i, int j)
+    {
+        auto rooti = find(i);
+        auto rootj = find(j);
+        if (rooti!=rootj)
+        {
+            mNodes[rootj] = rooti;
+            --mNumComponents;
+            return true;
+        }
+
+        return false;
+    }
+
+    int GetNumComponents() { return mNumComponents; }
+
+private:
+    std::vector<int> mNodes;
+    int mNumComponents{0};
+
+    int find(int i)
+    {
+        if (mNodes[i]==i) { return i; }
+        mNodes[i] = find(mNodes[i]);
+
+        return mNodes[i];
+    }
+};
+
 class Solution {
 public:
     bool validTree(int n, vector<vector<int>>& edges)
     {
-        if (edges.size()!=n-1) { return false; }
-
-        std::vector<std::vector<int>> tree(n);
+        UnionFind unionFind(n);
         for (const auto& ele : edges)
         {
-            tree[ele[0]].emplace_back(ele[1]);
-            tree[ele[1]].emplace_back(ele[0]);
+            if (!unionFind.Unite(ele[0], ele[1])) { return false; }
         }
 
-        std::unordered_set<int> visited;
-        
-        int numNodes = 0;
-
-        std::queue<int> que;
-        que.push(0);
-        visited.emplace(0);
-        while (!que.empty())
-        {
-            int size = que.size();
-            for (int s = 0; s<size; ++s)
-            {
-                auto node = que.front();
-                que.pop();
-
-                ++numNodes;
-
-                for (const auto ele : tree[node])
-                {
-                    if (visited.find(ele)!=visited.end()) { continue; }
-
-                    que.push(ele);
-                    visited.emplace(ele);
-                }
-            }
-        }
-
-        return numNodes==n;
+        return unionFind.GetNumComponents()==1;
     }
 };
