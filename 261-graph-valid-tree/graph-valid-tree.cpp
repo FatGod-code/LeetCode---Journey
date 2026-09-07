@@ -2,8 +2,6 @@ class Solution {
 public:
     bool validTree(int n, vector<vector<int>>& edges)
     {
-        if (edges.size()!=n-1) { return false; }
-
         std::vector<std::vector<int>> graph(n);
         for (const auto& ele : edges)
         {
@@ -12,11 +10,11 @@ public:
         }
 
         int numNodes = 0;
-
-        std::vector<bool> visited(n, false);
+        
+        std::vector<std::pair<bool, int>> visited(n, std::pair<bool, int>{false, -1});
         std::queue<int> que;
         que.push(0);
-        visited[0] = true;
+        visited[0] = {true, -1};
         while (!que.empty())
         {
             int size = que.size();
@@ -29,10 +27,14 @@ public:
 
                 for (const auto ele : graph[node])
                 {
-                    if (visited[ele]) { continue; }
+                    if (visited[ele].first)
+                    {
+                        if (visited[node].second==ele) { continue; }
+                        else { return false;}
+                    }
 
                     que.push(ele);
-                    visited[ele] = true;
+                    visited[ele] = {true, node};
                 }
             }
         }
