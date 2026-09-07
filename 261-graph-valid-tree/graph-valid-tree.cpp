@@ -11,10 +11,9 @@ public:
             graph[ele[1]].emplace_back(ele[0]);
         }
 
-        std::vector<bool> visited(n, false);
-
         int numNodes = 0;
 
+        std::vector<bool> visited(n, false);
         std::queue<int> que;
         que.push(0);
         visited[0] = true;
