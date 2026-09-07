@@ -1,50 +1,43 @@
-class UnionFind
-{
-public:
-    UnionFind(int n) : mNumComponents(n), mNodes(n)
-    {
-        std::iota(mNodes.begin(), mNodes.end(), 0);
-    }
-
-    bool Unite(int i, int j)
-    {
-        auto rooti = find(i);
-        auto rootj = find(j);
-        if (rooti!=rootj)
-        {
-            mNodes[rootj] = rooti;
-            --mNumComponents;
-            return true;
-        }
-
-        return false;
-    }
-
-    int GetNumComponents() { return mNumComponents; }
-
-private:
-    std::vector<int> mNodes;
-    int mNumComponents{0};
-
-    int find(int i)
-    {
-        if (mNodes[i]==i) { return i; }
-        mNodes[i] = find(mNodes[i]);
-
-        return mNodes[i];
-    }
-};
-
 class Solution {
 public:
     bool validTree(int n, vector<vector<int>>& edges)
     {
-        UnionFind unionFind(n);
+        if (edges.size()!=n-1) { return false; }
+
+        std::vector<std::vector<int>> graph(n);
         for (const auto& ele : edges)
         {
-            if (!unionFind.Unite(ele[0], ele[1])) { return false; }
+            graph[ele[0]].emplace_back(ele[1]);
+            graph[ele[1]].emplace_back(ele[0]);
         }
 
-        return unionFind.GetNumComponents()==1;
+        std::vector<bool> visited(n, false);
+
+        int numNodes = 0;
+
+        std::queue<int> que;
+        que.push(0);
+        visited[0] = true;
+        while (!que.empty())
+        {
+            int size = que.size();
+            for (int s = 0; s<size; ++s)
+            {
+                auto node = que.front();
+                que.pop();
+
+                ++numNodes;
+
+                for (const auto ele : graph[node])
+                {
+                    if (visited[ele]) { continue; }
+
+                    que.push(ele);
+                    visited[ele] = true;
+                }
+            }
+        }
+
+        return numNodes==n;
     }
 };
