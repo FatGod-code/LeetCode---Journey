@@ -46,10 +46,11 @@ public:
                         if (originalChar==c) { continue; }
 
                         str[l] = c;
-                        if (wordTable.find(str)!=wordTable.end() && !visited[wordTable[str]])
+                        auto found = wordTable.find(str);
+                        if (found!=wordTable.end() && !visited[found->second])
                         {
-                            que.push(wordTable[str]);
-                            visited[wordTable[str]] = true;
+                            que.push(found->second);
+                            visited[found->second] = true;
                         }
                     }
 
