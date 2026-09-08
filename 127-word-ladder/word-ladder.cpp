@@ -2,67 +2,52 @@ class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList)
     {
-        std::unordered_map<std::string, int> wordTable;
-        for (int idx = 0; idx<wordList.size(); ++idx)
-        {
-            wordTable[wordList[idx]] = idx;
-        }
+        std::unordered_set<std::string> table(wordList.begin(), wordList.end());
 
-        if (wordTable.find(endWord)==wordTable.end()) { return 0; }
-        if (wordTable.find(beginWord)==wordTable.end())
-        {
-            wordList.emplace_back(beginWord);
-            wordTable[beginWord] = wordList.size()-1;
-        }
-
-
+        if (table.find(endWord)==table.end()) { return false; }
+    
         int results = 0;
 
-        std::vector<bool> visited(wordList.size(), false);
-
-        int beginIdx = wordTable[beginWord];
-        
-        std::queue<int> que;
-        que.push(beginIdx);
-        visited[beginIdx] = true;
-
         std::string str;
+
+        std::queue<std::string> que;
+        que.push(beginWord);
         while (!que.empty())
         {
             int size = que.size();
             for (int s = 0; s<size; ++s)
             {
-                auto wordId = que.front();
+                auto word = que.front();
                 que.pop();
 
-                if (wordList[wordId]==endWord) { return results+1; }
+                if (word==endWord) { return results+1; }
 
-                str = wordList[wordId];
-                for (int l = 0; l<wordList[wordId].size(); ++l)
+                for (int l = 0; l<word.size(); ++l)
                 {
-                    unsigned char originalChar = wordList[wordId][l];
+                    unsigned char originalChar = word[l];
                     for (unsigned char c = 'a'; c<='z'; ++c)
                     {
-                        if (originalChar==c) { continue; }
+                        //if (c==originalChar) { continue; }
 
-                        str[l] = c;
-                        auto found = wordTable.find(str);
-                        if (found!=wordTable.end() && !visited[found->second])
+                        word[l] = c;
+                        auto found = table.find(word);
+                        if (found!=table.end())
                         {
-                            que.push(found->second);
-                            visited[found->second] = true;
+                            que.push(word);
+                            table.erase(found);
                         }
                     }
 
-                    str[l] = originalChar;
+                    word[l] = originalChar;
                 }
             }
 
             ++results;
         }
 
-        //std::cout << results << std::endl;
+
         return 0;
+
     }
 };
 
