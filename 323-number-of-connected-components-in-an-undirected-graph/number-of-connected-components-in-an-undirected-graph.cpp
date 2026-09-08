@@ -1,51 +1,44 @@
-class UnionFind
-{
-public:
-    UnionFind(int n) : mNumComponents(n), mParents(n)
-    {
-        std::iota(mParents.begin(), mParents.end(), 0);
-    }
-
-    bool unite(int i, int j)
-    {
-        auto rooti = find(i);
-        auto rootj = find(j);
-        if (rooti!=rootj)
-        {
-            mParents[rootj] = rooti;
-            --mNumComponents;
-            
-            return true;
-        }
-
-        return false;
-    }
-
-    int getNumComponents() { return mNumComponents; }
-
-private:
-    std::vector<int> mParents;
-    int mNumComponents{0};
-
-    int find(int i)
-    {
-        if (mParents[i]==i) { return i; }
-
-        mParents[i] = find(mParents[i]);
-        return mParents[i];
-    }
-};
-
 class Solution {
 public:
     int countComponents(int n, vector<vector<int>>& edges)
     {
-        UnionFind uf(n);
-        for (const auto& ele :edges)
+        std::vector<std::vector<int>> graph(n);
+        for (const auto& ele : edges)
         {
-            uf.unite(ele[0], ele[1]);
+            graph[ele[0]].emplace_back(ele[1]);
+            graph[ele[1]].emplace_back(ele[0]);
         }
 
-        return uf.getNumComponents();
+        std::vector<bool> visited(n, false);
+        int results = 0;
+        for (int idx = 0; idx<n; ++idx)
+        {
+            if (visited[idx]) { continue; }
+
+            std::queue<int> que;
+            que.push(idx);
+            visited[idx] = true;
+            while (!que.empty())
+            {
+                int size = que.size();
+                for (int s = 0; s<size; ++s)
+                {
+                    auto node = que.front();
+                    que.pop();
+
+                    for (const auto ele : graph[node])
+                    {
+                        if (visited[ele]) { continue; }
+
+                        que.push(ele);
+                        visited[ele] = true;
+                    }
+                }
+            }
+
+            ++results;
+        }
+
+        return results;
     }
 };
