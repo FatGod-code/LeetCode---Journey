@@ -26,6 +26,7 @@ public:
         que.push(beginIdx);
         visited[beginIdx] = true;
 
+        std::string str;
         while (!que.empty())
         {
             int size = que.size();
@@ -36,7 +37,7 @@ public:
 
                 if (wordList[wordId]==endWord) { return results+1; }
 
-                std::string str = wordList[wordId];
+                str = wordList[wordId];
                 for (int l = 0; l<wordList[wordId].size(); ++l)
                 {
                     unsigned char originalChar = wordList[wordId][l];
