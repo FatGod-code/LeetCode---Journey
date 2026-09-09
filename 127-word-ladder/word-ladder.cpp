@@ -3,7 +3,7 @@ public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList)
     {
         std::unordered_set<std::string> table(wordList.begin(), wordList.end());
-        if (table.find(endWord)==table.end()) { return 0;}
+        if (table.find(endWord)==table.end()) { return 0; }
 
         int results = 1;
 
@@ -11,8 +11,6 @@ public:
 
         std::queue<std::string> que;
         que.push(beginWord);
-        //if (table.find(beginWord)!=table.end()) { table.erase(beginWord); }
-
         while (!que.empty())
         {
             int size = que.size();
@@ -24,12 +22,13 @@ public:
                 if (word==endWord) { return results; }
 
                 str = word;
-                for (int l = 0; l<word.size(); ++l)
+                for (int l = 0; l<str.size(); ++l)
                 {
                     unsigned char originalChar = str[l];
-                    for (unsigned char c  = 'a'; c<='z'; ++c)
+                    for (int c = 'a'; c<='z'; ++c)
                     {
                         str[l] = c;
+                        
                         auto found = table.find(str);
                         if (found!=table.end())
                         {
@@ -37,7 +36,7 @@ public:
                             table.erase(found);
                         }
                     }
-                    
+
                     str[l] = originalChar;
                 }
             }
