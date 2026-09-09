@@ -7,8 +7,6 @@ public:
 
         int results = 1;
 
-        std::string str;
-
         std::queue<std::string> que;
         que.push(beginWord);
         while (!que.empty())
@@ -21,26 +19,25 @@ public:
 
                 if (word==endWord) { return results; }
 
-                str = word;
-                for (int l = 0; l<str.size(); ++l)
+                for (int l = 0; l<word.size(); ++l)
                 {
-                    unsigned char originalChar = str[l];
-                    for (int c = 'a'; c<='z'; ++c)
+                    unsigned char originalChar = word[l];
+                    for (unsigned char c = 'a'; c<='z'; ++c)
                     {
-                        str[l] = c;
-                        
-                        auto found = table.find(str);
+                        word[l] = c;
+
+                        auto found = table.find(word);
                         if (found!=table.end())
                         {
-                            que.push(str);
-                            table.erase(found);
+                            que.push(word);
+                            table.erase(word);
                         }
                     }
 
-                    str[l] = originalChar;
+                    word[l] = originalChar;
                 }
             }
-
+            
             ++results;
         }
 
