@@ -2,29 +2,28 @@ class Solution {
 public:
     int rob(vector<int>& nums)
     {
-        int size = static_cast<int>(nums.size());
+        if (nums.size()==1) { return nums[0]; }
 
+        int size = static_cast<int>(nums.size());
+        
+        int value1 = dp(nums, 0, size-1);
+        int value2 = dp(nums, 1, size);
+        
+        return std::max(value1, value2);
+    }
+
+    int dp(const std::vector<int>& nums, int start, int end)
+    {
         int value1 = 0;
         int value2 = 0;
-        int maxAmount1 = nums[0];
-        for (int idx = 0; idx<size-1; ++idx)
+        int maxAmount = 0;
+        for (int idx = start; idx<end; ++idx)
         {
-            maxAmount1 = std::max(value1+nums[idx], value2);
+            maxAmount = std::max(value1+nums[idx], value2);
             value1 = value2;
-            value2 = maxAmount1;
+            value2 = maxAmount;
         }
 
-        value1 = 0;
-        value2 = 0;
-        int maxAmount2 = 0;
-        for (int idx = 1; idx<size; ++idx)
-        {
-            maxAmount2 = std::max(value1+nums[idx], value2);
-            value1 = value2;
-            value2 = maxAmount2;
-        }
-
-        int results = std::max(maxAmount1, maxAmount2);
-        return results;
+        return maxAmount;
     }
 };
