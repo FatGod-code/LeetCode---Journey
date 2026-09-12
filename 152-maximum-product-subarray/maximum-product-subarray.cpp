@@ -9,12 +9,9 @@ public:
             if (nums[idx]<0) { std::swap(table.first, table.second); }
             /*if (nums[idx]==0) { table = {0, 0}; }
             else*/
-            {
-                int value1 = table.first==0 ? 1 : table.first;
-                int value2 = table.second==0 ? 1 : table.second;
-                table.first = std::max({nums[idx], table.first*nums[idx]});
-                table.second = std::min({nums[idx], table.second*nums[idx]});
-            }
+        
+            table.first = std::max({nums[idx], table.first*nums[idx]});
+            table.second = std::min({nums[idx], table.second*nums[idx]});
 
             results = std::max(table.first, results);
         }
