@@ -9,11 +9,17 @@ public:
         {
             for (const auto& word : wordDict)
             {
-                if (idx+1-static_cast<int>(word.size())<0) { continue; }
+                int wordLength = static_cast<int>(word.size());
+                int index = idx+1-wordLength;
+                if (index<0) { continue; }
 
-                if (!table[idx+1-word.size()]) { continue; }
+                if (!table[index]) { continue; }
 
-                if (word==s.substr(idx+1-word.size(), word.size())) { table[idx+1] = true; };
+                if (s.compare(index, wordLength, word)==0)
+                {
+                    table[idx+1] = true;
+                    break;
+                }
             }
         }
 
