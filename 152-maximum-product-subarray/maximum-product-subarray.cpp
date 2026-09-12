@@ -3,8 +3,8 @@ public:
     int maxProduct(vector<int>& nums)
     {
         int results = nums[0];
-        std::pair<int, int> table = {nums[0], nums[0]};
-        for (int idx = 1; idx<nums.size(); ++idx)
+        std::pair<int, int> table = {1 ,1};
+        for (int idx = 0; idx<nums.size(); ++idx)
         {
             if (nums[idx]<0) { std::swap(table.first, table.second); }
             /*if (nums[idx]==0) { table = {0, 0}; }
