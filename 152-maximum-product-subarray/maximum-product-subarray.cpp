@@ -12,8 +12,8 @@ public:
             {
                 int value1 = table.first==0 ? 1 : table.first;
                 int value2 = table.second==0 ? 1 : table.second;
-                table.first = std::max({nums[idx], value1*nums[idx]});
-                table.second = std::min({nums[idx], value2*nums[idx]});
+                table.first = std::max({nums[idx], table.first*nums[idx]});
+                table.second = std::min({nums[idx], table.second*nums[idx]});
             }
 
             results = std::max(table.first, results);
