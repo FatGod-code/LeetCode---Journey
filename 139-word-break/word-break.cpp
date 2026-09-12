@@ -2,23 +2,18 @@ class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict)
     {
+        std::unordered_set<std::string> wordSet(wordDict.begin(), wordDict.end());
+
         std::vector<bool> table(s.size()+1, false);
         table[0] = true;
 
-        for (int idx = 0; idx<s.size(); ++idx)
+        for (int i = 1; i<=s.size(); ++i)
         {
-            for (const auto& word : wordDict)
+            for (int j = 0; j<i; ++j)
             {
-                int wordLength = static_cast<int>(word.size());
-                int index = idx+1-wordLength;
-                if (index<0) { continue; }
-
-                if (!table[index]) { continue; }
-
-                if (s.compare(index, wordLength, word)==0)
+                if (table[j] && wordSet.count(s.substr(j, i-j)))
                 {
-                    table[idx+1] = true;
-                    break;
+                    table[i] = true;
                 }
             }
         }
