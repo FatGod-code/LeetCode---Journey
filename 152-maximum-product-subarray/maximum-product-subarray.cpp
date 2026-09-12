@@ -6,8 +6,8 @@ public:
         std::pair<int, int> table = {nums[0], nums[0]};
         for (int idx = 1; idx<nums.size(); ++idx)
         {
-            if (nums[idx]==0) { table = {0, 0}; }
-            else
+            /*if (nums[idx]==0) { table = {0, 0}; }
+            else*/
             {
                 int value1 = table.first==0 ? 1 : table.first;
                 int value2 = table.second==0 ? 1 : table.second;
