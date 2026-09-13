@@ -4,11 +4,11 @@ public:
     {
         std::vector<std::vector<bool>> table(s.size(), std::vector<bool>(s.size(), false));
 
-        std::string results;
+        std::pair<int, int> str;
         for (int idx = 0; idx<s.size(); ++idx)
         {
             table[idx][idx] = true;
-            results = s[idx];
+            str = {idx, idx};
         }
 
         for (int idx = 0; idx<s.size()-1; ++idx)
@@ -16,7 +16,7 @@ public:
             if (s[idx]==s[idx+1])
             {
                 table[idx][idx+1] = true;
-                results = s.substr(idx, 2);
+                str = {idx, idx+1};
             }
         }
 
@@ -29,11 +29,11 @@ public:
                 if (s[idx]==s[idx+l-1] && table[idx+1][idx+l-2])\
                 {
                     table[idx][idx+l-1] = true;
-                    results = s.substr(idx, l);
+                    str = {idx, idx+l-1};
                 }
             }
         }
 
-        return results;
+        return s.substr(str.first, str.second-str.first+1);
     }
 };
