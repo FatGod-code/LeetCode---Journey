@@ -9,7 +9,7 @@ public:
         {
             for (int j = s.size()-1; j>=i; --j)
             {
-                if (s[i]==s[j] && (j==i || j-i==1 || table[j-1]))
+                if (s[i]==s[j] && (j-i<=1 || table[j-1]))
                 {
                     table[j] = true;
                     if (j-i+1>str.second-str.first+1) { str = {i, j}; }
