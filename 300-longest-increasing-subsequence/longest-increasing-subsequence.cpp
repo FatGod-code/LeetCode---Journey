@@ -4,19 +4,14 @@ public:
     {
         int results = 0;
 
-        std::vector<int> table(nums.size(), 0);
+        std::vector<int> table(nums.size(), 1);
         for (int idx = 0; idx<nums.size(); ++idx)
         {
-            int numSequence = 1;
             for (int i = 0; i<idx; ++i)
             {
-                if (nums[idx]>nums[i])
-                {
-                    numSequence = std::max(table[i]+1, numSequence);
-                }
+                if (nums[idx]>nums[i]) { table[idx] = std::max(table[i]+1, table[idx]); }
             }
 
-            table[idx] = numSequence;
             results = std::max(table[idx], results);
         }
 
