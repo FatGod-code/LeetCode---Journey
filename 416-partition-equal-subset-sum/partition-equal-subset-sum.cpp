@@ -7,7 +7,8 @@ public:
 
         if (sum%2) { return false; }
 
-        std::vector<bool> table(sum/2+1, false);
+        int target = sum/2;
+        std::vector<bool> table(target+1, false);
         table[0] = true;
         for (const auto ele : nums)
         {
@@ -16,6 +17,8 @@ public:
                 if (table[idx]) { continue; }
 
                 if (idx-ele>=0 && table[idx-ele]) { table[idx] = true; }
+
+                if (table[target+1]) { return true; }
             }
         }
 
