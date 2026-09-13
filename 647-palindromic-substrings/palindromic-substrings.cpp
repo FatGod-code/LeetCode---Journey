@@ -14,7 +14,7 @@ public:
                     table[j] = true;
                     ++results;
                 }
-                else if (j-i+1>2 && s[j]==s[i] && table[j-1])
+                else if (s[j]==s[i] && table[j-1])
                 {
                     table[j] = true;
                     ++results;
