@@ -9,12 +9,7 @@ public:
         {
             for (int j = s.size()-1; j>=i; --j)
             {
-                if (i==j)
-                {
-                    table[j] = true;
-                    ++results;
-                }
-                else if (j-i+1<=2 && s[i]==s[j])
+                if (j-i+1<=2 && s[i]==s[j])
                 {
                     table[j] = true;
                     ++results;
