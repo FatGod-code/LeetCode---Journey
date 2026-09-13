@@ -2,37 +2,32 @@ class Solution {
 public:
     int countSubstrings(string s)
     {
-        std::unordered_set<std::string> table;
+        std::vector<bool> table(s.size(), false);
 
         int results = 0;
-        for (int l = 1; l<=s.size(); ++l)
+        for (int i = s.size()-1; i>=0; --i)
         {
-            for (int idx = 0; idx<s.size(); ++idx)
+            for (int j = s.size()-1; j>=i; --j)
             {
-                if (idx+l-1>=s.size()) { continue; }
-
-                std::string substr = s.substr(idx, l);
-                if (table.find(substr)!=table.end()) { ++results; }
-                else
+                if (i==j)
                 {
-                    if (!isPalindromic(substr)) { continue; }
-
+                    table[j] = true;
                     ++results;
-                    table.emplace(substr);
                 }
+                else if (j-i+1<=2 && s[i]==s[j])
+                {
+                    table[j] = true;
+                    ++results;
+                }
+                else if (j-i+1>2 && s[j]==s[i] && table[j-1])
+                {
+                    table[j] = true;
+                    ++results;
+                }
+                else { table[j] = false; }
             }
         }
 
         return results;
-    }
-
-    bool isPalindromic(const std::string& str)
-    {
-        for (int idx = 0; idx<str.size(); ++idx)
-        {
-            if (str[idx]!=str[str.size()-1-idx]) { return false; }
-        }
-
-        return true;
     }
 };
