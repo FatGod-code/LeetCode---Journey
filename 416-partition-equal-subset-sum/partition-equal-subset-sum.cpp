@@ -5,7 +5,7 @@ public:
         int sum = 0;
         for (const auto ele : nums) { sum += ele; }
 
-        if (sum%2) { return false; };
+        if (sum%2) { return false; }
 
         int target = sum/2;
         std::vector<bool> table(target+1, false);
