@@ -4,15 +4,15 @@ public:
     {
         int results = 0;
 
-        unsigned leftMask = 1 << 31;
-        unsigned rightMask = 1;
+        unsigned leftMask = 1u << 31;
+        unsigned rightMask = 1u;
         for (int idx = 0; idx<16; ++idx)
         {
-            bool isLeftOne = (n & leftMask)!=0;
-            bool isRightOne = (n & rightMask)!=0;
+            bool isLeft1 = (n & leftMask)!=0;
+            bool isRight1 = (n & rightMask)!=0;
 
-            if (isLeftOne) { results |= rightMask; }
-            if (isRightOne) { results |= leftMask; }
+            if (isLeft1) { results |= rightMask; }
+            if (isRight1) { results |= leftMask; }
 
             leftMask = leftMask >> 1;
             rightMask = rightMask << 1;
