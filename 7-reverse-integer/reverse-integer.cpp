@@ -2,28 +2,30 @@ class Solution {
 public:
     int reverse(int x)
     {
-        if (x==INT_MIN || x==INT_MAX) { return 0; }
-
         int results = 0;
 
-        int limit = INT_MAX/10;
-        int value = std::abs(x);
-        while (value)
-        {
-            int residue = value%10;
+        int maxLimit = INT_MAX/10;
+        int maxResidue = INT_MAX%10;
 
-            if (results>limit) { return 0; }
-            if (results==limit)
-            {
-                if ((x<0 && residue>8) || (x>=0 && residue>7)) { return 0; }
-            }
-            
+        int minLimit = INT_MIN/10;
+        int minResidue = INT_MIN%10;
+
+        while (x)
+        {
+            int residue = x%10;
+
+            if (results>maxLimit) { return 0; }
+            if (results==maxLimit && residue>maxResidue) { return 0; }
+
+            if (results<minLimit) { return 0; }
+            if (results==minLimit && residue<minResidue) { return 0; }
+
             results *= 10;
             results += residue;
 
-            value /= 10;
+            x /= 10;
         }
 
-        return x>=0 ? results : -results;
+        return results;
     }
 };
