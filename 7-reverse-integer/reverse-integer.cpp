@@ -2,16 +2,38 @@ class Solution {
 public:
     int reverse(int x)
     {
-        std::string str = std::to_string(x);
-        for (int idx = 0; idx<str.size()/2; ++idx) { std::swap(str[idx], str[str.size()-1-idx]); }
+        if (x==INT_MAX || x==INT_MIN) { return 0; }
 
-        if (str.back()=='-')
+        int results = 0;
+
+        int limit = INT_MAX/10;
+        std::cout << limit << std::endl;
+        int value = std::abs(x);
+        while (value)
         {
-            str = '-'+str;
-            str.resize(str.size()-1);
+            int residue = value%10;
+
+            
+            if (results>limit)
+            {
+                std::cout << results;
+                return 0;
+            }
+            if (results==limit)
+            {
+                if ((x<0 && residue>8) || (x>=0 && residue>7))
+                {
+                    std::cout << results << " " << residue << std::endl;
+                    return 0;
+                }
+            }
+            
+            results *= 10;
+            results += residue;
+
+            value /= 10;
         }
 
-        long long value = stoll(str);
-        return value>INT_MAX || value<INT_MIN ? 0 : value;
+        return x>=0 ? results : -results;
     }
 };
