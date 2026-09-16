@@ -35,9 +35,7 @@ public:
             }
         }
 
-        if (std::ranges::count(delayTimes, INT_MAX)) { return -1; }
-        for (const auto ele : delayTimes) { std::cout << ele << " "; }
-        
+        if (std::ranges::count(delayTimes, INT_MAX)) { return -1; }        
         return *std::ranges::max_element(delayTimes);
     }
 };
