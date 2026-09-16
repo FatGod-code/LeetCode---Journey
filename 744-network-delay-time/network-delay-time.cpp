@@ -18,7 +18,7 @@ public:
                 auto node = que.front();
                 que.pop();
 
-                for (const auto ele : graph[node])
+                for (const auto& ele : graph[node])
                 {
                     if (delayTimes[node]+ele.second<delayTimes[ele.first])
                     {
