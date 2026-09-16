@@ -3,17 +3,11 @@ public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k)
     {
         std::vector<std::vector<std::pair<int, int>>> graph(n);
-        std::vector<int> inDegrees(n);
-        for (const auto& ele : times)
-        {
-            graph[ele[0]-1].push_back({ele[1]-1, ele[2]});
-            ++inDegrees[ele[1]-1];
-        }
+        for (const auto& ele : times) { graph[ele[0]-1].push_back({ele[1]-1, ele[2]}); }
 
         std::vector<int> delayTimes(n, INT_MAX);
         delayTimes[k-1] = 0;
 
-        std::vector<bool> visited(n, false);
         std::queue<int> que;
         que.push(k-1);
         while (!que.empty())
