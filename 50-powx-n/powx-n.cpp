@@ -4,11 +4,10 @@ public:
     {
         long long N = static_cast<long long>(n);
         N = std::abs(N);
-        
-        double results = 1.0;
-        
+
+        double results = 1;
         double value = x;
-        unsigned long long mask = 1u;
+        unsigned mask = 1u;
         for (int idx = 0; idx<32; ++idx)
         {
             bool is1 = (N & mask)!=0;
@@ -17,7 +16,7 @@ public:
             mask = mask << 1;
             value *= value;
         }
-    
+        
         return n>=0 ? results : 1/results;
     }
 };
