@@ -2,10 +2,13 @@ class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix)
     {
+        int m = static_cast<int>(matrix.size());
+        int n = static_cast<int>(matrix[0].size());
+        
         bool firstRowHas0 = false;
-        for (int idx = 0; idx<matrix.size(); ++idx)
+        for (int col = 0; col<n; ++col)
         {
-            if (matrix[idx][0]==0)
+            if (matrix[0][col]==0)
             {
                 firstRowHas0 = true;
                 break;
@@ -13,18 +16,18 @@ public:
         }
 
         bool firstColHas0 = false;
-        for (int idx = 0; idx<matrix[0].size(); ++idx)
+        for (int row = 0; row<m; ++row)
         {
-            if (matrix[0][idx]==0)
+            if (matrix[row][0]==0)
             {
                 firstColHas0 = true;
                 break;
             }
         }
 
-        for (int row = 1; row<matrix.size(); ++row)
+        for (int row = 1; row<m; ++row)
         {
-            for (int col = 1; col<matrix[0].size(); ++col)
+            for (int col = 1; col<n; ++col)
             {
                 if (matrix[row][col]==0)
                 {
@@ -34,30 +37,30 @@ public:
             }
         }
 
-        for (int row = 1; row<matrix.size(); ++row)
+        for (int row = 1; row<m; ++row)
         {
             if (matrix[row][0]==0)
             {
-                for (int col = 1; col<matrix[0].size(); ++col) { matrix[row][col] = 0; }
+                for (int col = 1; col<n; ++col) { matrix[row][col] = 0; }
             }
         }
 
-        for (int col = 1; col<matrix[0].size(); ++col)
+        for (int col = 1; col<n; ++col)
         {
             if (matrix[0][col]==0)
             {
-                for (int row = 1; row<matrix.size(); ++row) { matrix[row][col] = 0; }
+                for (int row = 1; row<m; ++row) { matrix[row][col] = 0; }
             }
         }
 
         if (firstRowHas0)
         {
-            for (int row = 0; row<matrix.size(); ++row) { matrix[row][0] = 0; }
+            for (int col = 0; col<n; ++col) { matrix[0][col] = 0; }
         }
 
         if (firstColHas0)
         {
-            for (int col = 0; col<matrix[0].size(); ++col) { matrix[0][col] = 0; }
+            for (int row = 0; row<m; ++row) { matrix[row][0] = 0; }
         }
     }
 };
