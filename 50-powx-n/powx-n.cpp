@@ -2,19 +2,22 @@ class Solution {
 public:
     double myPow(double x, int n)
     {
-        std::unordered_map<int, double> table;
-        table[0] = 1;
-        table[1] = x;
-        table[-1] = 1/x;
+        long long N = static_cast<long long>(n);
+        N = std::abs(N);
+        std::cout << N << std::endl;
+        double results = 1.0;
+        
+        double value = x;
+        unsigned long long mask = 1u;
+        for (int idx = 0; idx<32; ++idx)
+        {
+            bool is1 = (N & mask)!=0;
+            if (is1) { results *= value; std::cout << "fuck"; }
 
-        return countValue(x, n, table);
-    }
-
-    double countValue(double x, int n, std::unordered_map<int, double>& table)
-    {
-        if (table.find(n)!=table.end()) { return table[n]; }
-
-        table[n] = countValue(x, n/2, table)*countValue(x, n/2+n%2, table);
-        return table[n];
+            mask = mask << 1;
+            value *= value;
+        }
+    
+        return n>=0 ? results : 1/results;
     }
 };
