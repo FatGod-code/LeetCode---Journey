@@ -4,33 +4,30 @@ public:
     {
         int m = static_cast<int>(matrix.size());
         int n = static_cast<int>(matrix[0].size());
-        int size = m*n;
 
         std::vector<int> results(m*n);
         int ridx = 0;
 
         int left = 0;
         int right = n-1;
-        
+
         int top = 0;
         int bottom = m-1;
-
         while (left<=right && top<=bottom)
         {
-            for (int col = left; col<=right; ++col) { results[ridx++] = matrix[top][col]; }
+            for (int idx = left; idx<=right; ++idx) { results[ridx++] = matrix[top][idx]; }
             ++top;
             if (top>bottom) { break; }
 
-
-            for (int row = top; row<=bottom; ++row) { results[ridx++] = matrix[row][right]; }
+            for (int idx = top; idx<=bottom; ++idx) { results[ridx++] = matrix[idx][right]; }
             --right;
             if (right<left) { break; }
 
-            for (int col = right; col>=left; --col) { results[ridx++] = matrix[bottom][col]; }
+            for (int idx = right; idx>=left; --idx) { results[ridx++] = matrix[bottom][idx]; }
             --bottom;
             if (bottom<top) { break; }
 
-            for (int row = bottom; row>=top; --row) { results[ridx++] = matrix[row][left]; }
+            for (int idx = bottom; idx>=top; --idx) { results[ridx++] = matrix[idx][left]; }
             ++left;
             if (left>right) { break; }
         }
