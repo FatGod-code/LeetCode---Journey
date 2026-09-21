@@ -1,12 +1,6 @@
 class DetectSquares {
 public:
-    DetectSquares()
-    {
-        for (int row = 0; row<1001; ++row)
-        {
-            for (int col = 0; col<1001; ++col) { mPoints[row][col] = 0; }
-        }
-    }
+    DetectSquares() {}
     
     void add(vector<int> point)
     {
@@ -25,9 +19,9 @@ public:
             int length = std::abs(ele-point[1]);
             if (length==0) { continue; }
 
+            int numPoints1 = mPoints[ele][point[0]];
             if (point[0]-length>=0)
             {
-                int numPoints1 = mPoints[ele][point[0]];
                 int numPoints2 = mPoints[point[1]][point[0]-length];
                 int numPoints3 = mPoints[ele][point[0]-length];
 
@@ -36,7 +30,6 @@ public:
 
             if (point[0]+length<=1000)
             {
-                int numPoints1 = mPoints[ele][point[0]];
                 int numPoints2 = mPoints[point[1]][point[0]+length];
                 int numPoints3 = mPoints[ele][point[0]+length];
                 results += numPoints1*numPoints2*numPoints3;
@@ -47,7 +40,7 @@ public:
     }
 
 private:
-    int mPoints[1001][1001];
+    int mPoints[1001][1001]{0};
     std::vector<int> mYinX[1001];
 };
 
