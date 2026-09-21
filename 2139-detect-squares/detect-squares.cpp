@@ -1,45 +1,54 @@
 class DetectSquares {
 public:
-    DetectSquares() {}
+    DetectSquares()
+    {
+        for (int row = 0; row<1001; ++row)
+        {
+            for (int col = 0; col<1001; ++col) { mPoints[row][col] = 0; }
+        }
+    }
     
-    void add(vector<int> point) { ++mPoints[point[0]][point[1]]; }
+    void add(vector<int> point)
+    {
+        int x = point[0];
+        int y = point[1];
+
+        if (mPoints[y][x]==0) { mYinX[x].emplace_back(y); }
+        ++mPoints[y][x];
+    }
     
     int count(vector<int> point)
     {
-        auto foundX = mPoints.find(point[0]);
-        if (foundX==mPoints.end()) { return 0; }
-
         int results = 0;
-        for (const auto& ele : foundX->second)
+        for (const auto ele : mYinX[point[0]])
         {
-            int length = std::abs(ele.first-point[1]);
+            int length = std::abs(ele-point[1]);
             if (length==0) { continue; }
 
-            auto numPoints1 = findPoint(point[0]-length, point[1]);
-            auto numPoints2 = findPoint(point[0]-length, ele.first);
-            results += (ele.second*numPoints1*numPoints2);
+            if (point[0]-length>=0)
+            {
+                int numPoints1 = mPoints[ele][point[0]];
+                int numPoints2 = mPoints[point[1]][point[0]-length];
+                int numPoints3 = mPoints[ele][point[0]-length];
 
-            numPoints1 = findPoint(point[0]+length, point[1]);
-            numPoints2 = findPoint(point[0]+length, ele.first);
-            results += (ele.second*numPoints1*numPoints2);
+                results += numPoints1*numPoints2*numPoints3;
+            }
+
+            if (point[0]+length<=1000)
+            {
+                int numPoints1 = mPoints[ele][point[0]];
+                int numPoints2 = mPoints[point[1]][point[0]+length];
+                int numPoints3 = mPoints[ele][point[0]+length];
+                results += numPoints1*numPoints2*numPoints3;
+            }
         }
 
         return results;
     }
 
 private:
-    std::unordered_map<int, std::unordered_map<int, int>> mPoints;
-
-    int findPoint(int x, int y)
-    {
-        auto foundX = mPoints.find(x);
-        if (foundX==mPoints.end()) { return 0; }
-
-        auto foundY = foundX->second.find(y);
-        if (foundY==foundX->second.end()) { return 0; }
-
-        return foundY->second;
-    }
+    int mPoints[1001][1001];
+    std::vector<int> mYinX[1001];
 };
 
 /**
