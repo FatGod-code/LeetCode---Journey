@@ -17,11 +17,11 @@ public:
 
             auto numPoints1 = findPoint(point[0]-length, point[1]);
             auto numPoints2 = findPoint(point[0]-length, ele.first);
-            results += ele.second*numPoints1*numPoints2;
+            results += (ele.second*numPoints1*numPoints2);
 
             numPoints1 = findPoint(point[0]+length, point[1]);
             numPoints2 = findPoint(point[0]+length, ele.first);
-            results += ele.second*numPoints1*numPoints2;
+            results += (ele.second*numPoints1*numPoints2);
         }
 
         return results;
