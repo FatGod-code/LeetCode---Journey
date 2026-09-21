@@ -2,7 +2,7 @@ class DetectSquares {
 public:
     DetectSquares() {}
     
-    void add(vector<int> point)
+    void add(const vector<int>& point)
     {
         int x = point[0];
         int y = point[1];
@@ -11,7 +11,7 @@ public:
         ++mPoints[y][x];
     }
     
-    int count(vector<int> point)
+    int count(const vector<int>& point)
     {
         int results = 0;
         for (const auto ele : mYinX[point[0]])
