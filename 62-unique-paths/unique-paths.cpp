@@ -2,15 +2,15 @@ class Solution {
 public:
     int uniquePaths(int m, int n)
     {
-        std::vector<std::vector<int>> table(m, std::vector<int>(n, 1));
-        for (int row = 1; row<m; ++row)
+        int totalSteps = m+n-2;
+        int k = std::min(m-1, n-1);
+
+        long long results = 1;
+        for (int i = 1; i<=k; ++i)
         {
-            for (int col = 1; col<n; ++col)
-            {
-                table[row][col] = table[row-1][col]+table[row][col-1];
-            }
+            results = (results* ((totalSteps-k+i)))/i;
         }
-        
-        return table.back().back();
+
+        return results;
     }
 };
