@@ -11,6 +11,6 @@ public:
             results = (results* ((totalSteps-k+i)))/i;
         }
 
-        return results;
+        return static_cast<int>(results);
     }
 };
