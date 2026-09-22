@@ -8,7 +8,7 @@ public:
         int size = static_cast<int>(table.size());
         for (const auto ele : coins)
         {
-            for (int idx = 1; idx<size; ++idx)
+            for (int idx = ele; idx<size; ++idx)
             {
                 if (idx-ele<0) { continue; }
                 
