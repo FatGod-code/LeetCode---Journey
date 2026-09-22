@@ -2,7 +2,7 @@ class Solution {
 public:
     int change(int amount, vector<int>& coins)
     {
-        std::vector<unsigned long long> table(amount+1, 0);
+        std::vector<unsigned int> table(amount+1, 0);
         table.front() = 1;
 
         int size = static_cast<int>(table.size());
