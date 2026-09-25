@@ -7,7 +7,7 @@ public:
 
         for (int idx1 = 0; idx1<word1.size(); ++idx1)
         {
-            int previous = idx1;//table[0];
+            int previous = table[0];
             for (int idx2 = 0; idx2<word2.size(); ++idx2)
             {
                 int temp = table[idx2+1];
