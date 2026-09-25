@@ -7,13 +7,9 @@ public:
 
         for (int idx1 = 0; idx1<word1.size(); ++idx1)
         {
-            
             int previous = table[0];
-            std::cout << table[0] << " ";
             for (int idx2 = 0; idx2<word2.size(); ++idx2)
             {
-                std::cout << table[idx2+1] << " ";
-
                 int temp = table[idx2+1];
                 if (word1[idx1]==word2[idx2]) { table[idx2+1] = previous; }
                 else { table[idx2+1] = std::min({table[idx2], table[idx2+1], previous})+1; }
@@ -21,7 +17,6 @@ public:
                 previous = temp;
             }
             ++table[0];
-            std::cout << std::endl;
         }
 
         return table.back();
