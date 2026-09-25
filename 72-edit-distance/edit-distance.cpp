@@ -1,24 +1,24 @@
-class Solution {
+class Solution 
+{
 public:
-    int minDistance(string word1, string word2)
+    int fun(string &word1, string &word2, int i, int j, vector<vector<int>>&dp)
     {
-        std::vector<int> table(word2.size()+1, 0);
-        for (int idx = 1; idx<table.size(); ++idx) { table[idx] = table[idx-1]+1; }
-
-        for (int idx1 = 0; idx1<word1.size(); ++idx1)
-        {
-            int previous = table[0];
-            for (int idx2 = 0; idx2<word2.size(); ++idx2)
-            {
-                int temp = table[idx2+1];
-                if (word1[idx1]==word2[idx2]) { table[idx2+1] = previous; }
-                else { table[idx2+1] = std::min({table[idx2], table[idx2+1], previous})+1; }
-
-                previous = temp;
-            }
-            ++table[0];
-        }
-
-        return table.back();
+        if(i==-1) return j+1;
+        if(j==-1) return i+1;
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(word1[i]==word2[j]) return dp[i][j] = fun(word1,word2,i-1,j-1,dp);
+        return dp[i][j] = 1 + min(fun(word1,word2,i-1,j-1,dp), 
+                min(fun(word1,word2,i,j-1,dp), fun(word1,word2,i-1,j,dp)));
     }
+    int minDistance(string word1, string word2) 
+    {
+        int n = word1.size();
+        int m = word2.size();
+        if(n==0 && m==0) return 0;
+        else if(n==0) return m;
+        else if(m==0) return n;
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        return fun(word1,word2,n-1,m-1,dp);
+    }
+//please upvote...
 };
