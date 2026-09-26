@@ -19,6 +19,7 @@ public:
             {
                 bool previous = table[idx2+1];
                 table[idx2+1] = false;
+                
                 if (s1[idx1]==s3[idx1+idx2+1]) { table[idx2+1] = table[idx2+1] || previous; }
                 if (s2[idx2]==s3[idx1+idx2+1]) { table[idx2+1] = table[idx2+1] || table[idx2]; }
             }
