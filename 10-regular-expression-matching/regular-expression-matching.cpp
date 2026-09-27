@@ -6,7 +6,7 @@ public:
         table[0][0] = true;
         for (int idx = 0; idx<p.size(); ++idx)
         {
-            if (p[idx]=='*') { table[0][idx+1] = table[0][idx+1] || table[0][idx-1]; }
+            if (p[idx]=='*') { table[0][idx+1] = table[0][idx-1]; }
         }
 
         for (int idx1 = 0; idx1<s.size(); ++idx1)
@@ -17,11 +17,10 @@ public:
                 else if (p[idx2]=='*')
                 {
                     table[idx1+1][idx2+1] = table[idx1+1][idx2+1] || table[idx1+1][idx2-1];
-                    if (p[idx2-1]==s[idx1] || p[idx2-1]=='.') { table[idx1+1][idx2+1] = table[idx1+1][idx2+1] || table[idx1][idx2+1]; }
+                    if (s[idx1]==p[idx2-1] || p[idx2-1]=='.') { table[idx1+1][idx2+1] = table[idx1+1][idx2+1] || table[idx1][idx2+1]; }
                 }
             }
         }
-
         return table.back().back();
     }
 };
