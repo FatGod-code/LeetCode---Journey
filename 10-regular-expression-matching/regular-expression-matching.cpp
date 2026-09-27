@@ -19,19 +19,16 @@ public:
                 if (s[idx1]==p[idx2] || p[idx2]=='.') { table[idx2+1] = previous; }
                 else if (p[idx2]=='*')
                 {
-                    bool temp = table[idx2+1];
+                    bool t = table[idx2+1];
                     table[idx2+1] = table[idx2-1];
-                    if (s[idx1]==p[idx2-1] || p[idx2-1]=='.')
-                    {
-                        //bool temp = table[idx2+1];
-                        table[idx2+1] = table[idx2+1] || temp;
-                    }
+                    if (s[idx1]==p[idx2-1] || p[idx2-1]=='.') { table[idx2+1] = table[idx2+1] || t; }
                 }
                 else { table[idx2+1] = false; }
 
                 previous = temp;
             }
         }
+
         return table.back();
     }
 };
