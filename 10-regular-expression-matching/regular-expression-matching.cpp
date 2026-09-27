@@ -21,7 +21,7 @@ public:
                 {
                     bool t = table[idx2+1];
                     table[idx2+1] = table[idx2-1];
-                    if (s[idx1]==p[idx2-1] || p[idx2-1]=='.') { table[idx2+1] = table[idx2+1] || t; }
+                    if (s[idx1]==p[idx2-1] || p[idx2-1]=='.') { table[idx2+1] = table[idx2+1] || temp; }
                 }
                 else { table[idx2+1] = false; }
 
