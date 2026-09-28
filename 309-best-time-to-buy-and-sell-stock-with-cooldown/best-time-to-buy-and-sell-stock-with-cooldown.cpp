@@ -3,20 +3,27 @@ public:
     int maxProfit(vector<int>& prices)
     {
         if (prices.empty()) { return 0; }
-
-        std::vector<int> hold(prices.size());
-        hold[0] = -prices[0];
         
-        std::vector<int> sold(prices.size(), 0);
-        std::vector<int> rest(prices.size(), 0);
+        int preHold = -prices[0];
+        int hold = 0;
+        
+        int preSold = 0;
+        int sold = 0;
+
+        int preRest = 0;
+        int rest = 0;
 
         for (int idx = 1; idx<prices.size(); ++idx)
         {
-            hold[idx] = std::max(hold[idx-1], rest[idx-1]-prices[idx]);
-            sold[idx] = hold[idx-1]+prices[idx];
-            rest[idx] = std::max(rest[idx-1], sold[idx-1]);
+            hold = std::max(preHold, preRest-prices[idx]);
+            sold = preHold+prices[idx];
+            rest = std::max(preRest, preSold);
+            
+            preHold = hold;
+            preSold = sold;
+            preRest = rest;
         }
 
-        return std::max({hold.back(), sold.back(), rest.back()});
+        return std::max({hold, sold, rest});
     }
 };
