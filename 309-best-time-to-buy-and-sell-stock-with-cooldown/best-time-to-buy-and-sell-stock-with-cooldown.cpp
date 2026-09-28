@@ -2,6 +2,8 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices)
     {
+        if (prices.empty()) { return 0; }
+
         std::vector<int> hold(prices.size());
         hold[0] = -prices[0];
         
