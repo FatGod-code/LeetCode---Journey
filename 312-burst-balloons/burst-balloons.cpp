@@ -5,7 +5,7 @@ public:
         std::vector<int> numbers(nums.size()+2, 1);
         for (int idx = 0; idx<nums.size(); ++idx) { numbers[idx+1] = nums[idx]; }
 
-        std::vector<std::vector<int>> table(numbers.size(), std::vector<int>(numbers.size(), 0));
+        std::vector<std::vector<int>> table(numbers.size(), std::vector<int>(numbers.size(), -1));
         return dfs(numbers, 1, nums.size(), table);
     }
 
@@ -13,8 +13,7 @@ public:
             std::vector<std::vector<int>>& table)
     {
         if (left>right) { return 0; }
-
-        if (table[left][right]!=0) { return table[left][right]; }
+        if (table[left][right]!=-1) { return table[left][right]; }
 
         int results = 0;
         for (int idx = left; idx<=right; ++idx)
@@ -22,9 +21,8 @@ public:
             auto leftValue = dfs(numbers, left, idx-1, table);
             auto rightValue = dfs(numbers, idx+1, right, table);
 
-            int numCoins = leftValue+rightValue+numbers[left-1]*numbers[idx]*numbers[right+1];
-
-            results = std::max(numCoins, results);
+            int midValue = numbers[left-1]*numbers[idx]*numbers[right+1];
+            results = std::max(leftValue+rightValue+midValue, results);
         }
 
         table[left][right] = results;
