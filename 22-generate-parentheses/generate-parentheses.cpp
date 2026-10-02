@@ -11,7 +11,7 @@ public:
 
     void solve(int n, int left, int right, std::string& str, std::vector<std::string>& results)
     {
-        if (n==left && n==right)
+        if (left==n && right==n)
         {
             results.emplace_back(str);
             return;
